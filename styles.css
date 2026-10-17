@@ -525,3 +525,136 @@ main,.dashboard-main,.gift-main,.signup-main{width:100%;min-width:0}
 @media(max-width:360px){
   .wish-item .small-button{font-size:13px;padding:9px 8px}
 }
+
+
+/* Final phone layout: wishlist cards must stack instead of squeezing content into columns. */
+@media (max-width: 600px) {
+  .dashboard-lists,
+  .workspace {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .owned-list {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .owned-list-icon {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+  }
+
+  .owned-list-info {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .owned-list-info h3 {
+    font-size: 16px;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .owned-list-info p {
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .owned-list .small-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 42px;
+    margin: 2px 0 0;
+    padding: 10px 12px;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .workspace-head {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .workspace-head > div:first-child {
+    width: 100%;
+    flex: none;
+  }
+
+  .workspace-head .code-chip {
+    align-self: flex-start;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .wish-item {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 9px;
+    padding: 14px;
+  }
+
+  .wish-item .item-placeholder {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+  }
+
+  .wish-item .item-info {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .wish-item .item-info h3 {
+    font-size: 16px;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .wish-item .item-info p {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .wish-item .item-price {
+    align-self: flex-start;
+    white-space: normal;
+  }
+
+  .wish-item .small-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: none;
+    min-height: 40px;
+    margin: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 360px) {
+  .owned-list,
+  .wish-item {
+    padding: 12px;
+  }
+
+  .workspace h2 {
+    font-size: 22px;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+}
