@@ -40,7 +40,7 @@ service cloud.firestore {
       match /items/{itemId} {
         allow get, list: if exists(/databases/$(database)/documents/wishlists/$(code));
         allow create: if isOwner(code)
-          && request.resource.data.keys().hasOnly(['name', 'category', 'url', 'price', 'priority', 'notes', 'createdAt'])
+          && request.resource.data.keys().hasOnly(['name', 'category', 'url', 'imageUrl', 'price', 'priority', 'notes', 'createdAt'])
           && request.resource.data.name is string
           && request.resource.data.name.size() > 0
           && request.resource.data.name.size() <= 100;
@@ -48,7 +48,7 @@ service cloud.firestore {
           && request.resource.data.name is string
           && request.resource.data.name.size() > 0
           && request.resource.data.name.size() <= 100
-          && request.resource.data.keys().hasOnly(['name', 'category', 'url', 'price', 'priority', 'notes', 'createdAt']);
+          && request.resource.data.keys().hasOnly(['name', 'category', 'url', 'imageUrl', 'price', 'priority', 'notes', 'createdAt']);
         allow delete: if isOwner(code);
       }
 
@@ -64,6 +64,25 @@ service cloud.firestore {
           && request.resource.data.keys().hasOnly(['purchased', 'updatedAt'])
           && request.resource.data.purchased == true;
         allow delete: if false;
+      }
+
+      match /reservations/{itemId} {
+        // Anonymous gift-givers can see reservation status; owners cannot read these records.
+        allow get, list: if isGiftGiver()
+          && exists(/databases/$(database)/documents/wishlists/$(code))
+          && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId));
+        allow create: if isGiftGiver()
+          && exists(/databases/$(database)/documents/wishlists/$(code))
+          && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId))
+          && request.resource.data.keys().hasOnly(['reserved', 'reservedBy', 'updatedAt'])
+          && request.resource.data.reserved == true
+          && request.resource.data.reservedBy == request.auth.uid;
+        allow update: if isGiftGiver()
+          && resource.data.reservedBy == request.auth.uid
+          && request.resource.data.keys().hasOnly(['reserved', 'reservedBy', 'updatedAt'])
+          && request.resource.data.reserved == true
+          && request.resource.data.reservedBy == request.auth.uid;
+        allow delete: if isGiftGiver() && resource.data.reservedBy == request.auth.uid;
       }
     }
   }
