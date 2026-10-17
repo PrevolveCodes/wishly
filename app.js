@@ -37,6 +37,7 @@ const googleSignInButton = $("#google-sign-in");
 const accountPanel = $("#account-panel");
 const accountOpenButton = $("#account-open");
 const accountCloseButton = $("#account-close");
+const getStartedButton = $("#get-started-cta");
 let accountMode = "signup";
 let activeListId = null;
 let activeMode = "owner";
@@ -97,11 +98,13 @@ onAuthStateChanged(auth, user => {
   setAccountUi(user);
   accountOpenButton.textContent = user && !user.isAnonymous ? "My account" : "Make an account";
 });
-accountOpenButton.addEventListener("click", () => {
+function openAccountPanel() {
   accountPanel.classList.remove("hidden");
   accountPanel.scrollIntoView({ behavior: "smooth", block: "center" });
   if (!auth.currentUser || auth.currentUser.isAnonymous) $("#account-email").focus({ preventScroll: true });
-});
+}
+accountOpenButton.addEventListener("click", openAccountPanel);
+getStartedButton.addEventListener("click", openAccountPanel);
 accountCloseButton.addEventListener("click", () => accountPanel.classList.add("hidden"));
 
 accountToggle.addEventListener("click", () => {
