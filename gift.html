@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f6f2">
+  <meta name="description" content="Open a Wishly list using the code you were given.">
+  <title>Find a wishlist — Wishly</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="gift.js"></script>
+</head>
+<body class="gift-page">
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Wishly home"><span class="brand-mark">w</span><span>wishly<span class="brand-dot">.</span></span></a>
+    <nav class="top-nav" aria-label="Main navigation"><a href="./">Home</a><a href="signup.html">Make a wishlist</a></nav>
+  </header>
+  <main class="gift-main">
+    <a class="back-link" href="./">← Back to Wishly</a>
+    <section class="gift-intro"><div class="eyebrow">A LITTLE SOMETHING FOR SOMEONE</div><h1>Find their wishlist<span>.</span></h1><p>Enter the share code they gave you to see their gift ideas. You can mark an item purchased to help avoid duplicates.</p></section>
+    <section class="gift-search-card">
+      <form id="view-form" class="gift-search-form">
+        <label for="list-code">Wishlist code</label><input id="list-code" name="code" maxlength="10" placeholder="e.g. 7K4P2Q9M3R" autocomplete="off" required>
+        <button class="button button-primary" type="submit">Find wishlist <span>→</span></button>
+      </form>
+      <p class="signup-status">Purchase marks are only shown to gift-givers, not to the person whose list it is.</p>
+    </section>
+    <section id="workspace" class="workspace hidden" aria-live="polite"></section>
+  </main>
+  <p id="notice" class="notice hidden" role="status"></p>
+</body>
+</html>
