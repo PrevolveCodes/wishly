@@ -99,7 +99,7 @@ form.addEventListener("submit", async event => {
   try {
     const currentUser = auth.currentUser;
     if (currentUser && !currentUser.isAnonymous) {
-      toast("This browser is signed in to a Wishly owner account. Sign out first or open this page in a private window so purchase marks stay separate.");
+      toast("This browser is signed in to a Wishly owner account. Sign out first or open this page in a private window so gift reservations stay separate.");
       return;
     }
     if (!currentUser) await signInAnonymously(auth);
