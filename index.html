@@ -16,6 +16,14 @@
   </header>
 
   <main>
+    <section class="account-panel" aria-label="Wishly account">
+      <div class="account-copy"><h2>Your Wishly account</h2><p id="account-status">Sign in or create an account to manage wishlists.</p></div>
+      <form id="account-form" class="account-form">
+        <label for="account-email">Email</label><input id="account-email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com">
+        <label for="account-password">Password</label><input id="account-password" type="password" autocomplete="new-password" minlength="6" required>
+        <div class="account-actions"><button class="button button-primary" id="account-submit" type="submit">Create account</button><button class="small-button" id="account-toggle" type="button">Already have an account? Sign in</button><button class="small-button hidden" id="sign-out" type="button">Sign out</button></div>
+      </form>
+    </section>
     <section class="hero">
       <div class="eyebrow"><span class="eyebrow-dot"></span> WISH SOMETHING GOOD</div>
       <h1>Make a list.<br><span>Share a wish.</span></h1>
