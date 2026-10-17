@@ -70,7 +70,9 @@ async function renderList() {
       return `<article class="wish-item ${purchased ? "purchased" : ""}" data-search="${escapeHtml((item.name + " " + (item.category || "")).toLowerCase())}" data-price="${Number(item.price)||0}" data-has-price="${priceValue}">
         <div class="item-placeholder" aria-hidden="true">${safeUrl(item.imageUrl) ? '<img class="item-image" src="' + escapeHtml(safeUrl(item.imageUrl)) + '" alt="" loading="lazy">' : (purchased ? "✓" : "♡")}</div>
         <div class="item-info"><span class="category-tag">${escapeHtml(item.category || "Other")}</span><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.priority || "Would love")}${item.notes ? " · " + escapeHtml(item.notes) : ""}</p>${url ? '<a class="item-link" href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">View at store ↗</a>' : ""}</div>
-        ${priceValue ? '<div class="item-price"> data-index="${index}" type="button" aria-pressed="${purchased}">${purchased ? "Marked purchased ✓" : "Mark purchased"}</button>
+        ${priceValue ? '<div class="item-price">$' + Number(item.price).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) + "</div>" : ""}
+        <button class="small-button reserve-toggle" data-index="${index}" type="button" ${reserved && !reservedByMe ? "disabled" : ""}>${reservedByMe ? "Release reservation" : reserved ? "Reserved by someone" : "Reserve gift"}</button>
+        <button class="small-button purchase-toggle" data-index="${index}" type="button" aria-pressed="${purchased}">${purchased ? "Marked purchased ✓" : "Mark purchased"}</button>
       </article>`;
     }).join("") : '<div class="empty-state">This wishlist does not have any items yet.</div>'}</div>
     <p class="workspace-sub" style="margin-top:16px">Purchase marks are for gift-givers. Please keep the surprise a secret.</p>
