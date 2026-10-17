@@ -28,17 +28,16 @@ const workspace = $("#workspace");
 const notice = $("#notice");
 const dialog = $("#item-dialog");
 const itemForm = $("#item-form");
-const accountForm = $("#account-form");
-const accountStatus = $("#account-status");
-const accountSubmit = $("#account-submit");
-const accountToggle = $("#account-toggle");
-const signOutButton = $("#sign-out");
-const googleSignInButton = $("#google-sign-in");
-const accountPanel = $("#account-panel");
-const accountOpenButton = $("#account-open");
-const accountCloseButton = $("#account-close");
-const getStartedButton = $("#get-started-cta");
-let accountMode = "signup";
+const accountForm = null;
+const accountStatus = null;
+const accountSubmit = null;
+const accountToggle = null;
+const signOutButton = null;
+const googleSignInButton = null;
+const accountPanel = null;
+const accountOpenButton = null;
+const accountCloseButton = null;
+const getStartedButton = null;
 let activeListId = null;
 let activeMode = "owner";
 let activeItemDocs = [];
@@ -74,71 +73,11 @@ function friendlyError(error) {
   };
   return messages[code] || error?.message || "Something went wrong. Please try again.";
 }
-function setAccountUi(user) {
-  const accountFields = accountForm.querySelectorAll("label, input");
-  accountFields.forEach(field => field.classList.toggle("hidden", !!user));
-  googleSignInButton.classList.toggle("hidden", !!user);
-  if (user && !user.isAnonymous) {
-    accountStatus.textContent = `Signed in as ${user.email}`;
-    accountSubmit.classList.add("hidden");
-    accountToggle.classList.add("hidden");
-    signOutButton.classList.remove("hidden");
-    createForm.querySelector('button[type="submit"]').disabled = false;
-    createForm.querySelector('button[type="submit"]').textContent = "Create a wishlist →";
-  } else {
-    accountStatus.textContent = user?.isAnonymous ? "Gift-giver session active" : "Sign in or create an account to manage wishlists.";
-    accountSubmit.classList.toggle("hidden", !!user?.isAnonymous);
-    accountToggle.classList.toggle("hidden", !!user?.isAnonymous);
-    signOutButton.classList.toggle("hidden", !user);
-    createForm.querySelector('button[type="submit"]').disabled = true;
-    createForm.querySelector('button[type="submit"]').textContent = "Sign in to create a wishlist";
-  }
-}
 onAuthStateChanged(auth, user => {
-  setAccountUi(user);
-  accountOpenButton.textContent = user && !user.isAnonymous ? "My account" : "Make an account";
-});
-function openAccountPanel() {
-  accountPanel.classList.remove("hidden");
-  accountPanel.scrollIntoView({ behavior: "smooth", block: "center" });
-  if (!auth.currentUser || auth.currentUser.isAnonymous) $("#account-email").focus({ preventScroll: true });
-}
-accountOpenButton.addEventListener("click", openAccountPanel);
-getStartedButton.addEventListener("click", openAccountPanel);
-accountCloseButton.addEventListener("click", () => accountPanel.classList.add("hidden"));
-
-accountToggle.addEventListener("click", () => {
-  accountMode = accountMode === "signup" ? "signin" : "signup";
-  accountSubmit.textContent = accountMode === "signup" ? "Create account" : "Sign in";
-  accountToggle.textContent = accountMode === "signup" ? "Already have an account? Sign in" : "Need an account? Create one";
-  $("#account-password").autocomplete = accountMode === "signup" ? "new-password" : "current-password";
-});
-accountForm.addEventListener("submit", async event => {
-  event.preventDefault();
-  const email = String($("#account-email").value || "").trim();
-  const password = String($("#account-password").value || "");
-  accountSubmit.disabled = true;
-  try {
-    if (accountMode === "signup") await createUserWithEmailAndPassword(auth, email, password);
-    else await signInWithEmailAndPassword(auth, email, password);
-    accountForm.reset();
-    toast(accountMode === "signup" ? "Account created. You can now make your wishlist." : "Signed in. You can now manage your wishlists.");
-  } catch (error) { toast(friendlyError(error)); }
-  finally { accountSubmit.disabled = false; }
-});
-googleSignInButton.addEventListener("click", async () => {
-  googleSignInButton.disabled = true;
-  try {
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: "select_account" });
-    await signInWithPopup(auth, provider);
-    toast("Signed in with Google. You can now manage your wishlists.");
-  } catch (error) { toast(friendlyError(error)); }
-  finally { googleSignInButton.disabled = false; }
-});
-signOutButton.addEventListener("click", async () => {
-  try { await signOut(auth); workspace.classList.add("hidden"); toast("Signed out."); }
-  catch (error) { toast(friendlyError(error)); }
+  const createButton = createForm.querySelector('button[type="submit"]');
+  const isOwner = !!user && !user.isAnonymous;
+  createButton.disabled = !isOwner;
+  createButton.textContent = isOwner ? "Create a wishlist →" : "Sign in to create a wishlist";
 });
 
 function makeCode() {
