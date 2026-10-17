@@ -12,22 +12,15 @@
 <body>
   <header class="topbar">
     <a class="brand" href="./" aria-label="Wishly home"><span class="brand-mark">w</span><span>wishly<span class="brand-dot">.</span></span></a>
-    <nav class="top-nav" aria-label="Main navigation"><a href="#about">About</a><button id="account-open" class="nav-account" type="button">Make an account</button></nav>
+    <nav class="top-nav" aria-label="Main navigation"><a href="#about">About</a><a href="signup.html" class="nav-account">Make an account</a></nav>
   </header>
 
   <main>
-    <section id="account-panel" class="account-panel hidden" aria-label="Wishly account">
-      <div class="account-copy"><h2>Your Wishly account</h2><p id="account-status">Sign in or create an account to manage wishlists.</p><button id="account-close" class="small-button account-close" type="button">Close</button></div>
-      <form id="account-form" class="account-form">
-        <label for="account-email">Email</label><input id="account-email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com">
-        <label for="account-password">Password</label><input id="account-password" type="password" autocomplete="new-password" minlength="6" required>
-        <div class="account-actions"><button class="button button-primary" id="account-submit" type="submit">Create account</button><button class="button google-button" id="google-sign-in" type="button"><span class="google-mark" aria-hidden="true">G</span> Continue with Google</button><button class="small-button" id="account-toggle" type="button">Already have an account? Sign in</button><button class="small-button hidden" id="sign-out" type="button">Sign out</button></div>
-      </form>
-    </section>
+
     <section class="hero">
       <div class="eyebrow"><span class="eyebrow-dot"></span> WISH SOMETHING GOOD</div>
       <h1>Make a list.<br><span>Share a wish.</span></h1>
-      <p class="hero-copy">Keep your gift ideas in one place. Give your family a code, and let them handle the surprises.</p><button class="button button-primary hero-cta" id="get-started-cta" type="button">Get started <span>→</span></button>
+      <p class="hero-copy">Keep your gift ideas in one place. Give your family a code, and let them handle the surprises.</p><a class="button button-primary hero-cta" href="signup.html">Get started <span>→</span></a>
       <div class="hero-art" aria-hidden="true">
         <div class="art-spark spark-one">✳</div><div class="art-spark spark-two">✦</div>
         <div class="gift gift-back"></div><div class="gift gift-front"><div class="gift-ribbon"></div><div class="gift-bow"></div></div>
