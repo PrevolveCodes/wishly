@@ -73,7 +73,7 @@ form.addEventListener("submit", async event => {
     else await signInWithEmailAndPassword(auth, email, password);
     status.textContent = "Account ready. You can now manage your wishlists.";
     toast("Account ready. Returning to Wishly…");
-    window.location.href = "./";
+    window.location.href = "dashboard.html";
   } catch (error) {
     toast(friendlyError(error));
     submit.disabled = false;
