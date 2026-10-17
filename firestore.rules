@@ -18,7 +18,6 @@ service cloud.firestore {
     }
 
     match /wishlists/{code} {
-      // The share code is the public lookup key. Only the creator can modify list metadata.
       allow get: if true;
       allow list: if signedIn()
         && request.auth.token.firebase.sign_in_provider != 'anonymous'
@@ -26,7 +25,7 @@ service cloud.firestore {
       allow create: if signedIn()
         && request.auth.token.firebase.sign_in_provider != 'anonymous'
         && request.resource.data.ownerUid == request.auth.uid
-        && request.resource.data.keys().hasOnly(['code', 'ownerUid', 'ownerName', 'title', 'occasion', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['code', 'ownerUid', 'ownerName', 'title', 'occasion', 'createdAt', 'coverImageUrl', 'themeColor', 'eventDate', 'customMessage'])
         && request.resource.data.code == code
         && request.resource.data.ownerName is string
         && request.resource.data.ownerName.size() > 0
@@ -53,8 +52,6 @@ service cloud.firestore {
       }
 
       match /purchases/{itemId} {
-        // Purchase records are intentionally inaccessible to normal email/password owner sessions.
-        // Anonymous auth is used for the gift-giver flow.
         allow get, list: if isGiftGiver()
           && exists(/databases/$(database)/documents/wishlists/$(code))
           && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId));
@@ -67,7 +64,6 @@ service cloud.firestore {
       }
 
       match /reservations/{itemId} {
-        // Anonymous gift-givers can see reservation status; owners cannot read these records.
         allow get, list: if isGiftGiver()
           && exists(/databases/$(database)/documents/wishlists/$(code))
           && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId));
