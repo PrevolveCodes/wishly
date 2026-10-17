@@ -680,7 +680,7 @@ main,.dashboard-main,.gift-main,.signup-main{width:100%;min-width:0}
 
 
 /* Clear reservation status for other gift-givers */
-.reservation-status{display:flex;flex-direction:column;gap:3px;flex-basis:100%;order:5;padding:9px 11px;background:#fff1f0;border:1px solid #f2c5c2;border-radius:9px;color:#b42318}
+.reservation-status{display:flex;flex-direction:column;gap:3px;flex-basis:100%;padding:9px 11px;background:#fff1f0;border:1px solid #f2c5c2;border-radius:9px;color:#b42318}
 .reservation-status strong{font-size:12px;letter-spacing:.8px;color:#b42318}
 .reservation-status span{font-size:11px;line-height:1.45;color:#8f302a}
 .reserve-toggle:disabled{border-color:#efc7c4;color:#b42318;background:#fff8f7;opacity:1;cursor:not-allowed}
