@@ -145,9 +145,133 @@ async function openWorkspace(list, mode) {
         const url = safeUrl(item.url);
         return `<article class="wish-item ${!owner && purchased ? "purchased" : ""}">
           <div class="item-placeholder" aria-hidden="true">${!owner && purchased ? "✓" : "♡"}</div>
-          <div class="item-info"><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.priority || "Would love")}${item.notes ? " · " + escapeHtml(item.notes) : ""}</p>${url ? '<a class="item-link" href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">View at store ↗</a>' : ""}</div>
-          ${item.price !== "" && item.price != null ? '<div class="item-price">$' + Number(item.price).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + "</div>" : ""}
-          ${owner ? '<button class="small-button remove-item" data-index="' + index + '" type="button">Remove</button>' : '<button class="small-button toggle-purchased" data-index="' + index + '" type="button" aria-pressed="' + purchased + '">' + (purchased ? "Marked purchased ✓" : "Mark purchased") + "</button>"}
+          <div class="item-info"><span class="category-tag">${escapeHtml(item.category || "Other")}</span><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.priority || "Would love")}${item.notes ? " · " + escapeHtml(item.notes) : ""}</p>${url ? '<a class="item-link" href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">View at store ↗</a>' : ""}</div>
+          ${item.price !== "" && item.price != null ? '<div class="item-price">
+        </article>`;
+      }).join("") : '<div class="empty-state">No items yet. Check back later.</div>'}</div>
+      ${!owner ? '<p class="workspace-sub" style="margin-top:16px">Purchase information is stored separately from the wishlist items.</p>' : ""}
+    `;
+    workspace.classList.remove("hidden");
+    workspace.scrollIntoView({ behavior: "smooth", block: "start" });
+    $("#copy-code")?.addEventListener("click", () => copyText(list.code, "Wishlist code copied."));
+    $("#copy-share")?.addEventListener("click", () => copyText(`I made a wishlist on Wishly! Enter code ${list.code} to see it.`, "Sharing message copied."));
+    $("#add-item")?.addEventListener("click", () => {
+      itemForm.reset();
+      delete itemForm.dataset.editingId;
+      $("#item-dialog-title").textContent = "Add an item";
+      $("#item-submit").innerHTML = 'Add to wishlist <span>+</span>';
+      $("#item-category").value = "Other";
+      dialog.showModal();
+      $("#item-name").focus();
+    });
+    workspace.querySelectorAll(".edit-item").forEach(button => button.addEventListener("click", () => {
+      const item = activeItemDocs[Number(button.dataset.index)];
+      if (!item) return;
+      itemForm.reset();
+      itemForm.dataset.editingId = item.id;
+      $("#item-name").value = item.name || "";
+      $("#item-category").value = item.category || "Other";
+      $("#item-url").value = item.url || "";
+      $("#item-price").value = item.price ?? "";
+      $("#item-priority").value = item.priority || "Would love";
+      $("#item-notes").value = item.notes || "";
+      $("#item-dialog-title").textContent = "Edit item";
+      $("#item-submit").innerHTML = 'Save changes <span>✓</span>';
+      dialog.showModal();
+      $("#item-name").focus();
+    }));
+    workspace.querySelectorAll(".remove-item").forEach(button => button.addEventListener("click", async () => {
+      const item = activeItemDocs[Number(button.dataset.index)];
+      if (!item || !confirm("Remove this item from your wishlist?")) return;
+      try {
+        await deleteDoc(doc(db, "wishlists", activeListId, "items", item.id));
+        await deleteDoc(doc(db, "wishlists", activeListId, "purchases", item.id)).catch(() => {});
+        await openWorkspace(activeList, "owner");
+        toast("Item removed.");
+      } catch (error) { toast(friendlyError(error)); }
+    }));
+    workspace.querySelectorAll(".toggle-purchased").forEach(button => button.addEventListener("click", async () => {
+      const item = activeItemDocs[Number(button.dataset.index)];
+      if (!item) return;
+      try {
+        await setDoc(doc(db, "wishlists", activeListId, "purchases", item.id), { purchased: true, updatedAt: serverTimestamp() });
+        await openWorkspace(activeList, "gift");
+        toast("Purchase status updated.");
+      } catch (error) { toast(friendlyError(error)); }
+    }));
+  } catch (error) {
+    toast(friendlyError(error));
+    workspace.classList.add("hidden");
+  }
+}
+
+createForm.addEventListener("submit", async event => {
+  event.preventDefault();
+  const user = auth.currentUser;
+  if (!user || user.isAnonymous) { toast("Create an account or sign in first."); return; }
+  const data = new FormData(createForm);
+  const ownerName = String(data.get("ownerName") || "").trim();
+  const title = String(data.get("title") || "").trim();
+  if (!ownerName || !title) return;
+  const button = createForm.querySelector('button[type="submit"]');
+  button.disabled = true;
+  try {
+    let code;
+    let exists = true;
+    for (let attempt = 0; attempt < 5 && exists; attempt++) {
+      code = makeCode();
+      exists = (await getDoc(doc(db, "wishlists", code))).exists();
+    }
+    if (exists) throw new Error("Could not generate a unique code. Please try again.");
+    const list = { code, ownerUid: user.uid, ownerName, title, occasion: String(data.get("occasion") || "Other"), createdAt: serverTimestamp() };
+    await setDoc(doc(db, "wishlists", code), list);
+    createForm.reset();
+    await loadOwnedLists(user);
+    await openWorkspace({ ...list, createdAt: new Date() }, "owner");
+    toast("Wishlist created. Copy the code to share it.");
+  } catch (error) { toast(friendlyError(error)); }
+  finally { button.disabled = false; }
+});
+
+itemForm.addEventListener("submit", async event => {
+  event.preventDefault();
+  const user = auth.currentUser;
+  if (!user || user.isAnonymous || activeMode !== "owner" || !activeList || activeList.ownerUid !== user.uid) {
+    toast("Sign in with the account that owns this wishlist to add items.");
+    dialog.close(); return;
+  }
+  const data = new FormData(itemForm);
+  const name = String(data.get("itemName") || "").trim();
+  const rawUrl = String(data.get("itemUrl") || "").trim();
+  const url = rawUrl ? safeUrl(rawUrl) : "";
+  if (!name) { toast("Please enter an item name."); return; }
+  if (rawUrl && !url) { toast("Use a valid http or https store link."); return; }
+  try {
+    const itemData = {
+      name, category: String(data.get("itemCategory") || "Other").trim() || "Other",
+      url, price: String(data.get("itemPrice") || ""),
+      priority: String(data.get("itemPriority") || "Would love"),
+      notes: String(data.get("itemNotes") || "").trim()
+    };
+    const editingId = itemForm.dataset.editingId;
+    if (editingId) {
+      await updateDoc(doc(db, "wishlists", activeListId, "items", editingId), itemData);
+    } else {
+      await addDoc(collection(db, "wishlists", activeListId, "items"), {
+        ...itemData, createdAt: serverTimestamp()
+      });
+    }
+    delete itemForm.dataset.editingId;
+    dialog.close();
+    await openWorkspace(activeList, "owner");
+    toast(editingId ? "Item updated." : "Item added to your wishlist.");
+  } catch (error) { toast(friendlyError(error)); }
+});
+$("#close-modal").addEventListener("click", () => dialog.close());
+dialog.addEventListener("click", event => { if (event.target === dialog) dialog.close(); });
+
+ + Number(item.price).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + "</div>" : ""}
+          ${owner ? '<button class="small-button edit-item" data-index="' + index + '" type="button">Edit</button><button class="small-button remove-item" data-index="' + index + '" type="button">Remove</button>' : '<button class="small-button toggle-purchased" data-index="' + index + '" type="button" aria-pressed="' + purchased + '">' + (purchased ? "Marked purchased ✓" : "Mark purchased") + "</button>"}
         </article>`;
       }).join("") : '<div class="empty-state">No items yet. Check back later.</div>'}</div>
       ${!owner ? '<p class="workspace-sub" style="margin-top:16px">Purchase information is stored separately from the wishlist items.</p>' : ""}
