@@ -20,7 +20,9 @@ service cloud.firestore {
     match /wishlists/{code} {
       // The share code is the public lookup key. Only the creator can modify list metadata.
       allow get: if true;
-      allow list: if false;
+      allow list: if signedIn()
+        && request.auth.token.firebase.sign_in_provider != 'anonymous'
+        && resource.data.ownerUid == request.auth.uid;
       allow create: if signedIn()
         && request.auth.token.firebase.sign_in_provider != 'anonymous'
         && request.resource.data.ownerUid == request.auth.uid
