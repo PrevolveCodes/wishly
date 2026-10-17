@@ -44,14 +44,10 @@ function friendlyError(error) {
 async function renderList() {
   const snap = await getDocs(query(collection(db, "wishlists", activeCode, "items"), orderBy("createdAt", "asc")));
   activeItems = snap.docs.map(itemDoc => ({ id: itemDoc.id, ...itemDoc.data() }));
-  const [purchaseEntries, reservationEntries] = await Promise.all([Promise.all(activeItems.map(async item => {
-    const purchase = await getDoc(doc(db, "wishlists", activeCode, "purchases", item.id));
-    return [item.id, purchase.exists() && Boolean(purchase.data().purchased)];
-  })), Promise.all(activeItems.map(async item => {
+  const reservationEntries = await Promise.all(activeItems.map(async item => {
     const reservation = await getDoc(doc(db, "wishlists", activeCode, "reservations", item.id));
     return [item.id, reservation.exists() ? reservation.data() : null];
-  }))]);
-  const purchases = Object.fromEntries(purchaseEntries);
+  }));
   const reservations = Object.fromEntries(reservationEntries);
   workspace.innerHTML = `
     <div class="workspace-head">
@@ -61,21 +57,19 @@ async function renderList() {
     <p class="workspace-sub">Reserve an item to let other gift-givers know you are planning to get it. Reservations and purchase marks are hidden from the wishlist owner.</p>
     <div class="list-tools"><label for="gift-item-search">Search items</label><input id="gift-item-search" type="search" placeholder="Search by name or category"><div class="list-summary"><span id="gift-visible-count">${activeItems.length} items</span><span>Total listed price: <strong id="gift-price-total"></strong></span></div></div>
     <div class="item-list">${activeItems.length ? activeItems.map((item, index) => {
-      const purchased = purchases[item.id];
       const reservation = reservations[item.id];
       const reservedByMe = Boolean(reservation && auth.currentUser && reservation.reservedBy === auth.currentUser.uid);
       const reserved = Boolean(reservation && reservation.reserved === true);
       const url = safeUrl(item.url);
       const priceValue = item.price !== "" && item.price != null && Number.isFinite(Number(item.price));
-      return `<article class="wish-item ${purchased ? "purchased" : ""}" data-search="${escapeHtml((item.name + " " + (item.category || "")).toLowerCase())}" data-price="${Number(item.price)||0}" data-has-price="${priceValue}">
-        <div class="item-placeholder" aria-hidden="true">${safeUrl(item.imageUrl) ? '<img class="item-image" src="' + escapeHtml(safeUrl(item.imageUrl)) + '" alt="" loading="lazy">' : (purchased ? "✓" : "♡")}</div>
+      return `<article class="wish-item" data-search="${escapeHtml((item.name + " " + (item.category || "")).toLowerCase())}" data-price="${Number(item.price)||0}" data-has-price="${priceValue}">
+        <div class="item-placeholder" aria-hidden="true">${safeUrl(item.imageUrl) ? '<img class="item-image" src="' + escapeHtml(safeUrl(item.imageUrl)) + '" alt="" loading="lazy">' : "♡"}</div>
         <div class="item-info"><span class="category-tag">${escapeHtml(item.category || "Other")}</span><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.priority || "Would love")}${item.notes ? " · " + escapeHtml(item.notes) : ""}</p>${url ? '<a class="item-link" href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">View at store ↗</a>' : ""}</div>
         ${priceValue ? '<div class="item-price">$' + Number(item.price).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) + "</div>" : ""}
-        <button class="small-button reserve-toggle" data-index="${index}" type="button" ${reserved && !reservedByMe ? "disabled" : ""}>${reservedByMe ? "Release reservation" : reserved ? "Reserved by someone" : "Reserve gift"}</button>
-        <button class="small-button purchase-toggle" data-index="${index}" type="button" aria-pressed="${purchased}">${purchased ? "Marked purchased ✓" : "Mark purchased"}</button>
+        ${reserved && !reservedByMe ? '<div class="reservation-status" role="status"><strong>RESERVED</strong><span>Someone else is planning to get this gift, so please choose another item.</span></div>' : ""}
+        <button class="small-button reserve-toggle" data-index="${index}" type="button" ${reserved && !reservedByMe ? "disabled" : ""}>${reservedByMe ? "Undo reservation" : "Reserve gift"}</button>
       </article>`;
     }).join("") : '<div class="empty-state">This wishlist does not have any items yet.</div>'}</div>
-    <p class="workspace-sub" style="margin-top:16px">Purchase marks are for gift-givers. Please keep the surprise a secret.</p>
   `;
   workspace.classList.remove("hidden");
   workspace.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -94,15 +88,6 @@ async function renderList() {
       } else { toast("Someone else has already reserved this gift."); }
       await renderList();
     } catch(error) { toast(friendlyError(error)); }
-  }));
-  workspace.querySelectorAll(".purchase-toggle").forEach(button => button.addEventListener("click", async () => {
-    const item = activeItems[Number(button.dataset.index)];
-    if (!item) return;
-    try {
-      await setDoc(doc(db, "wishlists", activeCode, "purchases", item.id), { purchased: true, updatedAt: serverTimestamp() });
-      await renderList();
-      toast("Marked as purchased.");
-    } catch (error) { toast(friendlyError(error)); }
   }));
 }
 form.addEventListener("submit", async event => {
