@@ -12,12 +12,12 @@
 <body>
   <header class="topbar">
     <a class="brand" href="./" aria-label="Wishly home"><span class="brand-mark">w</span><span>wishly<span class="brand-dot">.</span></span></a>
-    <span class="top-note">A little list for a big day</span>
+    <nav class="top-nav" aria-label="Main navigation"><a href="#about">About</a><button id="account-open" class="nav-account" type="button">Make an account</button></nav>
   </header>
 
   <main>
-    <section class="account-panel" aria-label="Wishly account">
-      <div class="account-copy"><h2>Your Wishly account</h2><p id="account-status">Sign in or create an account to manage wishlists.</p></div>
+    <section id="account-panel" class="account-panel hidden" aria-label="Wishly account">
+      <div class="account-copy"><h2>Your Wishly account</h2><p id="account-status">Sign in or create an account to manage wishlists.</p><button id="account-close" class="small-button account-close" type="button">Close</button></div>
       <form id="account-form" class="account-form">
         <label for="account-email">Email</label><input id="account-email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com">
         <label for="account-password">Password</label><input id="account-password" type="password" autocomplete="new-password" minlength="6" required>
@@ -27,7 +27,7 @@
     <section class="hero">
       <div class="eyebrow"><span class="eyebrow-dot"></span> WISH SOMETHING GOOD</div>
       <h1>Make a list.<br><span>Share a wish.</span></h1>
-      <p class="hero-copy">Keep your gift ideas in one place. Give your family a code, and let them handle the surprises.</p>
+      <p class="hero-copy">Keep your gift ideas in one place. Give your family a code, and let them handle the surprises.</p><a class="button button-primary hero-cta" href="#get-started">Get started <span>→</span></a>
       <div class="hero-art" aria-hidden="true">
         <div class="art-spark spark-one">✳</div><div class="art-spark spark-two">✦</div>
         <div class="gift gift-back"></div><div class="gift gift-front"><div class="gift-ribbon"></div><div class="gift-bow"></div></div>
@@ -35,7 +35,7 @@
       </div>
     </section>
 
-    <section class="action-grid" aria-label="Get started">
+    <section id="get-started" class="action-grid" aria-label="Get started">
       <article class="action-card create-card">
         <div class="card-icon lavender"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
         <div class="card-heading"><h2>Make your wishlist</h2><p>Start collecting things you’d love.</p></div>
@@ -66,7 +66,7 @@
     </section>
 
     <section id="workspace" class="workspace hidden" aria-live="polite"></section>
-    <section class="how-it-works">
+    <section id="about" class="how-it-works">
       <div><span class="step-number">01</span><h3>Make your list</h3><p>Add the things you’re hoping for.</p></div>
       <div><span class="step-number">02</span><h3>Share your code</h3><p>Give it to a parent or someone you trust.</p></div>
       <div><span class="step-number">03</span><h3>Keep the surprise</h3><p>Gift-givers can track purchases privately.</p></div>
