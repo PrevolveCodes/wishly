@@ -120,3 +120,50 @@ input:focus,select:focus,textarea:focus{
 
 /* Google sign-in button */
 .google-button{background:#fff;color:#30313a;border:1px solid #e1ded8;gap:10px;justify-content:center;box-shadow:0 2px 0 #28231b0a,0 4px 9px #28231b08}.google-button:hover{background:#faf9f6;border-color:#d5d0c7}.google-mark{font-family:Arial,sans-serif;font-size:17px;font-weight:700;color:#4285f4}
+
+
+/* Layout alignment and simpler top navigation */
+.topbar{min-height:88px;gap:20px}
+.top-nav{display:flex;align-items:center;gap:26px}
+.top-nav a{color:var(--muted);font-size:13px;font-weight:600;text-decoration:none}
+.top-nav a:hover{color:var(--purple)}
+.nav-account{border:1px solid #ded8fb;background:#fff;color:var(--purple);border-radius:10px;padding:10px 15px;font:600 13px 'DM Sans',sans-serif;cursor:pointer;box-shadow:0 2px 0 #29213b08}
+.nav-account:hover{background:#f5f2ff;border-color:#cfc6fa}
+.account-panel{scroll-margin-top:20px;grid-template-columns:minmax(180px,.75fr) minmax(0,1.25fr)}
+.account-copy{position:relative}
+.account-close{margin-top:14px}
+.account-actions .button{min-height:44px;padding:12px 16px}
+.hero{min-height:340px;padding-top:38px;padding-bottom:40px}
+.hero-art{top:28px;right:55px}
+.hero-cta{display:inline-flex;width:174px;min-height:46px;align-items:center;margin-top:23px;text-decoration:none;justify-content:space-between}
+.action-grid{align-items:stretch;gap:22px;margin-top:0;scroll-margin-top:22px}
+.action-card{display:flex;flex-direction:column;min-height:100%;padding:28px}
+.card-heading{min-height:70px}
+.action-card form{display:flex;flex-direction:column;flex:1}
+.action-card form .button{margin-top:auto;min-height:48px}
+.action-card form label:first-child{margin-top:0}
+.view-card .helper{margin-bottom:18px}
+.view-card .privacy-note{margin-top:24px}
+.action-card input,.action-card select{min-height:46px}
+.how-it-works{scroll-margin-top:22px}
+.button{min-height:46px;line-height:1.2}
+.button span{font-size:18px}
+.workspace-actions .button{min-height:44px}
+@media(max-width:720px){
+ .topbar{min-height:72px}
+ .top-nav{gap:13px}
+ .top-nav a{font-size:12px}
+ .nav-account{padding:9px 11px;font-size:12px}
+ .hero{min-height:350px;padding-top:28px}
+ .hero-art{right:-55px;top:100px}
+ .hero-cta{position:relative;z-index:2}
+ .card-heading{min-height:0}
+ .action-card{min-height:0}
+ .account-panel{grid-template-columns:1fr}
+ .account-actions .button{width:100%}
+}
+@media(max-width:390px){
+ .top-nav{gap:8px}
+ .brand{font-size:20px}
+ .nav-account{padding:8px 9px}
+}
