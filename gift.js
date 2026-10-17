@@ -60,7 +60,7 @@ async function renderList() {
       const url = safeUrl(item.url);
       return `<article class="wish-item ${purchased ? "purchased" : ""}">
         <div class="item-placeholder" aria-hidden="true">${purchased ? "✓" : "♡"}</div>
-        <div class="item-info"><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.priority || "Would love")}${item.notes ? " · " + escapeHtml(item.notes) : ""}</p>${url ? '<a class="item-link" href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">View at store ↗</a>' : ""}</div>
+        <div class="item-info"><span class="category-tag">${escapeHtml(item.category || "Other")}</span><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.priority || "Would love")}${item.notes ? " · " + escapeHtml(item.notes) : ""}</p>${url ? '<a class="item-link" href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">View at store ↗</a>' : ""}</div>
         ${item.price !== "" && item.price != null ? '<div class="item-price">$' + Number(item.price).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) + "</div>" : ""}
         <button class="small-button purchase-toggle" data-index="${index}" type="button" aria-pressed="${purchased}">${purchased ? "Marked purchased ✓" : "Mark purchased"}</button>
       </article>`;
