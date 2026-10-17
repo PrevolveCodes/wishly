@@ -684,3 +684,63 @@ main,.dashboard-main,.gift-main,.signup-main{width:100%;min-width:0}
 .reservation-status strong{font-size:12px;letter-spacing:.8px;color:#b42318}
 .reservation-status span{font-size:11px;line-height:1.45;color:#8f302a}
 .reserve-toggle:disabled{border-color:#efc7c4;color:#b42318;background:#fff8f7;opacity:1;cursor:not-allowed}
+
+
+/* Gift reservation layout fix: keep the notice and action from being squeezed into the narrow grid column. */
+.gift-page .wish-item {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.gift-page .wish-item .item-placeholder { grid-column: 1; grid-row: 1; }
+.gift-page .wish-item .item-info { grid-column: 2 / 4; grid-row: 1; min-width: 0; }
+.gift-page .wish-item .item-price { grid-column: 2 / 4; grid-row: 2; justify-self: start; }
+.gift-page .wish-item .reservation-status,
+.gift-page .wish-item .reserve-toggle {
+  grid-column: 1 / -1 !important;
+  grid-row: auto !important;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  justify-self: stretch;
+  box-sizing: border-box;
+}
+.gift-page .wish-item .reservation-status {
+  display: flex;
+  flex-direction: column;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.gift-page .wish-item .reservation-status span {
+  display: block;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.gift-page .wish-item .reserve-toggle {
+  min-height: 44px;
+  padding: 12px 14px;
+  white-space: normal;
+  line-height: 1.35;
+}
+@media (max-width: 600px) {
+  .gift-page .wish-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+    gap: 10px;
+    padding: 14px;
+  }
+  .gift-page .wish-item .item-placeholder,
+  .gift-page .wish-item .item-info,
+  .gift-page .wish-item .item-price,
+  .gift-page .wish-item .reservation-status,
+  .gift-page .wish-item .reserve-toggle {
+    grid-column: 1 / -1 !important;
+    grid-row: auto !important;
+  }
+  .gift-page .wish-item .item-placeholder { width: 40px; height: 40px; }
+  .gift-page .wish-item .item-info { width: 100%; }
+  .gift-page .wish-item .reserve-toggle { min-height: 46px; }
+}
