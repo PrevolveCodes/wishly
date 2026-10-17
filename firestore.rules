@@ -40,7 +40,7 @@ service cloud.firestore {
       match /items/{itemId} {
         allow get, list: if exists(/databases/$(database)/documents/wishlists/$(code));
         allow create: if isOwner(code)
-          && request.resource.data.keys().hasOnly(['name', 'url', 'price', 'priority', 'notes', 'createdAt'])
+          && request.resource.data.keys().hasOnly(['name', 'category', 'url', 'price', 'priority', 'notes', 'createdAt'])
           && request.resource.data.name is string
           && request.resource.data.name.size() > 0
           && request.resource.data.name.size() <= 100;
@@ -48,7 +48,7 @@ service cloud.firestore {
           && request.resource.data.name is string
           && request.resource.data.name.size() > 0
           && request.resource.data.name.size() <= 100
-          && request.resource.data.keys().hasOnly(['name', 'url', 'price', 'priority', 'notes', 'createdAt']);
+          && request.resource.data.keys().hasOnly(['name', 'category', 'url', 'price', 'priority', 'notes', 'createdAt']);
         allow delete: if isOwner(code);
       }
 
