@@ -34,6 +34,9 @@ const accountSubmit = $("#account-submit");
 const accountToggle = $("#account-toggle");
 const signOutButton = $("#sign-out");
 const googleSignInButton = $("#google-sign-in");
+const accountPanel = $("#account-panel");
+const accountOpenButton = $("#account-open");
+const accountCloseButton = $("#account-close");
 let accountMode = "signup";
 let activeListId = null;
 let activeMode = "owner";
@@ -90,7 +93,16 @@ function setAccountUi(user) {
     createForm.querySelector('button[type="submit"]').textContent = "Sign in to create a wishlist";
   }
 }
-onAuthStateChanged(auth, user => setAccountUi(user));
+onAuthStateChanged(auth, user => {
+  setAccountUi(user);
+  accountOpenButton.textContent = user && !user.isAnonymous ? "My account" : "Make an account";
+});
+accountOpenButton.addEventListener("click", () => {
+  accountPanel.classList.remove("hidden");
+  accountPanel.scrollIntoView({ behavior: "smooth", block: "center" });
+  if (!auth.currentUser || auth.currentUser.isAnonymous) $("#account-email").focus({ preventScroll: true });
+});
+accountCloseButton.addEventListener("click", () => accountPanel.classList.add("hidden"));
 
 accountToggle.addEventListener("click", () => {
   accountMode = accountMode === "signup" ? "signin" : "signup";
