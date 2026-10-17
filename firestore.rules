@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(code) {
+      return signedIn()
+        && exists(/databases/$(database)/documents/wishlists/$(code))
+        && get(/databases/$(database)/documents/wishlists/$(code)).data.ownerUid == request.auth.uid
+        && request.auth.token.firebase.sign_in_provider != 'anonymous';
+    }
+
+    function isGiftGiver() {
+      return signedIn()
+        && request.auth.token.firebase.sign_in_provider == 'anonymous';
+    }
+
+    match /wishlists/{code} {
+      // The share code is the public lookup key. Only the creator can modify list metadata.
+      allow get: if true;
+      allow list: if false;
+      allow create: if signedIn()
+        && request.auth.token.firebase.sign_in_provider != 'anonymous'
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.keys().hasOnly(['code', 'ownerUid', 'ownerName', 'title', 'occasion', 'createdAt'])
+        && request.resource.data.code == code
+        && request.resource.data.ownerName is string
+        && request.resource.data.ownerName.size() > 0
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0;
+      allow update: if isOwner(code)
+        && request.resource.data.ownerUid == resource.data.ownerUid
+        && request.resource.data.code == resource.data.code;
+      allow delete: if isOwner(code);
+
+      match /items/{itemId} {
+        allow get, list: if exists(/databases/$(database)/documents/wishlists/$(code));
+        allow create: if isOwner(code)
+          && request.resource.data.keys().hasOnly(['name', 'url', 'price', 'priority', 'notes', 'createdAt'])
+          && request.resource.data.name is string
+          && request.resource.data.name.size() > 0
+          && request.resource.data.name.size() <= 100;
+        allow update: if isOwner(code)
+          && request.resource.data.name is string
+          && request.resource.data.name.size() > 0
+          && request.resource.data.name.size() <= 100
+          && request.resource.data.keys().hasOnly(['name', 'url', 'price', 'priority', 'notes', 'createdAt']);
+        allow delete: if isOwner(code);
+      }
+
+      match /purchases/{itemId} {
+        // Purchase records are intentionally inaccessible to normal email/password owner sessions.
+        // Anonymous auth is used for the gift-giver flow.
+        allow get, list: if isGiftGiver()
+          && exists(/databases/$(database)/documents/wishlists/$(code))
+          && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId));
+        allow create, update: if isGiftGiver()
+          && exists(/databases/$(database)/documents/wishlists/$(code))
+          && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId))
+          && request.resource.data.keys().hasOnly(['purchased', 'updatedAt'])
+          && request.resource.data.purchased == true;
+        allow delete: if false;
+      }
+    }
+  }
+}
