@@ -517,3 +517,11 @@ main,.dashboard-main,.gift-main,.signup-main{width:100%;min-width:0}
   .form-row{grid-template-columns:minmax(0,1fr)}
   .workspace-head h2{font-size:22px}
 }
+
+@media(max-width:600px){
+  .wish-item .small-button{grid-column:1/-1;grid-row:auto;justify-self:stretch;width:100%;min-height:38px}
+  .wish-item .item-price{grid-column:2;grid-row:auto}
+}
+@media(max-width:360px){
+  .wish-item .small-button{font-size:13px;padding:9px 8px}
+}
