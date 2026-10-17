@@ -188,3 +188,39 @@ input:focus,select:focus,textarea:focus{
 .signup-toggle{margin-top:14px;align-self:center;padding:10px 13px}
 .signup-status{font-size:12px;color:var(--muted);text-align:center;margin:17px 0 0}
 @media(max-width:720px){.signup-main{padding-top:10px}.signup-card{border-radius:20px}.signup-intro h1{letter-spacing:-1.5px}}
+
+/* Landing page choices */
+.landing-choices .action-card>.button{margin-top:auto;text-decoration:none;display:flex;align-items:center;justify-content:space-between}
+.landing-choices .card-heading{min-height:86px}
+.landing-choices .privacy-note{margin-top:22px}
+.nav-account{font-family:'DM Sans',sans-serif}
+.dashboard-main{max-width:1120px;padding-top:20px;padding-bottom:70px}
+.dashboard-welcome{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px 0 34px}
+.dashboard-welcome h1,.gift-intro h1{font-family:Manrope,sans-serif;font-size:clamp(34px,6vw,48px);letter-spacing:-2px;line-height:1.12;margin:12px 0}
+.dashboard-welcome h1 span,.gift-intro h1 span{color:var(--purple)}
+.dashboard-welcome p,.gift-intro p{color:var(--muted);max-width:560px;margin:0}
+.dashboard-mark{display:grid;place-items:center;width:86px;height:86px;border-radius:28px;background:var(--lavender);color:var(--purple);font-size:52px;transform:rotate(7deg);box-shadow:0 8px 0 #6555d914}
+.dashboard-grid{display:grid;grid-template-columns:minmax(280px,.78fr) minmax(0,1.22fr);gap:24px;align-items:start}
+.dashboard-create{align-self:start}
+.dashboard-lists{background:#fff;border:1px solid var(--line);border-radius:22px;padding:25px;box-shadow:0 10px 28px #29231b08}
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+.section-heading h2{font-family:Manrope,sans-serif;font-size:24px;letter-spacing:-.8px;margin:5px 0 0}
+.list-count{font-size:12px;color:var(--muted);background:#f6f4f0;border-radius:999px;padding:7px 11px;white-space:nowrap}
+.owned-lists{display:grid;gap:12px}
+.owned-list{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(145deg,#fff,#fcfbf9)}
+.owned-list-icon{display:grid;place-items:center;flex:0 0 44px;height:44px;border-radius:14px;background:var(--lavender);color:var(--purple);font-size:23px}
+.owned-list-info{flex:1;min-width:0}
+.owned-list-info h3{margin:0;font-size:15px;overflow-wrap:anywhere}
+.owned-list-info p{margin:4px 0 0;color:var(--muted);font-size:12px}
+.owned-list .small-button{white-space:nowrap}
+.dashboard-page .workspace,.gift-page .workspace{margin-top:26px}
+.gift-main{max-width:720px;padding-top:20px;padding-bottom:70px}
+.gift-intro{padding:20px 0 28px}
+.gift-search-card{padding:25px;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 12px 30px #29231b08}
+.gift-search-form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;align-items:end}
+.gift-search-form label{grid-column:1/-1;margin-bottom:0}
+.gift-search-form input{min-height:48px}
+.gift-search-form .button{min-height:48px;white-space:nowrap}
+.gift-search-card .signup-status{text-align:left;line-height:1.6}
+@media(max-width:760px){.dashboard-grid{grid-template-columns:1fr}.dashboard-welcome{padding-top:12px}.dashboard-mark{width:64px;height:64px;border-radius:22px;font-size:38px}.dashboard-lists{padding:20px}}
+@media(max-width:500px){.gift-search-form{grid-template-columns:1fr}.gift-search-form label{grid-column:auto}.gift-search-form .button{width:100%}.owned-list{align-items:flex-start;flex-wrap:wrap}.owned-list .small-button{margin-left:58px}.dashboard-welcome h1,.gift-intro h1{letter-spacing:-1.2px}}
