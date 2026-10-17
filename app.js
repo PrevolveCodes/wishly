@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  signOut, signInAnonymously, onAuthStateChanged
+  GoogleAuthProvider, signInWithPopup, signOut, signInAnonymously, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 import {
   getFirestore, collection, doc, getDoc, getDocs, setDoc, addDoc,
@@ -33,6 +33,7 @@ const accountStatus = $("#account-status");
 const accountSubmit = $("#account-submit");
 const accountToggle = $("#account-toggle");
 const signOutButton = $("#sign-out");
+const googleSignInButton = $("#google-sign-in");
 let accountMode = "signup";
 let activeListId = null;
 let activeMode = "owner";
@@ -61,12 +62,18 @@ function friendlyError(error) {
     "auth/user-not-found": "No account was found for that email.",
     "auth/wrong-password": "Email or password is incorrect.",
     "auth/too-many-requests": "Too many attempts. Wait a little and try again.",
+    "auth/popup-closed-by-user": "Google sign-in was cancelled. You can try again.",
+    "auth/popup-blocked": "Your browser blocked the Google sign-in window. Allow pop-ups for this site and try again.",
+    "auth/unauthorized-domain": "This website domain is not authorized in Firebase Authentication settings.",
     "permission-denied": "Firebase blocked this action. Check that the Firestore rules have been published.",
     "unavailable": "Firebase is temporarily unavailable. Check your connection and try again."
   };
   return messages[code] || error?.message || "Something went wrong. Please try again.";
 }
 function setAccountUi(user) {
+  const accountFields = accountForm.querySelectorAll("label, input");
+  accountFields.forEach(field => field.classList.toggle("hidden", !!user));
+  googleSignInButton.classList.toggle("hidden", !!user);
   if (user && !user.isAnonymous) {
     accountStatus.textContent = `Signed in as ${user.email}`;
     accountSubmit.classList.add("hidden");
@@ -103,6 +110,16 @@ accountForm.addEventListener("submit", async event => {
     toast(accountMode === "signup" ? "Account created. You can now make your wishlist." : "Signed in. You can now manage your wishlists.");
   } catch (error) { toast(friendlyError(error)); }
   finally { accountSubmit.disabled = false; }
+});
+googleSignInButton.addEventListener("click", async () => {
+  googleSignInButton.disabled = true;
+  try {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+    await signInWithPopup(auth, provider);
+    toast("Signed in with Google. You can now manage your wishlists.");
+  } catch (error) { toast(friendlyError(error)); }
+  finally { googleSignInButton.disabled = false; }
 });
 signOutButton.addEventListener("click", async () => {
   try { await signOut(auth); workspace.classList.add("hidden"); toast("Signed out."); }
