@@ -744,3 +744,146 @@ main,.dashboard-main,.gift-main,.signup-main{width:100%;min-width:0}
   .gift-page .wish-item .item-info { width: 100%; }
   .gift-page .wish-item .reserve-toggle { min-height: 46px; }
 }
+
+
+/* Persistent dark mode */
+.theme-toggle {
+  flex: 0 0 auto;
+  border: 1px solid #dcd9e8;
+  border-radius: 9px;
+  padding: 8px 11px;
+  background: #f3f0ff;
+  color: #5142bd;
+  font: 600 12px 'DM Sans', sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.theme-toggle:hover { background: #e9e4ff; }
+body.dark-mode {
+  --ink: #eeeef5;
+  --muted: #b0b0c0;
+  --paper: #171720;
+  --white: #22222e;
+  --line: #383846;
+  color: var(--ink) !important;
+  background: radial-gradient(ellipse at 12% 3%,rgba(74,61,128,.20),transparent 34rem),
+              radial-gradient(ellipse at 92% 24%,rgba(112,68,49,.12),transparent 29rem),
+              #171720 !important;
+}
+.dark-mode .topbar,
+.dark-mode footer {
+  background: #1d1d28 !important;
+  border-color: #343442 !important;
+}
+.dark-mode .brand,
+.dark-mode .top-nav a,
+.dark-mode .nav-account { color: #eeeef5 !important; }
+.dark-mode .brand-dot { color: #a69aff !important; }
+.dark-mode .theme-toggle {
+  background: #2d2a42;
+  border-color: #4b456e;
+  color: #d9d2ff;
+}
+.dark-mode .theme-toggle:hover { background: #393351; }
+.dark-mode .action-card,
+.dark-mode .dashboard-create,
+.dark-mode .dashboard-lists,
+.dark-mode .signup-card,
+.dark-mode .gift-search-card,
+.dark-mode .workspace,
+.dark-mode .wish-item,
+.dark-mode .owned-list,
+.dark-mode .modal {
+  color: #eeeef5 !important;
+  background: #22222e !important;
+  border-color: #393947 !important;
+  box-shadow: 0 5px 20px #00000020 !important;
+}
+.dark-mode .dashboard-welcome {
+  background: #29263c !important;
+  border-color: #413a63 !important;
+}
+.dark-mode .dashboard-mark { background: #353047 !important; color: #d0c8ff !important; }
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode .workspace h2,
+.dark-mode .modal h2,
+.dark-mode .card-heading h2,
+.dark-mode .list-summary strong,
+.dark-mode .item-info h3,
+.dark-mode .item-price,
+.dark-mode label { color: #eeeef5; }
+.dark-mode p,
+.dark-mode .workspace-sub,
+.dark-mode .card-heading p,
+.dark-mode .hero-copy,
+.dark-mode .how-it-works p,
+.dark-mode footer > span,
+.dark-mode .top-note,
+.dark-mode .helper,
+.dark-mode .item-info p,
+.dark-mode .signup-status,
+.dark-mode .privacy-note { color: #b0b0c0 !important; }
+.dark-mode .how-it-works > div,
+.dark-mode .privacy-note { border-color: #393947 !important; }
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea {
+  color: #f0eff8 !important;
+  background: #191923 !important;
+  border-color: #414151 !important;
+  box-shadow: none;
+}
+.dark-mode input::placeholder,
+.dark-mode textarea::placeholder { color: #89899b !important; }
+.dark-mode input:focus,
+.dark-mode select:focus,
+.dark-mode textarea:focus {
+  border-color: #9586f0 !important;
+  box-shadow: 0 0 0 3px #9586f026 !important;
+}
+.dark-mode .small-button,
+.dark-mode .icon-button,
+.dark-mode .signup-toggle {
+  color: #e6e3f5;
+  background: #2b2b39;
+  border-color: #454555;
+}
+.dark-mode .small-button:hover,
+.dark-mode .icon-button:hover { background: #363647; }
+.dark-mode .button-primary {
+  color: #fff !important;
+  background: linear-gradient(135deg,#7565e5,#5b49cb) !important;
+}
+.dark-mode .button-secondary {
+  color: #ddd6ff !important;
+  background: #302b48 !important;
+  border-color: #494064 !important;
+  box-shadow: none !important;
+}
+.dark-mode .lavender,
+.dark-mode .card-icon.lavender { background: #332d50 !important; color: #d0c8ff !important; }
+.dark-mode .peach { background: #422e2c !important; color: #f0c2ad !important; }
+.dark-mode .code-chip { background: #302b48 !important; color: #d8d0ff !important; border-color: #494064 !important; }
+.dark-mode .category-tag { background: #332d50 !important; color: #d0c8ff !important; }
+.dark-mode .item-placeholder { background: #332d50 !important; color: #d0c8ff !important; }
+.dark-mode .list-tools,
+.dark-mode .empty-state,
+.dark-mode .qr-panel { background: #1b1b26 !important; border-color: #393947 !important; color: #b0b0c0 !important; }
+.dark-mode .list-tools label { color: #eeeef5 !important; }
+.dark-mode .item-link { color: #b7adff !important; }
+.dark-mode .reservation-status { background: #3a2225 !important; border-color: #6b373c !important; }
+.dark-mode .reservation-status strong { color: #ff9e9b !important; }
+.dark-mode .reservation-status span { color: #e9b2b0 !important; }
+.dark-mode .reserve-toggle:disabled { background: #3a2225 !important; border-color: #6b373c !important; color: #ffaaa6 !important; }
+.dark-mode .gift-back { background: linear-gradient(135deg,#815b50,#684538) !important; }
+.dark-mode .gift-front { background: linear-gradient(145deg,#7769c5,#4d3e9f) !important; }
+.dark-mode .art-tag { color: #24252c; }
+.dark-mode .modal::backdrop { background: #05050bd9; }
+.dark-mode .list-count { background: #302b48; color: #d8d0ff; }
+.dark-mode .signup-divider { color: #b0b0c0; }
+.dark-mode .filtered-out { display: none !important; }
+@media (max-width: 600px) {
+  .theme-toggle { padding: 7px 9px; }
+}
