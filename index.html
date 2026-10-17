@@ -7,12 +7,12 @@
   <meta name="description" content="Wishly makes it easy to make a wishlist and share it with family.">
   <title>Wishly — Make a list. Share a wish.</title>
   <link rel="stylesheet" href="styles.css">
-  <script type="module" src="app.js"></script>
+  
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="./" aria-label="Wishly home"><span class="brand-mark">w</span><span>wishly<span class="brand-dot">.</span></span></a>
-    <nav class="top-nav" aria-label="Main navigation"><a href="#about">About</a><a href="signup.html" class="nav-account">Make an account</a></nav>
+    <nav class="top-nav" aria-label="Main navigation"><a href="#about">About</a><a href="signup.html" class="nav-account">Sign up</a></nav>
   </header>
 
   <main>
@@ -28,37 +28,19 @@
       </div>
     </section>
 
-    <section id="get-started" class="action-grid" aria-label="Get started">
+    <section class="action-grid landing-choices" aria-label="Choose how to use Wishly">
       <article class="action-card create-card">
         <div class="card-icon lavender"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
-        <div class="card-heading"><h2>Make your wishlist</h2><p>Start collecting things you’d love.</p></div>
-        <form id="create-form">
-          <label for="owner-name">Your name</label>
-          <input id="owner-name" name="ownerName" maxlength="40" placeholder="e.g. Alex" required>
-          <label for="list-title">What’s the occasion?</label>
-          <input id="list-title" name="title" maxlength="60" placeholder="e.g. Christmas Wishlist" required>
-          <label for="occasion">Occasion</label>
-          <select id="occasion" name="occasion">
-            <option value="Christmas">Christmas</option><option value="Birthday">Birthday</option><option value="Other">Other</option>
-          </select>
-          <button class="button button-primary" type="submit">Create a wishlist <span>→</span></button>
-        </form>
+        <div class="card-heading"><h2>Make a wishlist</h2><p>Create your own list, add gift ideas, and share it with family.</p></div>
+        <a class="button button-primary" href="signup.html">Create your wishlist <span>→</span></a>
       </article>
-
       <article class="action-card view-card">
         <div class="card-icon peach"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg></div>
-        <div class="card-heading"><h2>View a wishlist</h2><p>Have a code? Find their gift ideas.</p></div>
-        <form id="view-form">
-          <label for="list-code">Wishlist code</label>
-          <input id="list-code" name="code" maxlength="10" placeholder="e.g. 7K4P2Q9M3R" autocomplete="off" required>
-          <div class="helper">Enter the code the list owner gave you.</div>
-          <button class="button button-secondary" type="submit">Find a wishlist <span>→</span></button>
-        </form>
-        <div class="privacy-note"><span class="lock-icon">⌑</span><span>Purchase status is for gift-givers only, so the surprise stays a surprise.</span></div>
+        <div class="card-heading"><h2>I’m getting a gift</h2><p>Parents, family, and friends can open a wishlist with the code they were given.</p></div>
+        <a class="button button-secondary" href="gift.html">View a wishlist <span>→</span></a>
+        <div class="privacy-note"><span class="lock-icon">⌑</span><span>Mark purchases privately so the wishlist owner won’t see the surprise.</span></div>
       </article>
     </section>
-
-    <section id="workspace" class="workspace hidden" aria-live="polite"></section>
     <section id="about" class="how-it-works">
       <div><span class="step-number">01</span><h3>Make your list</h3><p>Add the things you’re hoping for.</p></div>
       <div><span class="step-number">02</span><h3>Share your code</h3><p>Give it to a parent or someone you trust.</p></div>
@@ -68,15 +50,6 @@
   </main>
   <footer><a class="brand footer-brand" href="./"><span class="brand-mark">w</span><span>wishly<span class="brand-dot">.</span></span></a><span>Thoughtful gifting, made simple.</span></footer>
 
-  <dialog id="item-dialog" class="modal">
-    <form id="item-form" method="dialog">
-      <div class="modal-top"><div><div class="eyebrow">ADD SOMETHING GOOD</div><h2>Add an item</h2></div><button class="icon-button" type="button" id="close-modal" aria-label="Close">×</button></div>
-      <label for="item-name">Item name *</label><input id="item-name" name="itemName" maxlength="100" placeholder="e.g. Wireless headphones" required>
-      <label for="item-url">Store link</label><input id="item-url" name="itemUrl" type="url" placeholder="https://…">
-      <div class="form-row"><div><label for="item-price">Price</label><input id="item-price" name="itemPrice" type="number" min="0" max="1000000" step="0.01" placeholder="0.00"></div><div><label for="item-priority">Priority</label><select id="item-priority" name="itemPriority"><option value="Would love">Would love</option><option value="Really want">Really want</option><option value="Top wish">Top wish</option></select></div></div>
-      <label for="item-notes">Notes (optional)</label><textarea id="item-notes" name="itemNotes" maxlength="300" rows="3" placeholder="Color, size, or anything helpful…"></textarea>
-      <button class="button button-primary" type="submit">Add to wishlist <span>+</span></button>
-    </form>
-  </dialog>
+
 </body>
 </html>
