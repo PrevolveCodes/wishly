@@ -436,3 +436,84 @@ footer{max-width:none;padding-left:max(24px,calc((100vw - 1120px)/2));padding-ri
 
 /* Wishlist categories and item editing */
 .category-tag{display:inline-flex;align-items:center;margin:0 0 7px;padding:4px 9px;border-radius:999px;background:#eeeaff;color:#5142c2;font-size:11px;font-weight:700;line-height:1.4}.wish-item .edit-item{border-color:#d9d4fb;color:#5142c2}.wish-item .edit-item:hover{background:#f0edff}.modal [list]{width:100%}
+
+
+/* Mobile layout repair: prevent cramped navigation, cards, and wishlist items */
+*{box-sizing:border-box}
+html{width:100%;overflow-x:hidden}
+body{width:100%;min-width:0;overflow-x:hidden}
+main,.dashboard-main,.gift-main,.signup-main{width:100%;min-width:0}
+.topbar{width:100%;min-width:0;gap:16px}
+.top-nav{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:10px 16px;min-width:0}
+.top-nav a,.top-nav button{white-space:normal}
+.dashboard-grid,.dashboard-lists,.dashboard-create,.workspace,.gift-search-card,.signup-card,.owned-list,.wish-item,.item-info{min-width:0}
+.owned-list-info,.item-info{overflow-wrap:anywhere}
+.workspace-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.workspace-head>div:first-child{flex:1 1 180px;min-width:0}
+.code-chip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;max-width:100%;overflow-wrap:anywhere}
+.workspace-actions{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:18px 0}
+.workspace-actions>*{max-width:100%}
+.item-list{display:grid;gap:12px;min-width:0}
+.wish-item{display:grid;grid-template-columns:42px minmax(0,1fr);align-items:start;gap:12px;padding:16px}
+.wish-item .item-placeholder{grid-column:1;grid-row:1;width:42px;height:42px}
+.wish-item .item-info{grid-column:2;grid-row:1;min-width:0}
+.wish-item .item-price{grid-column:2;grid-row:2;justify-self:start;margin-top:0}
+.wish-item .small-button{grid-row:3;justify-self:start;max-width:100%;white-space:normal;text-align:center}
+.wish-item .edit-item,.wish-item .remove-item,.wish-item .toggle-purchased{grid-column:auto}
+.wish-item .item-link{overflow-wrap:anywhere}
+.modal{max-width:calc(100vw - 24px);width:520px;max-height:calc(100dvh - 24px);overflow:auto}
+.modal form{min-width:0}
+.modal input,.modal select,.modal textarea{max-width:100%;min-width:0}
+.form-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.form-row>div{min-width:0}
+@media(max-width:600px){
+  .topbar{padding:14px 16px!important;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .brand{flex:0 0 auto}
+  .top-nav{flex:1 1 100%;justify-content:flex-start;gap:8px 18px}
+  .top-nav a,.top-nav button{font-size:14px;padding:4px 0}
+  main,.dashboard-main,.gift-main,.signup-main{padding:16px!important}
+  .dashboard-main,.gift-main,.signup-main{margin:0 auto}
+  .dashboard-welcome{padding:22px 18px!important;margin:0 0 16px!important;border-radius:16px}
+  .dashboard-welcome h1{font-size:clamp(32px,9vw,42px);line-height:1.08;overflow-wrap:anywhere}
+  .dashboard-welcome p{font-size:14px;max-width:none}
+  .dashboard-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+  .dashboard-create,.dashboard-lists,.signup-card,.gift-search-card{padding:18px!important;border-radius:15px}
+  .dashboard-create .card-heading h2,.section-heading h2{font-size:21px}
+  .section-heading{display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap}
+  .section-heading>div{min-width:0}
+  .owned-list{display:grid;grid-template-columns:40px minmax(0,1fr);gap:10px;padding:13px}
+  .owned-list-icon{grid-column:1;grid-row:1;width:40px;height:40px}
+  .owned-list-info{grid-column:2;grid-row:1;min-width:0}
+  .owned-list-info p{overflow-wrap:anywhere;line-height:1.5}
+  .owned-list .small-button{grid-column:2;grid-row:2;margin:0;justify-self:start;white-space:normal}
+  .workspace{padding:16px!important;margin-top:16px!important;border-radius:15px}
+  .workspace-head h2{font-size:25px;line-height:1.15;overflow-wrap:anywhere}
+  .workspace-sub{overflow-wrap:anywhere}
+  .code-chip{font-size:13px;padding:8px 10px}
+  .workspace-actions{align-items:stretch}
+  .workspace-actions .button,.workspace-actions .small-button{width:100%!important;justify-content:center}
+  .wish-item{grid-template-columns:34px minmax(0,1fr);gap:10px;padding:13px}
+  .wish-item .item-placeholder{width:34px;height:34px}
+  .wish-item .item-info h3{font-size:16px;line-height:1.35;overflow-wrap:anywhere}
+  .wish-item .item-info p{font-size:13px;line-height:1.5}
+  .wish-item .item-price{font-size:15px}
+  .wish-item .small-button{font-size:12px;padding:8px 10px}
+  .gift-intro{padding:14px 0 20px}
+  .gift-intro h1{font-size:clamp(32px,9vw,43px);line-height:1.08;overflow-wrap:anywhere}
+  .gift-intro p{font-size:14px;line-height:1.6}
+  .gift-search-form{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+  .gift-search-form label{grid-column:auto}
+  .gift-search-form input,.gift-search-form .button{width:100%;min-width:0}
+  .signup-intro h1{font-size:clamp(31px,8vw,42px);line-height:1.12;letter-spacing:-1px;overflow-wrap:anywhere}
+  .signup-form input,.signup-form .button,.signup-form .google-button{width:100%;min-width:0}
+  footer{padding:18px 16px!important;gap:12px;flex-wrap:wrap}
+}
+@media(max-width:360px){
+  .topbar{padding:12px!important}
+  main,.dashboard-main,.gift-main,.signup-main{padding:12px!important}
+  .dashboard-create,.dashboard-lists,.signup-card,.gift-search-card,.workspace{padding:14px!important}
+  .wish-item{grid-template-columns:28px minmax(0,1fr);gap:8px;padding:10px}
+  .wish-item .item-placeholder{width:28px;height:28px}
+  .form-row{grid-template-columns:minmax(0,1fr)}
+  .workspace-head h2{font-size:22px}
+}
