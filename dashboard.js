@@ -165,8 +165,8 @@ async function openWorkspace(list, mode) {
         <div><div class="eyebrow">${owner ? "YOUR WISHLIST" : "A WISHLIST FOR SOMEONE"}</div><h2>${escapeHtml(list.title)}</h2><p class="workspace-sub">${escapeHtml(list.ownerName || "")} · ${escapeHtml(list.occasion || "Other")}</p></div>
         <div class="code-chip" title="Wishlist code">${escapeHtml(list.code)} ${owner ? '<button class="small-button" id="copy-code" type="button">Copy</button>' : ""}</div>
       </div>
-      ${owner ? '<p class="workspace-sub">Keep this code safe and share it with your gift-givers. Add your first item below.</p><div class="workspace-actions"><button class="button button-primary" id="add-item" type="button" style="width:auto;margin:0;gap:22px">Add an item <span>+</span></button><button class="small-button" id="copy-share" type="button">Copy sharing message</button></div>' : '<p class="workspace-sub">Here are the gift ideas. Mark an item purchased to help other gift-givers avoid duplicates.</p>'}
-      <div class="item-list">${items.length ? items.map((item, index) => {
+      ${owner ? '<p class="workspace-sub">Keep this code safe and share it with your gift-givers. Add your first item below.</p><div class="workspace-actions"><button class="button button-primary" id="add-item" type="button" style="width:auto;margin:0;gap:22px">Add an item <span>+</span></button><button class="small-button" id="copy-share" type="button">Copy sharing message</button><button class="small-button" id="show-qr" type="button">Show QR code</button></div><div id="qr-panel" class="qr-panel hidden"><div id="qr-code"></div><div><strong>Scan to open this wishlist</strong><p class="workspace-sub">Anyone with the link and code can view this list.</p><button class="small-button" id="download-qr" type="button">Download QR</button><button class="small-button" id="hide-qr" type="button">Close</button></div></div>' : '<p class="workspace-sub">Here are the gift ideas. Mark an item purchased to help other gift-givers avoid duplicates.</p>'}
+      <div class="list-tools"><label for="item-search">Search items</label><input id="item-search" type="search" placeholder="Search by name or category"><div class="list-summary"><span id="visible-count">${items.length} items</span><span>Total listed price: <strong id="price-total"></strong></span></div></div><div class="item-list">${items.length ? items.map((item, index) => {
         const purchased = Boolean(purchases[item.id]);
         const url = safeUrl(item.url);
         const price = item.price !== "" && item.price != null && Number.isFinite(Number(item.price))
@@ -175,8 +175,8 @@ async function openWorkspace(list, mode) {
         const actions = owner
           ? '<button class="small-button edit-item" data-index="' + index + '" type="button">Edit</button><button class="small-button remove-item" data-index="' + index + '" type="button">Remove</button>'
           : '<button class="small-button toggle-purchased" data-index="' + index + '" type="button" aria-pressed="' + purchased + '">' + (purchased ? "Marked purchased ✓" : "Mark purchased") + "</button>";
-        return `<article class="wish-item ${!owner && purchased ? "purchased" : ""}">
-          <div class="item-placeholder" aria-hidden="true">${!owner && purchased ? "✓" : "♡"}</div>
+        return `<article class="wish-item ${!owner && purchased ? "purchased" : ""}" data-search="${escapeHtml((item.name + " " + (item.category || "")).toLowerCase())}" data-price="${Number(item.price) || 0}" data-has-price="${item.price !== "" && item.price != null && Number.isFinite(Number(item.price))}">
+          <div class="item-placeholder" aria-hidden="true">${safeUrl(item.imageUrl) ? '<img class="item-image" src="' + escapeHtml(safeUrl(item.imageUrl)) + '" alt="" loading="lazy">' : (!owner && purchased ? "✓" : "♡")}</div>
           <div class="item-info"><span class="category-tag">${escapeHtml(item.category || "Other")}</span><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.priority || "Would love")}${item.notes ? " · " + escapeHtml(item.notes) : ""}</p>${url ? '<a class="item-link" href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">View at store ↗</a>' : ""}</div>
           ${price}${actions}
         </article>`;
@@ -184,7 +184,24 @@ async function openWorkspace(list, mode) {
       ${!owner ? '<p class="workspace-sub" style="margin-top:16px">Purchase information is stored separately from the wishlist items.</p>' : ""}
     `;
     $("#copy-code")?.addEventListener("click", () => copyText(list.code, "Wishlist code copied."));
-    $("#copy-share")?.addEventListener("click", () => copyText(`I made a wishlist on Wishly! Enter code ${list.code} to see it.`, "Sharing message copied."));
+    $("#copy-share")?.addEventListener("click", () => copyText(`I made a wishlist on Wishly! Open ${new URL("gift.html?code=" + encodeURIComponent(list.code), location.href).href}`, "Sharing message copied."));
+    $("#show-qr")?.addEventListener("click", () => {
+      const panel = $("#qr-panel"); const target = $("#qr-code");
+      panel.classList.remove("hidden"); target.innerHTML = "";
+      const shareUrl = new URL("gift.html?code=" + encodeURIComponent(list.code), location.href).href;
+      if (window.QRCode) new QRCode(target, {text:shareUrl,width:190,height:190,colorDark:"#24252c",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
+      else target.textContent = "QR code library did not load. Copy the sharing link instead.";
+      $("#download-qr")?.addEventListener("click", () => { const canvas=target.querySelector("canvas"); const img=target.querySelector("img"); const link=document.createElement("a"); link.download="wishly-qr.png"; link.href=canvas ? canvas.toDataURL("image/png") : img?.src || ""; if(link.href) link.click(); });
+    });
+    $("#hide-qr")?.addEventListener("click", () => $("#qr-panel")?.classList.add("hidden"));
+    const searchInput = $("#item-search");
+    const filterCards = () => {
+      const term = (searchInput?.value || "").trim().toLowerCase(); let shown = 0; let total = 0;
+      workspace.querySelectorAll(".wish-item").forEach(card => { const match = (card.dataset.search || "").includes(term); card.classList.toggle("filtered-out", !match); if(match){shown++; if(card.dataset.hasPrice === "true") total += Number(card.dataset.price)||0;} });
+      const count = $("#visible-count"); if(count) count.textContent = shown + (shown === 1 ? " item" : " items");
+      const sum = $("#price-total"); if(sum) sum.textContent = total.toLocaleString(undefined,{style:"currency",currency:"USD"});
+    };
+    searchInput?.addEventListener("input", filterCards); filterCards();
     $("#add-item")?.addEventListener("click", () => {
       itemForm.reset();
       delete itemForm.dataset.editingId;
@@ -202,6 +219,7 @@ async function openWorkspace(list, mode) {
       $("#item-name").value = item.name || "";
       $("#item-category").value = item.category || "Other";
       $("#item-url").value = item.url || "";
+      $("#item-image").value = item.imageUrl || "";
       $("#item-price").value = item.price ?? "";
       $("#item-priority").value = item.priority || "Would love";
       $("#item-notes").value = item.notes || "";
@@ -290,6 +308,7 @@ itemForm.addEventListener("submit", async event => {
     name,
     category: String(data.get("itemCategory") || "Other").trim() || "Other",
     url,
+    imageUrl: safeUrl(String(data.get("itemImage") || "").trim()),
     price: String(data.get("itemPrice") || ""),
     priority: String(data.get("itemPriority") || "Would love"),
     notes: String(data.get("itemNotes") || "").trim()
