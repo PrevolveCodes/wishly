@@ -86,7 +86,7 @@ googleButton.addEventListener("click", async () => {
     provider.setCustomParameters({ prompt: "select_account" });
     await signInWithPopup(auth, provider);
     toast("Signed in with Google. Returning to Wishly…");
-    window.location.href = "./";
+    window.location.href = "dashboard.html";
   } catch (error) {
     toast(friendlyError(error));
     googleButton.disabled = false;
