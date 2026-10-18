@@ -1181,3 +1181,11 @@ body.dark-mode .premium-coming-soon{background:#303b72;color:#d7d0ff}
   body.dashboard-page>.dashboard-main{margin:0;padding:20px 16px 30px}
   body.dashboard-page .dashboard-welcome{padding:20px 18px}
 }
+
+
+/* Separate dashboard and My Lists views */
+.dashboard-main [hidden]{display:none!important}
+.dashboard-grid.lists-only-grid{display:block}
+.dashboard-grid.lists-only-grid .dashboard-lists{width:100%;max-width:none}
+.dashboard-lists.lists-only-view{margin-top:0}
+.dashboard-lists.lists-only-view .section-heading{margin-bottom:22px}
