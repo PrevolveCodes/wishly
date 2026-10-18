@@ -45,7 +45,7 @@ service cloud.firestore {
       match /items/{itemId} {
         allow get, list: if exists(/databases/$(database)/documents/wishlists/$(code));
         allow create: if isOwner(code)
-          && request.resource.data.keys().hasOnly(['name', 'category', 'url', 'imageUrl', 'price', 'priority', 'notes', 'createdAt'])
+          && request.resource.data.keys().hasOnly(['name', 'category', 'url', 'imageUrl', 'price', 'priority', 'notes', 'createdAt', 'sortOrder'])
           && request.resource.data.name is string
           && request.resource.data.name.size() > 0
           && request.resource.data.name.size() <= 100;
