@@ -890,7 +890,7 @@ body.dark-mode {
 
 
 /* Homepage gift illustration replaced with the uploaded artwork. */
-.hero-art{width:300px;height:270px;right:35px;top:28px;display:flex;align-items:center;justify-content:center;filter:none}
+.hero-art{width:390px;height:330px;right:5px;top:5px;display:flex;align-items:center;justify-content:center;filter:none}
 .gift-boxes-image{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
-@media(max-width:720px){.hero-art{right:-35px;top:100px;width:245px;height:220px;transform:scale(.82);transform-origin:top right;opacity:.88}}
-@media(max-width:390px){.hero-art{right:-70px;top:112px;width:225px;height:205px;transform:scale(.75);opacity:.7}}
+@media(max-width:720px){.hero-art{right:-20px;top:90px;width:300px;height:260px;transform:scale(.9);transform-origin:top right;opacity:.92}}
+@media(max-width:390px){.hero-art{right:-55px;top:105px;width:270px;height:235px;transform:scale(.82);opacity:.78}}
