@@ -930,3 +930,14 @@ body.dark-mode {
 .dark-mode .gift-box-front .gift-bow-loop{border-color:#8ac8e5!important}
 .dark-mode .gift-box .gift-bow-knot{background:#6abfb5!important}
 .dark-mode .gift-box-front .gift-bow-knot{background:#8ac8e5!important}
+
+
+/* Fix inherited dimensions from the older CSS illustration styles. */
+.gift-box .gift-ribbon{left:auto;top:auto;right:auto;bottom:auto;width:auto;height:auto;z-index:1}
+.gift-box .ribbon-vertical{left:calc(50% - 11px);top:-16px;bottom:0;width:22px;height:auto}
+.gift-box .ribbon-horizontal{left:0;right:0;top:45%;bottom:auto;width:auto;height:18px}
+.gift-box-front .ribbon-vertical{left:calc(50% - 12px);width:25px}
+.gift-box-front .ribbon-horizontal{height:20px}
+.gift-box .gift-lid{z-index:2}
+.gift-box .gift-bow-loop{z-index:3}
+.gift-box .gift-bow-knot{z-index:4}
