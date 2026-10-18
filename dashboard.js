@@ -35,6 +35,7 @@ let activeMode = "owner";
 let activeItemDocs = [];
 let activeList = null;
 let noticeTimer;
+let showArchivedLists = false;
 
 const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, c => ({
   "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
@@ -90,15 +91,40 @@ async function loadOwnedLists(user = auth.currentUser) {
       collection(db, "wishlists"),
       where("ownerUid", "==", user.uid)
     ));
-    const lists = snap.docs
+    const allLists = snap.docs
       .map(d => ({ code: d.id, ...d.data() }))
       .sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+    const lists = allLists.filter(list => showArchivedLists ? Boolean(list.archived) : !list.archived);
     listCount.textContent = lists.length + (lists.length === 1 ? " list" : " lists");
+    const archiveToggle = $("#toggle-archived");
+    if (archiveToggle) {
+      archiveToggle.textContent = showArchivedLists ? "Show active" : "Show archived";
+      archiveToggle.onclick = () => { showArchivedLists = !showArchivedLists; loadOwnedLists(auth.currentUser); };
+    }
     ownedLists.innerHTML = lists.length ? lists.map(list => `<article class="owned-list">
       <div class="owned-list-icon" aria-hidden="true">♡</div>
       <div class="owned-list-info"><h3>${escapeHtml(list.title)}</h3><p>${escapeHtml(list.occasion || "Other")} · Code ${escapeHtml(list.code)}</p></div>
       <div class="owned-list-actions"><button class="small-button open-owned-list" data-code="${escapeHtml(list.code)}" type="button">Open list →</button><button class="small-button delete-owned-list" data-code="${escapeHtml(list.code)}" type="button">Delete</button></div>
     </article>`).join("") : '<div class="empty-state">You haven’t made a wishlist yet. Create your first one here.</div>';
+    ownedLists.querySelectorAll(".owned-list").forEach((card, index) => {
+      const list = lists[index];
+      if (!list) return;
+      const actions = card.querySelector(".owned-list-actions");
+      if (!actions) return;
+      const archiveButton = document.createElement("button");
+      archiveButton.className = "small-button archive-owned-list";
+      archiveButton.type = "button";
+      archiveButton.textContent = list.archived ? "Restore" : "Archive";
+      actions.insertBefore(archiveButton, actions.querySelector(".delete-owned-list"));
+      archiveButton.addEventListener("click", async () => {
+        archiveButton.disabled = true;
+        try {
+          await updateDoc(doc(db, "wishlists", list.code), { archived: !list.archived });
+          await loadOwnedLists(auth.currentUser);
+          toast(list.archived ? "Wishlist restored." : "Wishlist archived.");
+        } catch (error) { archiveButton.disabled = false; toast(friendlyError(error)); }
+      });
+    });
     ownedLists.querySelectorAll(".open-owned-list").forEach(button => {
       button.addEventListener("click", async () => {
         const list = lists.find(item => item.code === button.dataset.code);
