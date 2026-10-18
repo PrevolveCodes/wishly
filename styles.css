@@ -894,3 +894,39 @@ body.dark-mode {
 .gift-boxes-image{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
 @media(max-width:720px){.hero-art{right:-20px;top:90px;width:300px;height:260px;transform:scale(.9);transform-origin:top right;opacity:.92}}
 @media(max-width:390px){.hero-art{right:-55px;top:105px;width:270px;height:235px;transform:scale(.82);opacity:.78}}
+
+
+/* Rebuilt homepage illustration: recognizable gift boxes with lids, wrapping bands, and bows. */
+.hero-art.gift-art{width:390px;height:320px;right:5px;top:8px;display:block;filter:none;overflow:visible}
+.gift-box{position:absolute;border-radius:5px 5px 9px 9px;box-shadow:inset 0 2px 0 #ffffff55, inset -9px 0 0 #0000000b, 0 18px 25px #29234420}
+.gift-box-back{width:132px;height:142px;left:55px;top:65px;transform:rotate(-9deg);background:linear-gradient(110deg,#6e9aee,#4169e1 72%)}
+.gift-box-front{width:158px;height:160px;left:168px;top:104px;transform:rotate(7deg);background:linear-gradient(110deg,#5279e8,#3154c5 75%)}
+.gift-lid{position:absolute;left:-9px;top:-17px;width:calc(100% + 18px);height:31px;border-radius:5px;background:linear-gradient(180deg,#7295ef,#4169e1);box-shadow:inset 0 2px 0 #ffffff75,0 4px 5px #17255425}
+.gift-box-front .gift-lid{background:linear-gradient(180deg,#6285eb,#3558ca)}
+.gift-ribbon{position:absolute;background:#14b8a6;box-shadow:inset 2px 0 2px #ffffff55,inset -2px 0 2px #00000010}
+.ribbon-vertical{left:calc(50% - 11px);top:-16px;bottom:0;width:22px}
+.ribbon-horizontal{left:0;right:0;top:45%;height:18px;box-shadow:inset 0 2px 1px #ffffff45,inset 0 -2px 1px #00000010}
+.gift-box-front .gift-ribbon{background:#7dd3fc}
+.gift-box-front .ribbon-vertical{width:25px;left:calc(50% - 12px)}
+.gift-box-front .ribbon-horizontal{height:20px}
+.gift-bow-loop{position:absolute;z-index:2;top:-48px;width:34px;height:28px;border:9px solid #14b8a6;border-radius:70% 70% 35% 70%;background:transparent}
+.bow-left{left:calc(50% - 32px);transform:rotate(28deg)}
+.bow-right{left:calc(50% - 3px);transform:scaleX(-1) rotate(28deg)}
+.gift-bow-knot{position:absolute;z-index:3;left:calc(50% - 7px);top:-27px;width:15px;height:14px;border-radius:4px;background:#14b8a6;box-shadow:inset 0 1px 0 #ffffff55}
+.gift-box-front .gift-bow-loop{border-color:#7dd3fc}
+.gift-box-front .gift-bow-knot{background:#7dd3fc}
+.gift-spark{position:absolute;color:#b7aaf7;font-size:31px;font-weight:700}
+.gift-spark-one{right:15px;top:42px}
+.gift-spark-two{left:22px;top:43px;color:#14b8a6;font-size:25px}
+@media(max-width:720px){.hero-art.gift-art{right:-28px;top:83px;width:310px;height:255px;transform:scale(.88);transform-origin:top right;opacity:.95}}
+@media(max-width:390px){.hero-art.gift-art{right:-62px;top:101px;width:285px;height:235px;transform:scale(.78);opacity:.85}}
+.dark-mode .gift-box-back{background:linear-gradient(110deg,#6286d2,#3456a9)!important}
+.dark-mode .gift-box-front{background:linear-gradient(110deg,#5271c5,#30468d)!important}
+.dark-mode .gift-lid{background:linear-gradient(180deg,#7295d8,#4162b8)!important}
+.dark-mode .gift-box-front .gift-lid{background:linear-gradient(180deg,#6285ce,#3553a6)!important}
+.dark-mode .gift-box .gift-ribbon{background:#6abfb5!important}
+.dark-mode .gift-box-front .gift-ribbon{background:#8ac8e5!important}
+.dark-mode .gift-box .gift-bow-loop{border-color:#6abfb5!important}
+.dark-mode .gift-box-front .gift-bow-loop{border-color:#8ac8e5!important}
+.dark-mode .gift-box .gift-bow-knot{background:#6abfb5!important}
+.dark-mode .gift-box-front .gift-bow-knot{background:#8ac8e5!important}
