@@ -192,11 +192,13 @@ async function copyText(text, success) {
   }
 }
 async function loadItems(code) {
-  const snap = await getDocs(query(
-    collection(db, "wishlists", code, "items"),
-    orderBy("createdAt", "asc")
-  ));
-  return snap.docs.map(itemDoc => ({ id: itemDoc.id, ...itemDoc.data() }));
+  const snap = await getDocs(collection(db, "wishlists", code, "items"));
+  return snap.docs.map(itemDoc => ({ id: itemDoc.id, ...itemDoc.data() }))
+    .sort((a, b) => {
+      const aOrder = Number.isFinite(a.sortOrder) ? a.sortOrder : (a.createdAt?.seconds || 0);
+      const bOrder = Number.isFinite(b.sortOrder) ? b.sortOrder : (b.createdAt?.seconds || 0);
+      return aOrder - bOrder;
+    });
 }
 async function loadPurchases(code, items, isGift) {
   if (!isGift) return {};
@@ -231,8 +233,8 @@ async function openWorkspace(list, mode) {
           ? '<div class="item-price">$' + Number(item.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "</div>"
           : "";
         const actions = owner
-          ? '<button class="small-button edit-item" data-index="' + index + '" type="button">Edit</button><button class="small-button remove-item" data-index="' + index + '" type="button">Remove</button>'
-          : '<button class="small-button toggle-purchased" data-index="' + index + '" type="button" aria-pressed="' + purchased + '">' + (purchased ? "Marked purchased ✓" : "Mark purchased") + "</button>";
+          ? '<button class="small-button move-item" data-index="' + index + '" data-direction="-1" type="button" aria-label="Move up" ' + (index === 0 ? 'disabled' : '') + '>↑</button><button class="small-button move-item" data-index="' + index + '" data-direction="1" type="button" aria-label="Move down" ' + (index === items.length - 1 ? 'disabled' : '') + '>↓</button><button class="small-button edit-item" data-index="' + index + '" type="button">Edit</button><button class="small-button remove-item" data-index="' + index + '" type="button">Remove</button>'
+          : '<button class="small-button toggle-purchased" data-index="' + index + '" type="button" aria-pressed="' + purchased + '">' + (purchased ? "Marked purchased ✓" : "Mark purchased") + '</button>';
         return `<article class="wish-item ${!owner && purchased ? "purchased" : ""}" data-search="${escapeHtml((item.name + " " + (item.category || "")).toLowerCase())}" data-price="${Number(item.price) || 0}" data-has-price="${item.price !== "" && item.price != null && Number.isFinite(Number(item.price))}">
           <div class="item-placeholder" aria-hidden="true">${safeUrl(item.imageUrl) ? '<img class="item-image" src="' + escapeHtml(safeUrl(item.imageUrl)) + '" alt="" loading="lazy">' : (!owner && purchased ? "✓" : "♡")}</div>
           <div class="item-info"><span class="category-tag">${escapeHtml(item.category || "Other")}</span><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.priority || "Would love")}${item.notes ? " · " + escapeHtml(item.notes) : ""}</p>${url ? '<a class="item-link" href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">View at store ↗</a>' : ""}</div>
@@ -270,6 +272,21 @@ async function openWorkspace(list, mode) {
       dialog.showModal();
       $("#item-name").focus();
     });
+    workspace.querySelectorAll(".move-item").forEach(button => button.addEventListener("click", async () => {
+      const index = Number(button.dataset.index);
+      const nextIndex = index + Number(button.dataset.direction);
+      if (nextIndex < 0 || nextIndex >= activeItemDocs.length) return;
+      const reordered = [...activeItemDocs];
+      [reordered[index], reordered[nextIndex]] = [reordered[nextIndex], reordered[index]];
+      button.disabled = true;
+      try {
+        const batch = writeBatch(db);
+        reordered.forEach((item, order) => batch.update(doc(db, "wishlists", activeListId, "items", item.id), { sortOrder: order }));
+        await batch.commit();
+        await openWorkspace(activeList, "owner");
+        toast("Wishlist order updated.");
+      } catch (error) { toast(friendlyError(error)); }
+    }));
     workspace.querySelectorAll(".edit-item").forEach(button => button.addEventListener("click", () => {
       const item = activeItemDocs[Number(button.dataset.index)];
       if (!item) return;
@@ -380,7 +397,7 @@ itemForm.addEventListener("submit", async event => {
       await updateDoc(doc(db, "wishlists", activeListId, "items", editingId), itemData);
     } else {
       await addDoc(collection(db, "wishlists", activeListId, "items"), {
-        ...itemData, createdAt: serverTimestamp()
+        ...itemData, sortOrder: activeItemDocs.length, createdAt: serverTimestamp()
       });
     }
     delete itemForm.dataset.editingId;
