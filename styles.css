@@ -1005,3 +1005,61 @@ main,.dashboard-main,.gift-main,.signup-main{width:100%;padding:27px 18px 18px}.
 .delete-owned-list:hover{background:#fff1f1!important;border-color:#dcaeae!important}
 .delete-owned-list:disabled{opacity:.6;cursor:wait}
 @media(max-width:500px){.owned-list-actions{width:100%;padding-left:58px}.owned-list-actions .small-button{margin:0}}
+
+/* Wishly polish pass: stronger hierarchy, more consistent cards, and responsive controls. */
+.dashboard-main{max-width:1160px}
+.dashboard-welcome{display:flex;align-items:center;justify-content:space-between;gap:28px;padding:22px 0 30px}
+.dashboard-welcome>div:first-child{max-width:650px}
+.dashboard-welcome p{max-width:560px;color:var(--muted);line-height:1.75}
+.dashboard-grid{gap:22px;align-items:start}
+.dashboard-create,.dashboard-lists{border-radius:24px}
+.dashboard-lists{min-width:0}
+.section-heading{gap:14px;align-items:center;flex-wrap:wrap}
+.owned-lists{gap:12px}
+.owned-list{gap:14px;padding:17px;border-radius:17px;transition:border-color .18s,box-shadow .18s,transform .18s}
+.owned-list:hover{border-color:#d8d2f2;box-shadow:0 8px 24px rgba(36,30,70,.06);transform:translateY(-1px)}
+.owned-list-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.owned-list-actions .small-button{margin:0;min-height:36px}
+#toggle-archived{white-space:nowrap}
+.workspace{padding:clamp(18px,3vw,30px);border:1px solid var(--line);border-radius:24px;background:var(--white);box-shadow:0 14px 38px rgba(36,30,70,.045)}
+.workspace-head{gap:18px;align-items:flex-start}
+.workspace-head h2{overflow-wrap:anywhere}
+.workspace-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:18px 0}
+.workspace-actions .button{width:auto;min-height:40px}
+.list-tools{display:grid;grid-template-columns:minmax(130px,1fr) minmax(180px,2fr);gap:8px 14px;align-items:center}
+.list-tools label{margin:0}
+.list-tools input{min-width:0}
+.list-summary{grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px;padding:10px 0 4px}
+.item-list{gap:12px}
+.wish-item{border-radius:17px;padding:14px;gap:14px}
+.wish-item .item-info h3{line-height:1.35;overflow-wrap:anywhere}
+.item-placeholder{border-radius:13px;overflow:hidden;flex-shrink:0}
+.item-image{width:100%;height:100%;object-fit:cover}
+.small-button{transition:background .15s,border-color .15s,transform .15s}
+.small-button:active,.button:active{transform:translateY(1px)}
+#item-dialog{max-width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto}
+#item-form{padding:clamp(20px,4vw,30px)}
+input,select,textarea{min-height:44px}
+textarea{resize:vertical}
+@media(max-width:760px){
+  .dashboard-welcome{align-items:flex-start}
+  .dashboard-grid{grid-template-columns:minmax(0,1fr)}
+  .dashboard-create,.dashboard-lists{min-width:0}
+  .owned-list{align-items:flex-start;flex-wrap:wrap}
+  .owned-list-actions{width:100%;padding-left:58px;justify-content:flex-start}
+  .workspace-head{flex-direction:column}
+  .code-chip{max-width:100%;overflow-wrap:anywhere}
+  .list-tools{grid-template-columns:1fr}
+  .list-summary{grid-column:auto}
+}
+@media(max-width:480px){
+  .dashboard-main{padding-left:16px;padding-right:16px}
+  .dashboard-welcome h1{font-size:clamp(36px,10vw,48px);letter-spacing:-2px}
+  .owned-list{padding:14px}
+  .owned-list-actions{padding-left:0}
+  .workspace{padding:16px;border-radius:18px}
+  .workspace-actions .button,.workspace-actions .small-button{width:100%;justify-content:center}
+  .wish-item{display:grid;grid-template-columns:58px minmax(0,1fr);align-items:start}
+  .wish-item .item-placeholder{width:58px;height:58px}
+  .wish-item .item-price,.wish-item>.small-button{grid-column:2}
+}
