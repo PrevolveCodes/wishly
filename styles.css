@@ -1114,3 +1114,9 @@ body.dark .gift-idea-buttons button{background:#202126;color:#f4f4f6;border-colo
 @media(max-width:850px){.topbar{align-items:flex-start;padding:18px 20px;flex-wrap:wrap}.top-nav{gap:6px;justify-content:flex-start}.dashboard-main{padding:16px 20px 36px}.dashboard-grid{grid-template-columns:minmax(0,1fr)}.dashboard-welcome{grid-template-columns:minmax(0,1fr) auto}.owned-list{flex-wrap:wrap}.owned-list-actions{width:100%;justify-content:flex-start;padding-left:0}.workspace-actions>*{flex:0 1 auto}}
 @media(max-width:560px){.topbar{padding:15px 16px}.top-nav{width:100%;justify-content:space-between;gap:4px}.top-nav a,.top-nav button{padding:8px 9px;font-size:12px}.dashboard-main{padding:12px 14px 30px}.dashboard-welcome{grid-template-columns:minmax(0,1fr);padding:16px 0 22px}.dashboard-mark{display:none}.dashboard-welcome h1{font-size:clamp(34px,9vw,46px);letter-spacing:-1.8px}.owned-list-actions{gap:6px}.workspace{padding:16px}.workspace-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.workspace-actions>*{width:100%;min-width:0}.list-tools{grid-template-columns:minmax(0,1fr)}.wish-item{grid-template-columns:52px minmax(0,1fr);gap:10px;padding:12px}.wish-item .item-placeholder{width:52px;height:52px}.wish-item .item-price,.wish-item .small-button{grid-column:2;justify-self:start}}
 @media(prefers-reduced-motion:reduce){.top-nav a,.top-nav button,.wish-item{transition:none!important}}
+
+/* Dashboard welcome alignment fix */
+.dashboard-welcome>div:first-child{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;text-align:left;width:100%;min-width:0;}
+.dashboard-welcome .eyebrow{align-self:flex-start;width:auto;margin:0 0 2px;text-align:left;}
+.dashboard-welcome h1{align-self:flex-start;width:100%;text-align:left;margin:12px 0;}
+.dashboard-welcome p{align-self:flex-start;width:100%;text-align:left;margin:0;}
