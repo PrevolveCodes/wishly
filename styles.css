@@ -1189,3 +1189,9 @@ body.dark-mode .premium-coming-soon{background:#303b72;color:#d7d0ff}
 .dashboard-grid.lists-only-grid .dashboard-lists{width:100%;max-width:none}
 .dashboard-lists.lists-only-view{margin-top:0}
 .dashboard-lists.lists-only-view .section-heading{margin-bottom:22px}
+
+
+/* Keep the Dashboard overview separate from My Lists. */
+.dashboard-grid.dashboard-overview-grid{grid-template-columns:minmax(0,760px)}
+.dashboard-grid.dashboard-overview-grid .dashboard-create{width:100%;max-width:760px}
+@media(max-width:850px){.dashboard-grid.dashboard-overview-grid{grid-template-columns:minmax(0,1fr)}}
