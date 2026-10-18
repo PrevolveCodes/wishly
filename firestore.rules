@@ -17,6 +17,12 @@ service cloud.firestore {
         && request.auth.token.firebase.sign_in_provider == 'anonymous';
     }
 
+    function hasGiftAccess(code) {
+      return isGiftGiver()
+        && exists(/databases/$(database)/documents/wishlists/$(code)/giftAccess/$(request.auth.uid))
+        && get(/databases/$(database)/documents/wishlists/$(code)/giftAccess/$(request.auth.uid)).data.active == true;
+    }
+
     match /wishlists/{code} {
       allow get: if true;
       allow list: if signedIn()
@@ -51,12 +57,43 @@ service cloud.firestore {
         allow delete: if isOwner(code);
       }
 
+      match /giftAccessConfig/{configId} {
+        allow get, list: if false;
+        allow create: if isGiftGiver()
+          && configId == 'main'
+          && !exists(/databases/$(database)/documents/wishlists/$(code)/giftAccessConfig/main)
+          && request.resource.data.keys().hasOnly(['pinHash', 'createdAt'])
+          && request.resource.data.pinHash is string
+          && request.resource.data.pinHash.size() == 64;
+        allow update, delete: if false;
+      }
+
+      match /giftAccess/{uid} {
+        allow get: if isGiftGiver()
+          && request.auth.uid == uid
+          && resource.data.active == true;
+        allow list: if false;
+        allow create: if isGiftGiver()
+          && request.auth.uid == uid
+          && request.resource.data.keys().hasOnly(['pinHash', 'active', 'createdAt'])
+          && request.resource.data.pinHash is string
+          && request.resource.data.pinHash.size() == 64
+          && request.resource.data.active == true
+          && exists(/databases/$(database)/documents/wishlists/$(code)/giftAccessConfig/main)
+          && request.resource.data.pinHash == get(/databases/$(database)/documents/wishlists/$(code)/giftAccessConfig/main).data.pinHash;
+        allow update: if isGiftGiver()
+          && request.auth.uid == uid
+          && resource.data.active == true
+          && request.resource.data.keys().hasOnly(['pinHash', 'active', 'createdAt'])
+          && request.resource.data.pinHash == resource.data.pinHash
+          && request.resource.data.active == true;
+        allow delete: if false;
+      }
+
       match /purchases/{itemId} {
-        allow get, list: if isGiftGiver()
-          && exists(/databases/$(database)/documents/wishlists/$(code))
+        allow get, list: if hasGiftAccess(code)
           && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId));
-        allow create, update: if isGiftGiver()
-          && exists(/databases/$(database)/documents/wishlists/$(code))
+        allow create, update: if hasGiftAccess(code)
           && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId))
           && request.resource.data.keys().hasOnly(['purchased', 'updatedAt'])
           && request.resource.data.purchased == true;
@@ -64,21 +101,19 @@ service cloud.firestore {
       }
 
       match /reservations/{itemId} {
-        allow get, list: if isGiftGiver()
-          && exists(/databases/$(database)/documents/wishlists/$(code))
+        allow get, list: if hasGiftAccess(code)
           && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId));
-        allow create: if isGiftGiver()
-          && exists(/databases/$(database)/documents/wishlists/$(code))
+        allow create: if hasGiftAccess(code)
           && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId))
           && request.resource.data.keys().hasOnly(['reserved', 'reservedBy', 'updatedAt'])
           && request.resource.data.reserved == true
           && request.resource.data.reservedBy == request.auth.uid;
-        allow update: if isGiftGiver()
+        allow update: if hasGiftAccess(code)
           && resource.data.reservedBy == request.auth.uid
           && request.resource.data.keys().hasOnly(['reserved', 'reservedBy', 'updatedAt'])
           && request.resource.data.reserved == true
           && request.resource.data.reservedBy == request.auth.uid;
-        allow delete: if isGiftGiver() && resource.data.reservedBy == request.auth.uid;
+        allow delete: if hasGiftAccess(code) && resource.data.reservedBy == request.auth.uid;
       }
     }
   }
