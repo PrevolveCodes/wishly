@@ -4,7 +4,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 import {
   getFirestore, collection, doc, getDoc, getDocs, setDoc, addDoc,
-  deleteDoc, updateDoc, serverTimestamp, query, orderBy, where
+  deleteDoc, updateDoc, serverTimestamp, query, orderBy, where, writeBatch
 } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -97,12 +97,44 @@ async function loadOwnedLists(user = auth.currentUser) {
     ownedLists.innerHTML = lists.length ? lists.map(list => `<article class="owned-list">
       <div class="owned-list-icon" aria-hidden="true">♡</div>
       <div class="owned-list-info"><h3>${escapeHtml(list.title)}</h3><p>${escapeHtml(list.occasion || "Other")} · Code ${escapeHtml(list.code)}</p></div>
-      <button class="small-button open-owned-list" data-code="${escapeHtml(list.code)}" type="button">Open list →</button>
+      <div class="owned-list-actions"><button class="small-button open-owned-list" data-code="${escapeHtml(list.code)}" type="button">Open list →</button><button class="small-button delete-owned-list" data-code="${escapeHtml(list.code)}" type="button">Delete</button></div>
     </article>`).join("") : '<div class="empty-state">You haven’t made a wishlist yet. Create your first one here.</div>';
     ownedLists.querySelectorAll(".open-owned-list").forEach(button => {
       button.addEventListener("click", async () => {
         const list = lists.find(item => item.code === button.dataset.code);
         if (list) await openWorkspace(list, "owner");
+      });
+    });
+    ownedLists.querySelectorAll(".delete-owned-list").forEach(button => {
+      button.addEventListener("click", async () => {
+        const list = lists.find(item => item.code === button.dataset.code);
+        if (!list) return;
+        if (!confirm(`Delete "${list.title}"? Gift-givers will no longer be able to open this wishlist. This cannot be undone.`)) return;
+        button.disabled = true;
+        button.textContent = "Deleting…";
+        try {
+          const items = await getDocs(collection(db, "wishlists", list.code, "items"));
+          for (let i = 0; i < items.docs.length; i += 400) {
+            const batch = writeBatch(db);
+            items.docs.slice(i, i + 400).forEach(item => batch.delete(item.ref));
+            await batch.commit();
+          }
+          await deleteDoc(doc(db, "wishlists", list.code));
+          if (activeListId === list.code) {
+            activeListId = null;
+            activeList = null;
+            activeItemDocs = [];
+            workspace.innerHTML = "";
+            workspace.classList.add("hidden");
+          }
+          await loadOwnedLists(auth.currentUser);
+          toast("Wishlist deleted.");
+        } catch (error) {
+          button.disabled = false;
+          button.textContent = "Delete";
+          toast(friendlyError(error));
+          console.error("Wishly: failed to delete wishlist", error);
+        }
       });
     });
   } catch (error) {
