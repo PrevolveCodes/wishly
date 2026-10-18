@@ -941,3 +941,6 @@ body.dark-mode {
 .gift-box .gift-lid{z-index:2}
 .gift-box .gift-bow-loop{z-index:3}
 .gift-box .gift-bow-knot{z-index:4}
+
+/* Use the uploaded icon as the brand mark throughout the site. */
+img.brand-mark{display:block;object-fit:contain;background:transparent;border-radius:0;font-size:0;letter-spacing:normal;}
