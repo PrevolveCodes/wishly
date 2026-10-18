@@ -410,6 +410,12 @@ itemForm.addEventListener("submit", async event => {
   } finally { submit.disabled = false; }
 });
 
+$("#show-gift-ideas")?.addEventListener("click", () => $("#gift-ideas")?.classList.toggle("hidden"));
+$("#gift-ideas")?.querySelectorAll("button[data-name]").forEach(button => button.addEventListener("click", () => {
+  $("#item-name").value = button.dataset.name || "";
+  $("#item-category").value = button.dataset.category || "Other";
+  $("#item-name").focus();
+}));
 $("#close-modal").addEventListener("click", () => dialog.close());
 dialog.addEventListener("click", event => {
   if (event.target === dialog) dialog.close();
