@@ -1008,7 +1008,7 @@ main,.dashboard-main,.gift-main,.signup-main{width:100%;padding:27px 18px 18px}.
 
 /* Wishly polish pass: stronger hierarchy, more consistent cards, and responsive controls. */
 .dashboard-main{max-width:1160px}
-.dashboard-welcome{display:flex;align-items:center;justify-content:space-between;gap:28px;padding:22px 0 30px}
+.dashboard-welcome{display:flex;align-items:center;justify-content:space-between;gap:28px;padding:22px 36px 30px}
 .dashboard-welcome>div:first-child{max-width:650px}
 .dashboard-welcome p{max-width:560px;color:var(--muted);line-height:1.75}
 .dashboard-grid{gap:22px;align-items:start}
@@ -1112,7 +1112,7 @@ body.dark .gift-idea-buttons button{background:#202126;color:#f4f4f6;border-colo
 .wish-item.drop-before{box-shadow:inset 0 3px 0 var(--purple)}
 .wish-item.drop-after{box-shadow:inset 0 -3px 0 var(--purple)}
 @media(max-width:850px){.topbar{align-items:flex-start;padding:18px 20px;flex-wrap:wrap}.top-nav{gap:6px;justify-content:flex-start}.dashboard-main{padding:16px 20px 36px}.dashboard-grid{grid-template-columns:minmax(0,1fr)}.dashboard-welcome{grid-template-columns:minmax(0,1fr) auto}.owned-list{flex-wrap:wrap}.owned-list-actions{width:100%;justify-content:flex-start;padding-left:0}.workspace-actions>*{flex:0 1 auto}}
-@media(max-width:560px){.topbar{padding:15px 16px}.top-nav{width:100%;justify-content:space-between;gap:4px}.top-nav a,.top-nav button{padding:8px 9px;font-size:12px}.dashboard-main{padding:12px 14px 30px}.dashboard-welcome{grid-template-columns:minmax(0,1fr);padding:16px 0 22px}.dashboard-mark{display:none}.dashboard-welcome h1{font-size:clamp(34px,9vw,46px);letter-spacing:-1.8px}.owned-list-actions{gap:6px}.workspace{padding:16px}.workspace-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.workspace-actions>*{width:100%;min-width:0}.list-tools{grid-template-columns:minmax(0,1fr)}.wish-item{grid-template-columns:52px minmax(0,1fr);gap:10px;padding:12px}.wish-item .item-placeholder{width:52px;height:52px}.wish-item .item-price,.wish-item .small-button{grid-column:2;justify-self:start}}
+@media(max-width:560px){.topbar{padding:15px 16px}.top-nav{width:100%;justify-content:space-between;gap:4px}.top-nav a,.top-nav button{padding:8px 9px;font-size:12px}.dashboard-main{padding:12px 14px 30px}.dashboard-welcome{grid-template-columns:minmax(0,1fr);padding:20px 18px 22px}.dashboard-mark{display:none}.dashboard-welcome h1{font-size:clamp(34px,9vw,46px);letter-spacing:-1.8px}.owned-list-actions{gap:6px}.workspace{padding:16px}.workspace-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.workspace-actions>*{width:100%;min-width:0}.list-tools{grid-template-columns:minmax(0,1fr)}.wish-item{grid-template-columns:52px minmax(0,1fr);gap:10px;padding:12px}.wish-item .item-placeholder{width:52px;height:52px}.wish-item .item-price,.wish-item .small-button{grid-column:2;justify-self:start}}
 @media(prefers-reduced-motion:reduce){.top-nav a,.top-nav button,.wish-item{transition:none!important}}
 
 /* Dashboard welcome alignment fix */
