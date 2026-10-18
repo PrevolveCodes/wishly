@@ -1063,3 +1063,11 @@ textarea{resize:vertical}
   .wish-item .item-placeholder{width:58px;height:58px}
   .wish-item .item-price,.wish-item>.small-button{grid-column:2}
 }
+
+.gift-ideas{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--paper)}
+.gift-ideas p{font-size:12px;font-weight:700;margin-bottom:10px}
+.gift-idea-buttons{display:flex;flex-wrap:wrap;gap:7px}
+.gift-idea-buttons button{border:1px solid var(--line);border-radius:999px;padding:8px 11px;background:var(--white);color:var(--ink);font:500 12px 'DM Sans',sans-serif;cursor:pointer}
+.gift-idea-buttons button:hover{border-color:var(--purple);background:var(--lavender)}
+body.dark .gift-ideas{background:#292a30;border-color:#3d3e47}
+body.dark .gift-idea-buttons button{background:#202126;color:#f4f4f6;border-color:#3d3e47}
