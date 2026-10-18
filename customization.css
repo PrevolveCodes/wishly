@@ -12,6 +12,16 @@
 .wishlist-custom-content{padding:20px 22px;display:flex;justify-content:center;flex-direction:column;min-width:0}
 .wishlist-custom-content p{margin:0;line-height:1.55}
 .wishlist-event-date{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--wishly-list-accent,#8b78ff);margin-bottom:7px}
-@media(max-width:600px){.wishlist-custom-banner{display:block}.wishlist-cover{width:100%;height:150px}.customization-modal form{padding:22px}}
+.gift-access-panel{max-width:620px;margin:24px auto 4px;padding:24px;border:1px solid var(--line,#e8e6e0);border-radius:18px;background:var(--white,#fff);box-shadow:0 10px 30px rgba(30,25,55,.06)}
+.gift-access-panel h3{font:800 22px Manrope,sans-serif;letter-spacing:-.7px;margin:0 0 7px}
+.gift-access-panel>p{color:var(--muted,#777982);font-size:13px;margin-bottom:18px}
+.gift-access-panel form{padding:0}
+.gift-access-panel .button{margin-top:16px}
+.gift-access-divider{display:flex;align-items:center;gap:10px;margin:21px 0 13px;color:var(--muted,#777982);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.gift-access-divider:before,.gift-access-divider:after{content:"";height:1px;background:var(--line,#e8e6e0);flex:1}
+.gift-access-setup{width:100%;padding:11px 13px}
+@media(max-width:600px){.wishlist-custom-banner{display:block}.wishlist-cover{width:100%;height:150px}.customization-modal form{padding:22px}.gift-access-panel{padding:19px}}
 body.dark .customization-modal{background:#202126;color:#f4f4f6}
 body.dark .customization-modal input,body.dark .customization-modal textarea{background:#292a30;color:#f4f4f6;border-color:#3d3e47}
+body.dark .gift-access-panel{background:#202126;border-color:#3d3e47;color:#f4f4f6}
+body.dark .gift-access-panel>p{color:#aaaab2}
