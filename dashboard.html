@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#f7f6f2">
   <meta name="description" content="Manage your Wishly lists and gift ideas.">
   <title>Your dashboard — Wishly</title>
-  <link rel="stylesheet" href="styles.css?v=dashboard-align-3">
+  <link rel="stylesheet" href="styles.css?v=sidebar-1">
   <link rel="stylesheet" href="customization.css">
   <script src="theme.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -20,6 +20,24 @@
     <a class="brand" href="./" aria-label="Wishly home"><img class="brand-mark" src="icon.png" alt=""><span>wishly<span class="brand-dot">.</span></span></a>
     <nav class="top-nav" aria-label="Main navigation"><a href="./">Home</a><a href="gift.html">View a wishlist</a><button class="nav-account" id="sign-out" type="button">Sign out</button></nav>
   </header>
+  <aside class="wishly-sidebar" aria-label="Dashboard sidebar">
+    <a class="sidebar-brand" href="./" aria-label="Wishly home"><img src="icon.png" alt=""><span>wishly<span class="brand-dot">.</span></span></a>
+    <nav class="sidebar-nav" aria-label="Dashboard navigation">
+      <a class="sidebar-link is-active" href="dashboard.html" aria-current="page"><span class="sidebar-symbol" aria-hidden="true">⌂</span><span>Dashboard</span></a>
+      <a class="sidebar-link" href="#owned-lists"><span class="sidebar-symbol" aria-hidden="true">☷</span><span>My Lists</span></a>
+      <a class="sidebar-link" href="#show-gift-ideas"><span class="sidebar-symbol" aria-hidden="true">♧</span><span>Gift Suggestions</span></a>
+      <a class="sidebar-link" href="gift.html"><span class="sidebar-symbol" aria-hidden="true">♧</span><span>View a Wishlist</span></a>
+      <button class="sidebar-link sidebar-theme-toggle" id="sidebar-theme-toggle" type="button"><span class="sidebar-symbol" aria-hidden="true">◐</span><span>Toggle dark mode</span></button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="sidebar-premium">
+        <strong>Wishly Premium</strong>
+        <p>More ways to make your wishlists your own.</p>
+        <span class="premium-coming-soon">Coming later</span>
+      </div>
+      <button class="sidebar-signout" id="sidebar-sign-out" type="button"><span class="sidebar-symbol" aria-hidden="true">↪</span> Sign out</button>
+    </div>
+  </aside>
   <main class="dashboard-main">
     <section class="dashboard-welcome">
       <div class="dashboard-welcome-copy" style="display:block;width:100%;min-width:0;text-align:left;margin:0;padding:0"><div class="eyebrow" style="display:block;width:auto;text-align:left;margin:0 0 2px">YOUR WISHLY SPACE</div><h1 style="display:block;width:100%;text-align:left;margin:12px 0">Your dashboard<span>.</span></h1><p style="display:block;width:100%;max-width:560px;text-align:left;margin:0">Create lists for birthdays, holidays, and anything you’re hoping for.</p></div>
