@@ -1120,3 +1120,11 @@ body.dark .gift-idea-buttons button{background:#202126;color:#f4f4f6;border-colo
 .dashboard-welcome .eyebrow{align-self:flex-start;width:auto;margin:0 0 2px;text-align:left;}
 .dashboard-welcome h1{align-self:flex-start;width:100%;text-align:left;margin:12px 0;}
 .dashboard-welcome p{align-self:flex-start;width:100%;text-align:left;margin:0;}
+
+
+/* Explicit dashboard welcome copy alignment */
+.dashboard-welcome-copy{display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important;justify-self:start!important;text-align:left!important;width:100%!important;min-width:0!important;margin:0!important;padding:0!important;}
+.dashboard-welcome-copy>.eyebrow,.dashboard-welcome-copy>h1,.dashboard-welcome-copy>p{display:block!important;align-self:flex-start!important;text-align:left!important;width:100%!important;max-width:100%!important;margin-left:0!important;margin-right:0!important;}
+.dashboard-welcome-copy>.eyebrow{margin-top:0!important;margin-bottom:2px!important;}
+.dashboard-welcome-copy>h1{margin-top:12px!important;margin-bottom:12px!important;}
+.dashboard-welcome-copy>p{margin-top:0!important;margin-bottom:0!important;}
