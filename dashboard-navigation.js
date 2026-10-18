@@ -29,5 +29,12 @@
     if (grid) grid.classList.add("lists-only-grid");
   } else {
     document.title = "Your dashboard — Wishly";
+    if (welcome) welcome.hidden = false;
+    if (create) create.hidden = false;
+    if (lists) lists.hidden = true;
+    if (grid) {
+      grid.classList.remove("lists-only-grid");
+      grid.classList.add("dashboard-overview-grid");
+    }
   }
 })();
