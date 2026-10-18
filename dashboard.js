@@ -75,6 +75,16 @@ onAuthStateChanged(auth, async user => {
   await loadOwnedLists(user);
 });
 
+const sidebarSignOutButton = document.querySelector("#sidebar-sign-out");
+if (sidebarSignOutButton) sidebarSignOutButton.addEventListener("click", () => signOutButton.click());
+
+const sidebarThemeToggle = document.querySelector("#sidebar-theme-toggle");
+if (sidebarThemeToggle) sidebarThemeToggle.addEventListener("click", () => {
+  const existingToggle = document.querySelector("[data-theme-toggle], #theme-toggle, .theme-toggle");
+  if (existingToggle) existingToggle.click();
+  else document.documentElement.classList.toggle("dark-mode");
+});
+
 signOutButton.addEventListener("click", async () => {
   try {
     await signOut(auth);
