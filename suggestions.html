@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f6f2">
+  <title>Gift Suggestions — Wishly</title>
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="stylesheet" href="styles.css?v=gift-suggestions-1">
+  <script src="theme.js" defer></script>
+  <style>
+    .suggestions-main{margin-left:248px;padding:28px;min-height:100vh;color:var(--text,#f5f3ff)}
+    .suggestions-hero{padding:34px;border:1px solid var(--border,#393747);border-radius:22px;background:var(--surface,#22212e);margin-bottom:24px}
+    .suggestions-hero h1{font-size:clamp(2rem,4vw,3rem);margin:10px 0}
+    .suggestions-hero p,.suggestion-card p{color:var(--muted,#aaa6c6)}
+    .suggestions-controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:20px 0}
+    .suggestions-controls label{font-size:.9rem}
+    .suggestions-controls select,.suggestions-controls input{padding:12px 14px;border:1px solid var(--border,#393747);border-radius:10px;background:var(--input-bg,#191821);color:inherit;min-width:180px}
+    .suggestions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+    .suggestion-card{padding:20px;border:1px solid var(--border,#393747);border-radius:16px;background:var(--surface,#22212e)}
+    .suggestion-card h2{font-size:1.05rem;margin:10px 0}
+    .suggestion-category{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:#9b87ff}
+    .suggestion-card button{margin-top:12px}
+    .suggestions-empty{padding:20px;color:var(--muted,#aaa6c6)}
+    @media(max-width:680px){.suggestions-main{margin-left:0;padding:16px}.suggestions-hero{padding:24px}.suggestions-controls{align-items:stretch;flex-direction:column}.suggestions-controls select,.suggestions-controls input{width:100%}}
+  </style>
+</head>
+<body class="dashboard-page">
+  <aside class="wishly-sidebar" aria-label="Wishly sidebar">
+    <a class="sidebar-brand" href="./" aria-label="Wishly home"><img src="icon.png" alt=""><span>wishly<span class="brand-dot">.</span></span></a>
+    <nav class="sidebar-nav" aria-label="Main navigation">
+      <a class="sidebar-link" href="dashboard.html?view=lists"><span class="sidebar-symbol" aria-hidden="true">☷</span><span>My Lists</span></a>
+      <a class="sidebar-link" href="suggestions.html" aria-current="page"><span class="sidebar-symbol" aria-hidden="true">♧</span><span>Gift Suggestions</span></a>
+      <a class="sidebar-link" href="gift.html"><span class="sidebar-symbol" aria-hidden="true">♧</span><span>View a Wishlist</span></a>
+      <button class="sidebar-link sidebar-theme-toggle" id="sidebar-theme-toggle" type="button"><span class="sidebar-symbol" aria-hidden="true">◐</span><span>Toggle dark mode</span></button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="sidebar-premium"><strong>Wishly Premium</strong><p>More ways to make your wishlists your own.</p><span class="premium-coming-soon">Coming later</span></div>
+      <button class="sidebar-signout" id="sidebar-sign-out" type="button"><span class="sidebar-symbol" aria-hidden="true">↪</span> Sign out</button>
+    </div>
+  </aside>
+  <main class="suggestions-main">
+    <section class="suggestions-hero">
+      <div class="eyebrow">FIND SOMETHING THEY'LL LOVE</div>
+      <h1>Gift suggestions<span style="color:#8064f5">.</span></h1>
+      <p>Browse ideas by occasion, interest, or budget. Use an idea as a starting point for your wishlist.</p>
+      <div class="suggestions-controls">
+        <label>Category
+          <select id="category-filter">
+            <option value="All">All categories</option><option>Tech</option><option>Books</option><option>Games</option><option>Art & Crafts</option><option>Room</option><option>Clothing</option><option>Sports</option><option>Everyday</option>
+          </select>
+        </label>
+        <label>Budget
+          <select id="budget-filter"><option value="all">Any budget</option><option value="low">Under $15</option><option value="mid">$15–$50</option><option value="high">$50+</option></select>
+        </label>
+        <label>Search ideas
+          <input id="idea-search" type="search" placeholder="e.g. headphones, drawing">
+        </label>
+      </div>
+    </section>
+    <section aria-label="Gift ideas"><div id="suggestions-grid" class="suggestions-grid"></div><p id="suggestions-empty" class="suggestions-empty" hidden>No ideas match those filters. Try another category or budget.</p></section>
+  </main>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    const firebaseConfig = { apiKey: "AIzaSyD-wishly-public-config-placeholder", authDomain: "wishly-fd9ff.firebaseapp.com", projectId: "wishly-fd9ff", storageBucket: "wishly-fd9ff.appspot.com", messagingSenderId: "105527904702", appId: "1:105527904702:web:wishly" };
+    const ideas = [
+      ["Wireless earbuds","Tech", "mid"],["Phone stand","Tech","low"],["Portable charger","Tech","mid"],["LED desk lamp","Room","mid"],["Soft blanket","Room","mid"],["Wall art or posters","Room","low"],["Favorite book or series","Books","low"],["Journal or notebook set","Books","low"],["Board game","Games","mid"],["LEGO set","Games","mid"],["Controller charging dock","Games","mid"],["Drawing pencils and sketchbook","Art & Crafts","low"],["Paint or marker set","Art & Crafts","mid"],["DIY craft kit","Art & Crafts","mid"],["Hoodie","Clothing","high"],["Cap or beanie","Clothing","low"],["Water bottle","Everyday","mid"],["Backpack","Everyday","high"],["Snack box","Everyday","low"],["Sports ball","Sports","mid"],["Sports water bottle","Sports","low"],["Resistance bands","Sports","low"],["Mechanical keyboard","Tech","high"],["Headphones","Tech","high"],["Gift card for a favorite store","Everyday","all"]
+    ].map(([name,category,budget])=>({name,category,budget}));
+    const grid=document.querySelector("#suggestions-grid"), empty=document.querySelector("#suggestions-empty");
+    function render(){
+      const category=document.querySelector("#category-filter").value, budget=document.querySelector("#budget-filter").value, q=document.querySelector("#idea-search").value.trim().toLowerCase();
+      const filtered=ideas.filter(x=>(category==="All"||x.category===category)&&(budget==="all"||x.budget===budget||x.budget==="all")&&(x.name.toLowerCase().includes(q)||x.category.toLowerCase().includes(q)));
+      grid.innerHTML="";
+      filtered.forEach(x=>{const card=document.createElement("article");card.className="suggestion-card";const tag=document.createElement("div");tag.className="suggestion-category";tag.textContent=x.category;const h=document.createElement("h2");h.textContent=x.name;const p=document.createElement("p");p.textContent=x.budget==="low"?"Usually under $15":x.budget==="mid"?"Usually $15–$50":x.budget==="high"?"Usually $50+": "Price varies";const b=document.createElement("button");b.className="small-button";b.type="button";b.textContent="Use this idea";b.addEventListener("click",()=>{location.href="dashboard.html?makeList=1&idea="+encodeURIComponent(x.name)});card.append(tag,h,p,b);grid.append(card)});
+      empty.hidden=filtered.length!==0;
+    }
+    ["#category-filter","#budget-filter","#idea-search"].forEach(s=>document.querySelector(s).addEventListener(s==="#idea-search"?"input":"change",render));render();
+    try { const app=initializeApp(firebaseConfig); const auth=getAuth(app); onAuthStateChanged(auth,user=>{const out=document.querySelector("#sidebar-sign-out");if(out){out.hidden=!user;out.addEventListener("click",()=>signOut(auth).then(()=>location.href="./"));}}); } catch(e) { console.warn("Wishly sign-out setup unavailable",e); }
+    document.querySelector("#sidebar-theme-toggle").addEventListener("click",()=>{const dark=document.documentElement.dataset.theme==="dark"||document.body.classList.contains("dark");document.documentElement.dataset.theme=dark?"light":"dark";document.body.classList.toggle("dark",!dark);try{localStorage.setItem("wishly-theme",dark?"light":"dark")}catch{}});
+  </script>
+</body>
+</html>
