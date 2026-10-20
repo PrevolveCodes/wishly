@@ -17,13 +17,10 @@
   <script defer src="dashboard-navigation.js"></script>
 </head>
 <body class="dashboard-page">
-  <header class="topbar">
-    <a class="brand" href="./" aria-label="Wishly home"><img class="brand-mark" src="icon.png" alt=""><span>wishly<span class="brand-dot">.</span></span></a>
-    <nav class="top-nav" aria-label="Main navigation"><a href="./">Home</a><a href="gift.html">View a wishlist</a><button class="nav-account" id="sign-out" type="button">Sign out</button></nav>
-  </header>
   <aside class="wishly-sidebar" aria-label="Dashboard sidebar">
     <a class="sidebar-brand" href="./" aria-label="Wishly home"><img src="icon.png" alt=""><span>wishly<span class="brand-dot">.</span></span></a>
     <nav class="sidebar-nav" aria-label="Dashboard navigation">
+      <a class="sidebar-link" href="dashboard.html#make-a-list"><span class="sidebar-symbol" aria-hidden="true">＋</span><span>Make a List</span></a>
       <a class="sidebar-link" href="dashboard.html?view=lists"><span class="sidebar-symbol" aria-hidden="true">☷</span><span>My Lists</span></a>
       <a class="sidebar-link" href="suggestions.html"><span class="sidebar-symbol" aria-hidden="true">♧</span><span>Gift Suggestions</span></a>
       <a class="sidebar-link" href="gift.html"><span class="sidebar-symbol" aria-hidden="true">♧</span><span>View a Wishlist</span></a>
@@ -44,7 +41,7 @@
       <div class="dashboard-mark" aria-hidden="true">♡</div>
     </section>
     <section class="dashboard-grid">
-      <article class="action-card create-card dashboard-create">
+      <article class="action-card create-card dashboard-create" id="make-a-list">
         <div class="card-icon lavender"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
         <div class="card-heading"><h2>Create a wishlist</h2><p>Give your list a name, then start adding ideas.</p></div>
         <form id="create-form">
