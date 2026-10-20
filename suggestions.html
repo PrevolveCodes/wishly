@@ -22,10 +22,16 @@
     .suggestion-category{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:#9b87ff}
     .suggestion-card button{margin-top:12px}
     .suggestions-empty{padding:20px;color:var(--muted,#aaa6c6)}
+    body.dark-mode .suggestions-main{background:transparent;color:#f4f3fb}
+    body.dark-mode .suggestions-hero,body.dark-mode .suggestion-card{background:#22212e;border-color:#393747}
+    body.dark-mode .suggestions-controls select,body.dark-mode .suggestions-controls input{background:#191821;color:#f4f3fb;border-color:#393747}
+    body.dark-mode .suggestions-hero p,body.dark-mode .suggestion-card p,body.dark-mode .suggestions-empty{color:#aaa6c6}
+    body:not(.dark-mode) .suggestions-hero,body:not(.dark-mode) .suggestion-card{background:#fff;border-color:#e8e6e0;color:#24252c}
+    body:not(.dark-mode) .suggestions-controls select,body:not(.dark-mode) .suggestions-controls input{background:#fbfaf8;color:#24252c;border-color:#e6e4df}
     @media(max-width:680px){.suggestions-main{margin-left:0;padding:16px}.suggestions-hero{padding:24px}.suggestions-controls{align-items:stretch;flex-direction:column}.suggestions-controls select,.suggestions-controls input{width:100%}}
   </style>
 </head>
-<body class="dashboard-page">
+<body class="dashboard-page dark-mode">
   <aside class="wishly-sidebar" aria-label="Wishly sidebar">
     <a class="sidebar-brand" href="./" aria-label="Wishly home"><img src="icon.png" alt=""><span>wishly<span class="brand-dot">.</span></span></a>
     <nav class="sidebar-nav" aria-label="Main navigation">
@@ -61,9 +67,9 @@
     <section aria-label="Gift ideas"><div id="suggestions-grid" class="suggestions-grid"></div><p id="suggestions-empty" class="suggestions-empty" hidden>No ideas match those filters. Try another category or budget.</p></section>
   </main>
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    const firebaseConfig = { apiKey: "AIzaSyD-wishly-public-config-placeholder", authDomain: "wishly-fd9ff.firebaseapp.com", projectId: "wishly-fd9ff", storageBucket: "wishly-fd9ff.appspot.com", messagingSenderId: "105527904702", appId: "1:105527904702:web:wishly" };
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+    const firebaseConfig = { apiKey: "AIzaSyANtZF9yXTg3bvUWMFAPRwyE798av2gzl0", authDomain: "wishly-fd9ff.firebaseapp.com", projectId: "wishly-fd9ff", storageBucket: "wishly-fd9ff.firebasestorage.app", messagingSenderId: "250113116782", appId: "1:250113116782:web:c84ed484cacb2b029df47f", measurementId: "G-EG1Z8P6MZW" };
     const ideas = [
       ["Wireless earbuds","Tech", "mid"],["Phone stand","Tech","low"],["Portable charger","Tech","mid"],["LED desk lamp","Room","mid"],["Soft blanket","Room","mid"],["Wall art or posters","Room","low"],["Favorite book or series","Books","low"],["Journal or notebook set","Books","low"],["Board game","Games","mid"],["LEGO set","Games","mid"],["Controller charging dock","Games","mid"],["Drawing pencils and sketchbook","Art & Crafts","low"],["Paint or marker set","Art & Crafts","mid"],["DIY craft kit","Art & Crafts","mid"],["Hoodie","Clothing","high"],["Cap or beanie","Clothing","low"],["Water bottle","Everyday","mid"],["Backpack","Everyday","high"],["Snack box","Everyday","low"],["Sports ball","Sports","mid"],["Sports water bottle","Sports","low"],["Resistance bands","Sports","low"],["Mechanical keyboard","Tech","high"],["Headphones","Tech","high"],["Gift card for a favorite store","Everyday","all"]
     ].map(([name,category,budget])=>({name,category,budget}));
@@ -77,7 +83,24 @@
     }
     ["#category-filter","#budget-filter","#idea-search"].forEach(s=>document.querySelector(s).addEventListener(s==="#idea-search"?"input":"change",render));render();
     try { const app=initializeApp(firebaseConfig); const auth=getAuth(app); onAuthStateChanged(auth,user=>{const out=document.querySelector("#sidebar-sign-out");if(out){out.hidden=!user;out.addEventListener("click",()=>signOut(auth).then(()=>location.href="./"));}}); } catch(e) { console.warn("Wishly sign-out setup unavailable",e); }
-    document.querySelector("#sidebar-theme-toggle").addEventListener("click",()=>{const dark=document.documentElement.dataset.theme==="dark"||document.body.classList.contains("dark");document.documentElement.dataset.theme=dark?"light":"dark";document.body.classList.toggle("dark",!dark);try{localStorage.setItem("wishly-theme",dark?"light":"dark")}catch{}});
+    const themeButton=document.querySelector("#sidebar-theme-toggle");
+    function applySidebarTheme(theme){
+      const dark=theme==="dark";
+      document.body.classList.toggle("dark-mode",dark);
+      document.documentElement.dataset.theme=dark?"dark":"light";
+      themeButton.querySelector("span:last-child").textContent=dark?"Switch to light mode":"Switch to dark mode";
+      themeButton.setAttribute("aria-pressed",String(dark));
+      const meta=document.querySelector('meta[name="theme-color"]');
+      if(meta) meta.content=dark?"#171720":"#f7f6f2";
+    }
+    let currentTheme="light";
+    try{currentTheme=localStorage.getItem("wishly-theme")||"light"}catch{}
+    applySidebarTheme(currentTheme);
+    themeButton.addEventListener("click",()=>{
+      const next=document.body.classList.contains("dark-mode")?"light":"dark";
+      applySidebarTheme(next);
+      try{localStorage.setItem("wishly-theme",next)}catch{}
+    });
   </script>
 </body>
 </html>
