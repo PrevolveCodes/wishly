@@ -51,28 +51,36 @@ function openWishlistPrintView(list, items) {
     toast("Your browser blocked the print window. Allow pop-ups for Wishly, then try again.");
     return;
   }
-  const rows = items.map(item => {
+
+  const money = value => Number(value).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+  const pricedItems = items.filter(item => item.price !== "" && item.price != null && Number.isFinite(Number(item.price)));
+  const total = pricedItems.reduce((sum, item) => sum + Number(item.price), 0);
+  const rows = items.map((item, index) => {
     const image = safeUrl(item.imageUrl);
     const link = safeUrl(item.url);
-    const price = item.price !== "" && item.price != null && Number.isFinite(Number(item.price))
-      ? '<span class="price">$' + Number(item.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '</span>'
-      : "";
+    const hasPrice = item.price !== "" && item.price != null && Number.isFinite(Number(item.price));
     return '<article class="item">' +
+      '<div class="number">' + String(index + 1).padStart(2, "0") + '</div>' +
       (image ? '<img class="item-image" src="' + escapeHtml(image) + '" alt="">' : '<div class="image-placeholder">♡</div>') +
-      '<div class="details"><span class="category">' + escapeHtml(item.category || "Other") + '</span>' +
+      '<div class="details"><div class="meta"><span class="category">' + escapeHtml(item.category || "Other") + '</span><span class="priority">' + escapeHtml(item.priority || "Would love") + '</span></div>' +
       '<h2>' + escapeHtml(item.name || "Wishlist item") + '</h2>' +
-      '<p>' + escapeHtml(item.priority || "Would love") + (item.notes ? " · " + escapeHtml(item.notes) : "") + '</p>' +
-      (link ? '<p class="store">Store: ' + escapeHtml(link) + '</p>' : "") +
-      '</div>' + price + '</article>';
+      (item.notes ? '<p class="notes">' + escapeHtml(item.notes) + '</p>' : '') +
+      (link ? '<p class="store"><a href="' + escapeHtml(link) + '">View product online</a></p>' : '') +
+      '</div>' + (hasPrice ? '<div class="price">$' + money(item.price) + '</div>' : '<div class="price empty-price"></div>') +
+      '</article>';
   }).join("");
+
   const title = escapeHtml(list.title || "Wishlist");
   const owner = escapeHtml(list.ownerName || "");
   const occasion = escapeHtml(list.occasion || "Other");
   const page = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + title + ' — Wishly</title><style>' +
-    '*{box-sizing:border-box}body{margin:0;padding:28px;color:#20212a;background:#fff;font:14px/1.5 Arial,Helvetica,sans-serif}main{max-width:850px;margin:0 auto}.brand{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#6b5bd2;font-weight:700}.heading{border-bottom:2px solid #e8e5f3;padding-bottom:16px;margin-bottom:20px}h1{font-size:28px;line-height:1.2;margin:8px 0}.subtitle{color:#666;margin:0}.item{display:grid;grid-template-columns:86px minmax(0,1fr) auto;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid #e6e6e6;break-inside:avoid;page-break-inside:avoid}.item-image,.image-placeholder{width:86px;height:86px;object-fit:contain;border:1px solid #eee;border-radius:8px}.image-placeholder{display:grid;place-items:center;color:#888;font-size:30px;background:#fafafa}.details{min-width:0}.category{display:inline-block;background:#f0edff;color:#5141b5;border-radius:4px;padding:2px 7px;font-size:11px}.item h2{font-size:16px;margin:5px 0}.item p{margin:3px 0;color:#555;overflow-wrap:anywhere}.store{font-size:11px!important;color:#666!important}.price{white-space:nowrap;font-weight:700;font-size:14px}.footer{margin-top:20px;color:#777;font-size:11px}@media(max-width:520px){body{padding:16px}.item{grid-template-columns:64px minmax(0,1fr);gap:11px}.item-image,.image-placeholder{width:64px;height:64px}.price{grid-column:2}}@media print{body{padding:0}.item-image,.image-placeholder{print-color-adjust:exact;-webkit-print-color-adjust:exact}@page{size:auto;margin:14mm}}' +
-    '</style></head><body><main><header class="heading"><div class="brand">wishly.</div><h1>' + title + '</h1><p class="subtitle">' + (owner ? 'For ' + owner + ' · ' : '') + occasion + '</p></header>' +
+    '*{box-sizing:border-box}html{background:#f3f2f8}body{margin:0;padding:32px 18px;color:#252333;background:#f3f2f8;font:14px/1.5 Arial,Helvetica,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}.sheet{max-width:820px;margin:0 auto;background:#fff;padding:38px 42px;border:1px solid #e8e6ef;border-radius:12px}.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:24px}.brand{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:#6654c8;font-weight:800}.tagline{font-size:10px;color:#858195;letter-spacing:1px;text-transform:uppercase}.heading{padding-bottom:22px;border-bottom:2px solid #eeebf8;margin-bottom:8px}h1{font-size:30px;line-height:1.15;letter-spacing:-.6px;margin:0 0 8px;overflow-wrap:anywhere}.subtitle{color:#686579;margin:0}.summary{display:flex;flex-wrap:wrap;gap:8px 18px;color:#686579;font-size:12px;margin-top:18px}.summary strong{color:#302b49}.item{display:flex;align-items:center;gap:14px;padding:17px 0;border-bottom:1px solid #eceaf2;break-inside:avoid;page-break-inside:avoid;min-width:0}.number{width:24px;flex:0 0 24px;color:#9a95ac;font-size:10px;font-weight:700}.item-image,.image-placeholder{width:76px;height:76px;flex:0 0 76px;object-fit:contain;border:1px solid #eeedf3;border-radius:8px;background:#fff}.image-placeholder{display:flex;align-items:center;justify-content:center;color:#a29cb5;font-size:27px;background:#faf9fd}.details{flex:1;min-width:0}.meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:5px}.category{display:inline-block;background:#f0edff;color:#5947b7;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700}.priority{font-size:10px;color:#817b93}.item h2{font-size:15px;line-height:1.3;margin:0 0 4px;overflow-wrap:anywhere}.notes{margin:0;color:#686579;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere}.store{font-size:11px;margin:5px 0 0}.store a{color:#5947b7;text-decoration:none;overflow-wrap:anywhere}.price{flex:0 0 auto;min-width:76px;text-align:right;font-size:14px;font-weight:700;color:#302b49;white-space:nowrap}.empty-price{min-width:0}.footer{display:flex;justify-content:space-between;gap:12px;border-top:1px solid #eeebf4;margin-top:24px;padding-top:14px;color:#918ca1;font-size:10px}.footer strong{color:#6654c8}@page{size:auto;margin:12mm}@media print{html,body{background:#fff!important;padding:0;margin:0}.sheet{max-width:none;margin:0;padding:0;border:0;border-radius:0}.topline{margin-bottom:18px}h1{font-size:25px}.item{padding:12px 0}.item-image,.image-placeholder{width:68px;height:68px;flex-basis:68px}.footer{margin-top:18px}a{color:inherit;text-decoration:none}}@media screen and (max-width:560px){.sheet{padding:22px 16px}.topline{align-items:flex-start}.tagline{display:none}.item{gap:9px}.number{width:18px;flex-basis:18px}.item-image,.image-placeholder{width:56px;height:56px;flex-basis:56px}.price{min-width:60px;font-size:12px}h1{font-size:25px}}' +
+    '</style></head><body><main class="sheet"><div class="topline"><div class="brand">wishly.</div><div class="tagline">A list of things you love</div></div><header class="heading"><h1>' + title + '</h1><p class="subtitle">' + (owner ? 'For ' + owner + ' · ' : '') + occasion + '</p><div class="summary"><span><strong>' + items.length + '</strong> ' + (items.length === 1 ? 'item' : 'items') + '</span>' + (pricedItems.length ? '<span><strong>' + pricedItems.length + '</strong> priced</span><span>Listed total <strong>$' + money(total) + '</strong></span>' : '') + '</div></header>' +
     (rows || '<p>This wishlist does not have any items yet.</p>') +
-    '<p class="footer">Created with Wishly</p></main><script>window.addEventListener("load",function(){var imgs=Array.from(document.images);Promise.all(imgs.map(function(img){return img.complete?Promise.resolve():new Promise(function(resolve){img.onload=resolve;img.onerror=resolve;setTimeout(resolve,2500);});})).then(function(){setTimeout(function(){window.focus();window.print();},250);});});<\/script></body></html>';
+    '<footer class="footer"><span>Made with <strong>Wishly</strong></span><span>Wishlist copy · For personal planning</span></footer></main><script>window.addEventListener("load",function(){var imgs=Array.from(document.images);Promise.all(imgs.map(function(img){return img.complete?Promise.resolve():new Promise(function(resolve){img.onload=resolve;img.onerror=resolve;setTimeout(resolve,3000);});})).then(function(){setTimeout(function(){window.focus();window.print();},300);});});</script></body></html>';
   printWindow.document.open();
   printWindow.document.write(page);
   printWindow.document.close();
