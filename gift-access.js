@@ -9,11 +9,41 @@ let activeCode="", activeList=null, activeItems=[], giftAccess=false;
 const escapeHtml=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const safeUrl=v=>{try{const u=new URL(v);return ["https:","http:"].includes(u.protocol)?u.href:"";}catch{return "";}};
 function openWishlistPrintView(list, items) {
-  const printWindow = window.open('', '_blank');
-  if (!printWindow) { toast('Your browser blocked the print window. Allow pop-ups for Wishly, then try again.'); return; }
-  const rows = items.map(item => {
-    const image = safeUrl(item.imageUrl); const link = safeUrl(item.url);
-    const price = item.price !== '' && item.price != null && Number.isFinite(Number(item.price)) ? '<span class="price">const d=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(`wishly-gift-access:${code}:${pin}`));return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,"0")).join("");}
+  const printWindow = window.open("", "_blank");
+  if (!printWindow) {
+    toast("Your browser blocked the print window. Allow pop-ups for Wishly, then try again.");
+    return;
+  }
+  const money = value => Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const priced = items.filter(item => item.price !== "" && item.price != null && Number.isFinite(Number(item.price)));
+  const total = priced.reduce((sum, item) => sum + Number(item.price), 0);
+  const rows = items.map((item, index) => {
+    const image = safeUrl(item.imageUrl), link = safeUrl(item.url);
+    const hasPrice = item.price !== "" && item.price != null && Number.isFinite(Number(item.price));
+    return '<article class="item"><span class="number">' + String(index + 1).padStart(2, "0") + '</span>' +
+      (image ? '<img class="item-image" src="' + escapeHtml(image) + '" alt="">' : '<span class="placeholder">♡</span>') +
+      '<div class="details"><div><span class="category">' + escapeHtml(item.category || "Other") + '</span> <span class="priority">' + escapeHtml(item.priority || "Would love") + '</span></div>' +
+      '<h2>' + escapeHtml(item.name || "Wishlist item") + '</h2>' +
+      (item.notes ? '<p>' + escapeHtml(item.notes) + '</p>' : '') +
+      (link ? '<p class="store"><a href="' + escapeHtml(link) + '">View product online</a></p>' : '') +
+      '</div>' + (hasPrice ? '<strong class="price">$' + money(item.price) + '</strong>' : '') + '</article>';
+  }).join("");
+  const title = escapeHtml(list.title || "Wishlist");
+  const owner = escapeHtml(list.ownerName || "");
+  const occasion = escapeHtml(list.occasion || "Other");
+  const page = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + title + ' — Wishly</title><style>' +
+    '*{box-sizing:border-box}body{margin:0;padding:30px;background:#f4f3f8;color:#282538;font:14px/1.5 Arial,sans-serif}.sheet{max-width:800px;margin:auto;padding:36px 40px;background:#fff;border:1px solid #e9e6f1;border-radius:12px}.brand{color:#6553c7;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px}.heading{border-bottom:2px solid #efecf7;padding-bottom:20px;margin-bottom:4px}h1{font-size:28px;line-height:1.2;margin:0 0 8px;overflow-wrap:anywhere}.subtitle{color:#706b80;margin:0}.summary{display:flex;gap:18px;flex-wrap:wrap;color:#706b80;font-size:12px;margin-top:16px}.summary strong{color:#302b49}.item{display:flex;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid #eeecf3;break-inside:avoid;page-break-inside:avoid}.number{width:22px;flex:0 0 22px;color:#9b96ad;font-size:10px}.item-image,.placeholder{width:70px;height:70px;flex:0 0 70px;object-fit:contain;border:1px solid #eeecf3;border-radius:8px}.placeholder{display:grid;place-items:center;color:#a39db5;font-size:26px}.details{flex:1;min-width:0}.category{background:#f0edff;color:#5846b7;border-radius:4px;padding:3px 7px;font-size:10px;font-weight:700}.priority{color:#817b92;font-size:10px}.item h2{font-size:15px;margin:6px 0 3px;overflow-wrap:anywhere}.item p{margin:3px 0;color:#686579;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere}.store a{color:#5947b7;text-decoration:none}.price{white-space:nowrap;font-size:14px}.footer{display:flex;justify-content:space-between;gap:12px;margin-top:24px;padding-top:14px;border-top:1px solid #eeecf3;color:#9690a5;font-size:10px}.footer strong{color:#6553c7}@page{size:auto;margin:12mm}@media print{body{padding:0;background:#fff}.sheet{max-width:none;padding:0;border:0;border-radius:0}.item{padding:12px 0}.item-image,.placeholder{width:64px;height:64px;flex-basis:64px}}@media screen and (max-width:560px){.sheet{padding:20px 14px}.item{gap:8px}.number{width:16px;flex-basis:16px}.item-image,.placeholder{width:52px;height:52px;flex-basis:52px}.price{font-size:12px}h1{font-size:24px}}' +
+    '</style></head><body><main class="sheet"><div class="brand">wishly.</div><header class="heading"><h1>' + title + '</h1><p class="subtitle">' + (owner ? 'For ' + owner + ' · ' : '') + occasion + '</p><div class="summary"><span><strong>' + items.length + '</strong> ' + (items.length === 1 ? 'item' : 'items') + '</span>' +
+    (priced.length ? '<span><strong>' + priced.length + '</strong> priced</span><span>Listed total <strong>$' + money(total) + '</strong></span>' : '') +
+    '</div></header>' + (rows || '<p>This wishlist does not have any items yet.</p>') + '<footer class="footer"><span>Made with <strong>Wishly</strong></span><span>Wishlist copy</span></footer></main></body></html>';
+  printWindow.document.open();
+  printWindow.document.write(page);
+  printWindow.document.close();
+  const images = Array.from(printWindow.document.images);
+  Promise.all(images.map(img => img.complete ? Promise.resolve() : new Promise(resolve => {
+    img.onload = resolve; img.onerror = resolve; setTimeout(resolve, 2500);
+  }))).then(() => setTimeout(() => { printWindow.focus(); printWindow.print(); }, 250));
+}
 function toast(message){notice.textContent=message;notice.classList.remove("hidden");clearTimeout(toast.timer);toast.timer=setTimeout(()=>notice.classList.add("hidden"),4500);}
 function errorText(e){if(e?.code==="auth/operation-not-allowed")return "Anonymous sign-in is disabled. Enable it in Firebase Authentication settings.";if(e?.code==="permission-denied")return "That gift password is incorrect, or gift access has already been set up.";return e?.message||"Something went wrong. Please try again.";}
 async function accessAlreadySet(){const snap=await getDoc(doc(db,"wishlists",activeCode,"giftAccessConfig","main"));return snap.exists();}
