@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import {
-  getAuth, signOut, onAuthStateChanged
+  getAuth, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 import {
   getFirestore, collection, doc, getDoc, getDocs, setDoc, addDoc,
@@ -24,7 +24,6 @@ const $ = (selector, root = document) => root.querySelector(selector);
 const createForm = $("#create-form");
 const ownedLists = $("#owned-lists");
 const listCount = $("#list-count");
-const signOutButton = $("#sign-out") || $("#sidebar-sign-out");
 const workspace = $("#workspace");
 const notice = $("#notice");
 const dialog = $("#item-dialog");
@@ -75,23 +74,11 @@ onAuthStateChanged(auth, async user => {
   await loadOwnedLists(user);
 });
 
-const sidebarSignOutButton = document.querySelector("#sidebar-sign-out");
-if (sidebarSignOutButton && signOutButton && sidebarSignOutButton !== signOutButton) {
-  sidebarSignOutButton.addEventListener("click", () => signOutButton.click());
-}
-
 const sidebarThemeToggle = document.querySelector("#sidebar-theme-toggle");
 if (sidebarThemeToggle) sidebarThemeToggle.addEventListener("click", () => {
   const existingToggle = document.querySelector("[data-theme-toggle], #theme-toggle, .theme-toggle");
   if (existingToggle) existingToggle.click();
   else document.documentElement.classList.toggle("dark-mode");
-});
-
-signOutButton?.addEventListener("click", async () => {
-  try {
-    await signOut(auth);
-    window.location.href = "signup.html";
-  } catch (error) { toast(friendlyError(error)); }
 });
 
 async function loadOwnedLists(user = auth.currentUser) {
