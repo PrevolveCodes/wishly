@@ -101,7 +101,7 @@ async function loadOwnedLists(user = auth.currentUser) {
       archiveToggle.onclick = () => { showArchivedLists = !showArchivedLists; loadOwnedLists(auth.currentUser); };
     }
     ownedLists.innerHTML = lists.length ? lists.map(list => `<article class="owned-list">
-      ${list.coverImageUrl && /^https?:\/\//i.test(list.coverImageUrl) ? `<img class="owned-list-thumbnail" src="${escapeHtml(list.coverImageUrl)}" alt="" loading="lazy" onerror="this.remove()">` : '<span aria-hidden="true">♡</span>'}
+      <span class="owned-list-icon">${list.coverImageUrl && /^https?:\/\//i.test(list.coverImageUrl) ? `<img class="owned-list-thumbnail" src="${escapeHtml(list.coverImageUrl)}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='♡'">` : '<span aria-hidden="true">♡</span>'}</span>
       <div class="owned-list-info"><h3>${escapeHtml(list.title)}</h3><p>${escapeHtml(list.occasion || "Other")} · Code ${escapeHtml(list.code)}</p></div>
       <div class="owned-list-actions"><button class="small-button open-owned-list" data-code="${escapeHtml(list.code)}" type="button">Open list →</button><button class="small-button delete-owned-list" data-code="${escapeHtml(list.code)}" type="button">Delete</button></div>
     </article>`).join("") : '<div class="empty-state">You haven’t made a wishlist yet. Create your first one here.</div>';
