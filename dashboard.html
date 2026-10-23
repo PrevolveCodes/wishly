@@ -8,9 +8,10 @@
   <meta name="theme-color" content="#f7f6f2">
   <meta name="description" content="Manage your Wishly lists and gift ideas.">
   <title>Wishly Dashboard</title>
-  <link rel="stylesheet" href="styles.css?v=sidebar-1">
+  <link rel="stylesheet" href="styles.css?v=signout-confirm-1">
   <link rel="stylesheet" href="customization.css">
   <script src="theme.js" defer></script>
+  <script type="module" src="signout.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script type="module" src="dashboard.js"></script>
   <script type="module" src="customization.js"></script>
@@ -64,6 +65,9 @@
     <section id="workspace" class="workspace hidden" aria-live="polite"></section>
   </main>
   <p id="notice" class="notice hidden" role="status"></p>
+  <dialog id="signout-dialog" class="modal signout-modal" aria-labelledby="signout-title">
+    <div class="signout-content"><div class="signout-mark" aria-hidden="true">↪</div><div class="eyebrow">ACCOUNT</div><h2 id="signout-title">Sign out of Wishly?</h2><p>You’ll need to sign in again to manage your wishlists.</p><div class="signout-actions"><button type="button" class="small-button" id="signout-cancel">Stay signed in</button><button type="button" class="button button-primary" id="signout-confirm">Sign out</button></div></div>
+  </dialog>
   <dialog id="item-dialog" class="modal">
     <form id="item-form" method="dialog">
       <div class="modal-top"><div><div class="eyebrow">WISHLIST ITEM</div><h2 id="item-dialog-title">Add an item</h2></div><button class="icon-button" type="button" id="close-modal" aria-label="Close">×</button></div>
