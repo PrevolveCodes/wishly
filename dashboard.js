@@ -354,6 +354,7 @@ createForm.addEventListener("submit", async event => {
     const list = {
       code, ownerUid: user.uid, ownerName, title,
       occasion: String(data.get("occasion") || "Other"),
+      eventDate: String(data.get("eventDate") || ""),
       createdAt: serverTimestamp()
     };
     await setDoc(doc(db, "wishlists", code), list);
