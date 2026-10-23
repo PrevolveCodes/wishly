@@ -25,8 +25,10 @@
         if (tip) tip.textContent = tips[Math.floor(Math.random() * tips.length)];
         const screen = document.querySelector("#dashboard-loading");
         if (screen) {
-          window.setTimeout(() => screen.classList.add("is-hidden"), 900);
-          window.setTimeout(() => screen.remove(), 1300);
+          // Keep the startup screen visible for a random 3–8 seconds on every reload.
+          const duration = 3000 + Math.floor(Math.random() * 5001);
+          window.setTimeout(() => screen.classList.add("is-hidden"), duration);
+          window.setTimeout(() => screen.remove(), duration + 400);
         }
       });
     })();
@@ -102,7 +104,7 @@
     <form id="item-form" method="dialog">
       <div class="modal-top"><div><div class="eyebrow">WISHLIST ITEM</div><h2 id="item-dialog-title">Add an item</h2></div><button class="icon-button" type="button" id="close-modal" aria-label="Close">×</button></div>
       <label for="item-name">Item name *</label><input id="item-name" name="itemName" maxlength="100" placeholder="e.g. Wireless headphones" required>
-      <label for="item-category">Category</label><input id="item-category" name="itemCategory" maxlength="40" list="category-suggestions" placeholder="e.g. Electronics, Books, Clothes"><datalist id="category-suggestions"><option value="Electronics"><option value="Clothing & Accessories"><option value="Toys & Games"><option value="Books"><option value="Home & Room"><option value="Hobbies & Crafts"><option value="Sports & Outdoors"><option value="Beauty & Personal Care"><option value="Other"></datalist>
+      <label for="item-category">Category</label><input id="item-category" name="itemCategory" maxlength="40" list="category-suggestions" placeholder="e.g. Electronics, Books, Clothes"><datalist id="category-suggestions"><option value="Electronics"><option value="Clothing & Accessories"><option value="Toys & Games"><option value="Books"><option value="Home & Room"><option value="Hobbies & Crafts"><option value="Sports & Outdoors"><option value="Beauty & Personal Care"><option value="Other"></option></datalist>
       <label for="item-url">Store link</label><input id="item-url" name="itemUrl" type="url" placeholder="https://…">
       <label for="item-image">Image URL (optional)</label><input id="item-image" name="itemImage" type="url" placeholder="https://…image.jpg">
       <div class="form-row"><div><label for="item-price">Price</label><input id="item-price" name="itemPrice" type="number" min="0" max="1000000" step="0.01" placeholder="0.00"></div><div><label for="item-priority">Priority</label><select id="item-priority" name="itemPriority"><option value="Would love">Would love</option><option value="Really want">Really want</option><option value="Top wish">Top wish</option></select></div></div>
