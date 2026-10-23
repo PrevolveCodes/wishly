@@ -1283,3 +1283,7 @@ body .hero,body .dashboard-main,body .suggestions-main,body .signup-main{animati
   .hero-art.gift-art .gift-box-back,
   .hero-art.gift-art .gift-box-front { animation: none !important; }
 }
+
+
+/* Keep the uploaded Google logo crisp and correctly sized in the sign-in button. */
+.signup-form .google-logo{display:block;width:20px;height:20px;flex:0 0 20px;object-fit:contain}
