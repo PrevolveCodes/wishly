@@ -21,11 +21,20 @@
         "You can edit your wishlist items whenever you need to."
       ];
       window.addEventListener("DOMContentLoaded", () => {
+        const screen = document.querySelector("#dashboard-loading");
+        const cameFromSidebar = sessionStorage.getItem("wishly-sidebar-navigation") === "1";
+        sessionStorage.removeItem("wishly-sidebar-navigation");
+
+        // Sidebar navigation should switch views immediately without replaying the startup screen.
+        if (cameFromSidebar) {
+          if (screen) screen.remove();
+          return;
+        }
+
         const tip = document.querySelector("#dashboard-loading-tip");
         if (tip) tip.textContent = tips[Math.floor(Math.random() * tips.length)];
-        const screen = document.querySelector("#dashboard-loading");
         if (screen) {
-          // Keep the startup screen visible for a random 3–8 seconds on every reload.
+          // Keep the startup screen for a random 3–8 seconds on a direct load or reload.
           const duration = 3000 + Math.floor(Math.random() * 5001);
           window.setTimeout(() => screen.classList.add("is-hidden"), duration);
           window.setTimeout(() => screen.remove(), duration + 400);
