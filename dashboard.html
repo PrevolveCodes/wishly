@@ -10,6 +10,23 @@
   <title>Wishly Dashboard</title>
   <link rel="stylesheet" href="styles.css?v=visual-pass-1">
   <link rel="stylesheet" href="customization.css">
+  <style>
+    #wishly-dashboard-loader{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:#f7f6f2;opacity:1;visibility:visible;transition:opacity .28s ease,visibility .28s ease}
+    #wishly-dashboard-loader.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+    .dashboard-loader-inner{text-align:center;width:min(340px,calc(100% - 40px));animation:wishly-loader-in .45s ease both}
+    .dashboard-loader-logo{width:78px;height:78px;margin:0 auto 18px;display:block;border-radius:24px;box-shadow:0 12px 30px #6251d52e;animation:wishly-logo-pulse 1.4s ease-in-out infinite}
+    .dashboard-loader-wordmark{font:800 28px/1 Manrope,sans-serif;letter-spacing:-1.5px;color:#24252c}.dashboard-loader-wordmark span{color:#6251d5}
+    .dashboard-loader-status{margin:10px 0 18px;color:#777982;font-size:12px}
+    .dashboard-loader-tip{padding:12px 14px;border:1px solid #e6e2dc;border-radius:13px;background:#fff;font-size:11px;line-height:1.55;color:#777982}
+    .dashboard-loader-tip b{display:block;margin-bottom:3px;color:#6251d5;font-size:9px;letter-spacing:1.5px}
+    @keyframes wishly-loader-in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+    @keyframes wishly-logo-pulse{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.045) rotate(-2deg)}}
+    @media(prefers-reduced-motion:reduce){#wishly-dashboard-loader,.dashboard-loader-inner,.dashboard-loader-logo{animation:none;transition:none}}
+    body.dark-mode #wishly-dashboard-loader{background:#101827}body.dark-mode .dashboard-loader-wordmark{color:#f2f3fb}body.dark-mode .dashboard-loader-tip{background:#192439;border-color:#2d3a55;color:#b5bfd5}
+  </style>
+  <script>
+    (()=>{const tips=["Add store links so gift-givers can find the exact item.","You can give your wishlist code to family and friends without making them an account.","Use categories to keep a big wishlist easy to browse.","You can edit your wishlist items later if something changes.","A wishlist can be for birthdays, Christmas, or any occasion."];window.addEventListener("DOMContentLoaded",()=>{const t=document.querySelector("#wishly-loader-tip-text");if(t)t.textContent=tips[Math.floor(Math.random()*tips.length)];setTimeout(()=>document.querySelector("#wishly-dashboard-loader")?.classList.add("is-hidden"),850)})})();
+  </script>
   <script src="theme.js" defer></script>
   <script type="module" src="signout.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -18,6 +35,7 @@
   <script defer src="dashboard-navigation.js"></script>
 </head>
 <body class="dashboard-page">
+  <div id="wishly-dashboard-loader" role="status" aria-label="Loading Wishly"><div class="dashboard-loader-inner"><img class="dashboard-loader-logo" src="icon.png" alt="Wishly"><div class="dashboard-loader-wordmark">wish<span>ly.</span></div><div class="dashboard-loader-status">Getting your wishlists ready…</div><div class="dashboard-loader-tip"><b>WISHLY TIP</b><span id="wishly-loader-tip-text">Add store links so gift-givers can find the exact item.</span></div></div></div>
   <aside class="wishly-sidebar" aria-label="Dashboard sidebar">
     <a class="sidebar-brand" href="./" aria-label="Wishly home"><img src="icon.png" alt=""><span>wishly<span class="brand-dot">.</span></span></a>
     <nav class="sidebar-nav" aria-label="Dashboard navigation">
@@ -28,57 +46,15 @@
       <a class="sidebar-link" href="gift.html"><img class="sidebar-icon" src="view_list.png?v=sidebar-icons-fix-4" alt=""><span>View a Wishlist</span></a>
       <button class="sidebar-link sidebar-theme-toggle" id="sidebar-theme-toggle" type="button"><img class="sidebar-icon" src="darklight_mode.png?v=sidebar-icons-fix-5" alt=""><span>Toggle dark mode</span></button>
     </nav>
-    <div class="sidebar-bottom">
-      <div class="sidebar-premium">
-        <strong>Wishly Premium</strong>
-        <p>More ways to make your wishlists your own.</p>
-        <span class="premium-coming-soon">Coming later</span>
-      </div>
-      <button class="sidebar-signout" id="sidebar-sign-out" type="button"><img class="sidebar-icon" src="sign_out.png?v=sidebar-icons-fix-5" alt=""> Sign out</button>
-    </div>
+    <div class="sidebar-bottom"><div class="sidebar-premium"><strong>Wishly Premium</strong><p>More ways to make your wishlists your own.</p><span class="premium-coming-soon">Coming later</span></div><button class="sidebar-signout" id="sidebar-sign-out" type="button"><img class="sidebar-icon" src="sign_out.png?v=sidebar-icons-fix-5" alt=""> Sign out</button></div>
   </aside>
   <main class="dashboard-main" id="dashboard-main">
-    <section class="dashboard-welcome">
-      <div class="dashboard-welcome-copy" style="display:block;width:100%;min-width:0;text-align:left;margin:0;padding:0">
-        <div class="eyebrow" style="display:block;width:auto;text-align:left;margin:0 0 2px">WISHLIST MANAGEMENT</div>
-        <h1 style="display:block;width:100%;text-align:left;margin:12px 0">Make a list<span>.</span></h1>
-        <p style="display:block;width:100%;max-width:560px;text-align:left;margin:0">Create and manage your Wishly lists from here.</p>
-      </div>
-      <div class="dashboard-mark" aria-hidden="true">♡</div>
-    </section>
-    <section class="dashboard-grid">
-      <article class="action-card create-card dashboard-create" id="make-a-list">
-        <div class="card-icon lavender"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
-        <div class="card-heading"><h2>Create a wishlist</h2><p>Give your list a name, then start adding ideas.</p></div>
-        <form id="create-form">
-          <label for="owner-name">Your name</label><input id="owner-name" name="ownerName" maxlength="40" placeholder="e.g. Alex" required>
-          <label for="list-title">Wishlist name</label><input id="list-title" name="title" maxlength="60" placeholder="e.g. Birthday Wishlist" required>
-          <label for="occasion">Occasion</label><select id="occasion" name="occasion"><option value="Christmas">Christmas</option><option value="Birthday">Birthday</option><option value="Other">Other</option></select>
-          <button class="button button-primary" type="submit">Create wishlist <span>→</span></button>
-        </form>
-      </article>
-      <section class="dashboard-lists">
-        <div class="section-heading"><div><div class="eyebrow">SAVED IN YOUR ACCOUNT</div><h2>Your wishlists</h2></div><span id="list-count" class="list-count">Loading…</span><button id="toggle-archived" class="small-button" type="button">Show archived</button></div>
-        <div id="owned-lists" class="owned-lists"><div class="empty-state">Loading your wishlists…</div></div>
-      </section>
-    </section>
+    <section class="dashboard-welcome"><div class="dashboard-welcome-copy" style="display:block;width:100%;min-width:0;text-align:left;margin:0;padding:0"><div class="eyebrow" style="display:block;width:auto;text-align:left;margin:0 0 2px">WISHLIST MANAGEMENT</div><h1 style="display:block;width:100%;text-align:left;margin:12px 0">Make a list<span>.</span></h1><p style="display:block;width:100%;max-width:560px;text-align:left;margin:0">Create and manage your Wishly lists from here.</p></div><div class="dashboard-mark" aria-hidden="true">♡</div></section>
+    <section class="dashboard-grid"><article class="action-card create-card dashboard-create" id="make-a-list"><div class="card-icon lavender"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div><div class="card-heading"><h2>Create a wishlist</h2><p>Give your list a name, then start adding ideas.</p></div><form id="create-form"><label for="owner-name">Your name</label><input id="owner-name" name="ownerName" maxlength="40" placeholder="e.g. Alex" required><label for="list-title">Wishlist name</label><input id="list-title" name="title" maxlength="60" placeholder="e.g. Birthday Wishlist" required><label for="occasion">Occasion</label><select id="occasion" name="occasion"><option value="Christmas">Christmas</option><option value="Birthday">Birthday</option><option value="Other">Other</option></select><button class="button button-primary" type="submit">Create wishlist <span>→</span></button></form></article><section class="dashboard-lists"><div class="section-heading"><div><div class="eyebrow">SAVED IN YOUR ACCOUNT</div><h2>Your wishlists</h2></div><span id="list-count" class="list-count">Loading…</span><button id="toggle-archived" class="small-button" type="button">Show archived</button></div><div id="owned-lists" class="owned-lists"><div class="empty-state">Loading your wishlists…</div></div></section></section>
     <section id="workspace" class="workspace hidden" aria-live="polite"></section>
   </main>
   <p id="notice" class="notice hidden" role="status"></p>
-  <dialog id="signout-dialog" class="modal signout-modal" aria-labelledby="signout-title">
-    <div class="signout-content"><div class="signout-mark" aria-hidden="true">↪</div><div class="eyebrow">ACCOUNT</div><h2 id="signout-title">Sign out of Wishly?</h2><p>You’ll need to sign in again to manage your wishlists.</p><div class="signout-actions"><button type="button" class="small-button" id="signout-cancel">Stay signed in</button><button type="button" class="button button-primary" id="signout-confirm">Sign out</button></div></div>
-  </dialog>
-  <dialog id="item-dialog" class="modal">
-    <form id="item-form" method="dialog">
-      <div class="modal-top"><div><div class="eyebrow">WISHLIST ITEM</div><h2 id="item-dialog-title">Add an item</h2></div><button class="icon-button" type="button" id="close-modal" aria-label="Close">×</button></div>
-      <label for="item-name">Item name *</label><input id="item-name" name="itemName" maxlength="100" placeholder="e.g. Wireless headphones" required>
-      <label for="item-category">Category</label><input id="item-category" name="itemCategory" maxlength="40" list="category-suggestions" placeholder="e.g. Electronics, Books, Clothes"><datalist id="category-suggestions"><option value="Electronics"><option value="Clothing & Accessories"><option value="Toys & Games"><option value="Books"><option value="Home & Room"><option value="Hobbies & Crafts"><option value="Sports & Outdoors"><option value="Beauty & Personal Care"><option value="Other"></datalist>
-      <label for="item-url">Store link</label><input id="item-url" name="itemUrl" type="url" placeholder="https://…">
-      <label for="item-image">Image URL (optional)</label><input id="item-image" name="itemImage" type="url" placeholder="https://…image.jpg">
-      <div class="form-row"><div><label for="item-price">Price</label><input id="item-price" name="itemPrice" type="number" min="0" max="1000000" step="0.01" placeholder="0.00"></div><div><label for="item-priority">Priority</label><select id="item-priority" name="itemPriority"><option value="Would love">Would love</option><option value="Really want">Really want</option><option value="Top wish">Top wish</option></select></div></div>
-      <button class="small-button" type="button" id="show-gift-ideas">Need gift ideas?</button><div id="gift-ideas" class="gift-ideas hidden"><p>Pick an idea to start with:</p><div class="gift-idea-buttons"><button type="button" data-name="Wireless headphones" data-category="Electronics">Wireless headphones</button><button type="button" data-name="Books or a book series" data-category="Books">Books</button><button type="button" data-name="LEGO set" data-category="Toys & Games">LEGO set</button><button type="button" data-name="Desk or room lights" data-category="Home & Room">Room lights</button><button type="button" data-name="Art or craft supplies" data-category="Hobbies & Crafts">Craft supplies</button><button type="button" data-name="Sports gear" data-category="Sports & Outdoors">Sports gear</button><button type="button" data-name="Gift card" data-category="Other">Gift card</button></div></div><label for="item-notes">Notes (optional)</label><textarea id="item-notes" name="itemNotes" maxlength="300" rows="3" placeholder="Color, size, or anything helpful…"></textarea>
-      <button class="button button-primary" id="item-submit" type="submit">Add to wishlist <span>+</span></button>
-    </form>
-  </dialog>
+  <dialog id="signout-dialog" class="modal signout-modal" aria-labelledby="signout-title"><div class="signout-content"><div class="signout-mark" aria-hidden="true">↪</div><div class="eyebrow">ACCOUNT</div><h2 id="signout-title">Sign out of Wishly?</h2><p>You’ll need to sign in again to manage your wishlists.</p><div class="signout-actions"><button type="button" class="small-button" id="signout-cancel">Stay signed in</button><button type="button" class="button button-primary" id="signout-confirm">Sign out</button></div></div></dialog>
+  <dialog id="item-dialog" class="modal"><form id="item-form" method="dialog"><div class="modal-top"><div><div class="eyebrow">WISHLIST ITEM</div><h2 id="item-dialog-title">Add an item</h2></div><button class="icon-button" type="button" id="close-modal" aria-label="Close">×</button></div><label for="item-name">Item name *</label><input id="item-name" name="itemName" maxlength="100" placeholder="e.g. Wireless headphones" required><label for="item-category">Category</label><input id="item-category" name="itemCategory" maxlength="40" list="category-suggestions" placeholder="e.g. Electronics, Books, Clothes"><datalist id="category-suggestions"><option value="Electronics"><option value="Clothing & Accessories"><option value="Toys & Games"><option value="Books"><option value="Home & Room"><option value="Hobbies & Crafts"><option value="Sports & Outdoors"><option value="Beauty & Personal Care"><option value="Other"></datalist><label for="item-url">Store link</label><input id="item-url" name="itemUrl" type="url" placeholder="https://…"><label for="item-image">Image URL (optional)</label><input id="item-image" name="itemImage" type="url" placeholder="https://…image.jpg"><div class="form-row"><div><label for="item-price">Price</label><input id="item-price" name="itemPrice" type="number" min="0" max="1000000" step="0.01" placeholder="0.00"></div><div><label for="item-priority">Priority</label><select id="item-priority" name="itemPriority"><option value="Would love">Would love</option><option value="Really want">Really want</option><option value="Top wish">Top wish</option></select></div></div><button class="small-button" type="button" id="show-gift-ideas">Need gift ideas?</button><div id="gift-ideas" class="gift-ideas hidden"><p>Pick an idea to start with:</p><div class="gift-idea-buttons"><button type="button" data-name="Wireless headphones" data-category="Electronics">Wireless headphones</button><button type="button" data-name="Books or a book series" data-category="Books">Books</button><button type="button" data-name="LEGO set" data-category="Toys & Games">LEGO set</button><button type="button" data-name="Desk or room lights" data-category="Home & Room">Room lights</button><button type="button" data-name="Art or craft supplies" data-category="Hobbies & Crafts">Craft supplies</button><button type="button" data-name="Sports gear" data-category="Sports & Outdoors">Sports gear</button><button type="button" data-name="Gift card" data-category="Other">Gift card</button></div></div><label for="item-notes">Notes (optional)</label><textarea id="item-notes" name="itemNotes" maxlength="300" rows="3" placeholder="Color, size, or anything helpful…"></textarea><button class="button button-primary" id="item-submit" type="submit">Add to wishlist <span>+</span></button></form></dialog>
 </body>
 </html>
