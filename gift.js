@@ -52,7 +52,7 @@ async function renderList() {
   workspace.innerHTML = `
     <div class="workspace-head">
       <div><div class="eyebrow">SHARED WISHLIST</div><h2>${escapeHtml(activeList.title)}</h2><p class="workspace-sub">For ${escapeHtml(activeList.ownerName)} · ${escapeHtml(activeList.occasion || "Other")}</p></div>
-      <div class="code-chip">${escapeHtml(activeCode)}</div>
+      <div class="workspace-head-actions"><div class="code-chip">${escapeHtml(activeCode)}</div><button class="small-button" id="print-wishlist" type="button">Print / Save PDF</button></div>
     </div>
     <p class="workspace-sub">Reserve an item to let other gift-givers know you are planning to get it. Reservations and purchase marks are hidden from the wishlist owner.</p>
     <div class="list-tools"><label for="gift-item-search">Search items</label><input id="gift-item-search" type="search" placeholder="Search by name or category"><div class="list-summary"><span id="gift-visible-count">${activeItems.length} items</span><span>Total listed price: <strong id="gift-price-total"></strong></span></div></div>
@@ -73,6 +73,11 @@ async function renderList() {
   `;
   workspace.classList.remove("hidden");
   workspace.scrollIntoView({ behavior: "smooth", block: "start" });
+  $("#print-wishlist")?.addEventListener("click", () => {
+    document.body.classList.add("printing-wishlist");
+    window.addEventListener("afterprint", () => document.body.classList.remove("printing-wishlist"), { once: true });
+    window.print();
+  });
   const searchInput = $("#gift-item-search");
   const filterCards = () => { const term=(searchInput?.value||"").trim().toLowerCase(); let shown=0,total=0; workspace.querySelectorAll(".wish-item").forEach(card=>{const match=(card.dataset.search||"").includes(term);card.classList.toggle("filtered-out",!match);if(match){shown++;if(card.dataset.hasPrice==="true")total+=Number(card.dataset.price)||0;}});const count=$("#gift-visible-count");if(count)count.textContent=shown+(shown===1?" item":" items");const sum=$("#gift-price-total");if(sum)sum.textContent=total.toLocaleString(undefined,{style:"currency",currency:"USD"});};
   searchInput?.addEventListener("input",filterCards);filterCards();
