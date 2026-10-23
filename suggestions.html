@@ -64,5 +64,11 @@
     ["#category-filter","#budget-filter","#idea-search"].forEach(s=>document.querySelector(s).addEventListener(s==="#idea-search"?"input":"change",render));render();
     try { const app=initializeApp(firebaseConfig); const auth=getAuth(app); onAuthStateChanged(auth,user=>{const out=document.querySelector("#sidebar-sign-out");if(out){out.hidden=!user;out.addEventListener("click",()=>signOut(auth).then(()=>location.href="./"));}}); } catch(e) { console.warn("Wishly sign-out setup unavailable",e); }
   </script>
+  <script>
+    document.addEventListener("click", function (event) {
+      const link = event.target.closest(".sidebar-nav a.sidebar-link");
+      if (link && link.href) sessionStorage.setItem("wishly-sidebar-navigation", "1");
+    });
+  </script>
 </body>
 </html>
