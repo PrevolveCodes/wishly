@@ -51,39 +51,35 @@ function openWishlistPrintView(list, items) {
     toast("Your browser blocked the print window. Allow pop-ups for Wishly, then try again.");
     return;
   }
-
-  const money = value => Number(value).toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-  const pricedItems = items.filter(item => item.price !== "" && item.price != null && Number.isFinite(Number(item.price)));
-  const total = pricedItems.reduce((sum, item) => sum + Number(item.price), 0);
+  const money = value => Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const priced = items.filter(item => item.price !== "" && item.price != null && Number.isFinite(Number(item.price)));
+  const total = priced.reduce((sum, item) => sum + Number(item.price), 0);
   const rows = items.map((item, index) => {
-    const image = safeUrl(item.imageUrl);
-    const link = safeUrl(item.url);
+    const image = safeUrl(item.imageUrl), link = safeUrl(item.url);
     const hasPrice = item.price !== "" && item.price != null && Number.isFinite(Number(item.price));
-    return '<article class="item">' +
-      '<div class="number">' + String(index + 1).padStart(2, "0") + '</div>' +
-      (image ? '<img class="item-image" src="' + escapeHtml(image) + '" alt="">' : '<div class="image-placeholder">♡</div>') +
-      '<div class="details"><div class="meta"><span class="category">' + escapeHtml(item.category || "Other") + '</span><span class="priority">' + escapeHtml(item.priority || "Would love") + '</span></div>' +
+    return '<article class="item"><span class="number">' + String(index + 1).padStart(2, "0") + '</span>' +
+      (image ? '<img class="item-image" src="' + escapeHtml(image) + '" alt="">' : '<span class="placeholder">♡</span>') +
+      '<div class="details"><div><span class="category">' + escapeHtml(item.category || "Other") + '</span> <span class="priority">' + escapeHtml(item.priority || "Would love") + '</span></div>' +
       '<h2>' + escapeHtml(item.name || "Wishlist item") + '</h2>' +
-      (item.notes ? '<p class="notes">' + escapeHtml(item.notes) + '</p>' : '') +
+      (item.notes ? '<p>' + escapeHtml(item.notes) + '</p>' : '') +
       (link ? '<p class="store"><a href="' + escapeHtml(link) + '">View product online</a></p>' : '') +
-      '</div>' + (hasPrice ? '<div class="price">$' + money(item.price) + '</div>' : '<div class="price empty-price"></div>') +
-      '</article>';
+      '</div>' + (hasPrice ? '<strong class="price">$' + money(item.price) + '</strong>' : '') + '</article>';
   }).join("");
-
   const title = escapeHtml(list.title || "Wishlist");
   const owner = escapeHtml(list.ownerName || "");
   const occasion = escapeHtml(list.occasion || "Other");
   const page = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + title + ' — Wishly</title><style>' +
-    '*{box-sizing:border-box}html{background:#f3f2f8}body{margin:0;padding:32px 18px;color:#252333;background:#f3f2f8;font:14px/1.5 Arial,Helvetica,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}.sheet{max-width:820px;margin:0 auto;background:#fff;padding:38px 42px;border:1px solid #e8e6ef;border-radius:12px}.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:24px}.brand{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:#6654c8;font-weight:800}.tagline{font-size:10px;color:#858195;letter-spacing:1px;text-transform:uppercase}.heading{padding-bottom:22px;border-bottom:2px solid #eeebf8;margin-bottom:8px}h1{font-size:30px;line-height:1.15;letter-spacing:-.6px;margin:0 0 8px;overflow-wrap:anywhere}.subtitle{color:#686579;margin:0}.summary{display:flex;flex-wrap:wrap;gap:8px 18px;color:#686579;font-size:12px;margin-top:18px}.summary strong{color:#302b49}.item{display:flex;align-items:center;gap:14px;padding:17px 0;border-bottom:1px solid #eceaf2;break-inside:avoid;page-break-inside:avoid;min-width:0}.number{width:24px;flex:0 0 24px;color:#9a95ac;font-size:10px;font-weight:700}.item-image,.image-placeholder{width:76px;height:76px;flex:0 0 76px;object-fit:contain;border:1px solid #eeedf3;border-radius:8px;background:#fff}.image-placeholder{display:flex;align-items:center;justify-content:center;color:#a29cb5;font-size:27px;background:#faf9fd}.details{flex:1;min-width:0}.meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:5px}.category{display:inline-block;background:#f0edff;color:#5947b7;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700}.priority{font-size:10px;color:#817b93}.item h2{font-size:15px;line-height:1.3;margin:0 0 4px;overflow-wrap:anywhere}.notes{margin:0;color:#686579;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere}.store{font-size:11px;margin:5px 0 0}.store a{color:#5947b7;text-decoration:none;overflow-wrap:anywhere}.price{flex:0 0 auto;min-width:76px;text-align:right;font-size:14px;font-weight:700;color:#302b49;white-space:nowrap}.empty-price{min-width:0}.footer{display:flex;justify-content:space-between;gap:12px;border-top:1px solid #eeebf4;margin-top:24px;padding-top:14px;color:#918ca1;font-size:10px}.footer strong{color:#6654c8}@page{size:auto;margin:12mm}@media print{html,body{background:#fff!important;padding:0;margin:0}.sheet{max-width:none;margin:0;padding:0;border:0;border-radius:0}.topline{margin-bottom:18px}h1{font-size:25px}.item{padding:12px 0}.item-image,.image-placeholder{width:68px;height:68px;flex-basis:68px}.footer{margin-top:18px}a{color:inherit;text-decoration:none}}@media screen and (max-width:560px){.sheet{padding:22px 16px}.topline{align-items:flex-start}.tagline{display:none}.item{gap:9px}.number{width:18px;flex-basis:18px}.item-image,.image-placeholder{width:56px;height:56px;flex-basis:56px}.price{min-width:60px;font-size:12px}h1{font-size:25px}}' +
-    '</style></head><body><main class="sheet"><div class="topline"><div class="brand">wishly.</div><div class="tagline">A list of things you love</div></div><header class="heading"><h1>' + title + '</h1><p class="subtitle">' + (owner ? 'For ' + owner + ' · ' : '') + occasion + '</p><div class="summary"><span><strong>' + items.length + '</strong> ' + (items.length === 1 ? 'item' : 'items') + '</span>' + (pricedItems.length ? '<span><strong>' + pricedItems.length + '</strong> priced</span><span>Listed total <strong>$' + money(total) + '</strong></span>' : '') + '</div></header>' +
-    (rows || '<p>This wishlist does not have any items yet.</p>') +
-    '<footer class="footer"><span>Made with <strong>Wishly</strong></span><span>Wishlist copy · For personal planning</span></footer></main><script>window.addEventListener("load",function(){var imgs=Array.from(document.images);Promise.all(imgs.map(function(img){return img.complete?Promise.resolve():new Promise(function(resolve){img.onload=resolve;img.onerror=resolve;setTimeout(resolve,3000);});})).then(function(){setTimeout(function(){window.focus();window.print();},300);});});</script></body></html>';
+    '*{box-sizing:border-box}body{margin:0;padding:30px;background:#f4f3f8;color:#282538;font:14px/1.5 Arial,sans-serif}.sheet{max-width:800px;margin:auto;padding:36px 40px;background:#fff;border:1px solid #e9e6f1;border-radius:12px}.brand{color:#6553c7;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px}.heading{border-bottom:2px solid #efecf7;padding-bottom:20px;margin-bottom:4px}h1{font-size:28px;line-height:1.2;margin:0 0 8px;overflow-wrap:anywhere}.subtitle{color:#706b80;margin:0}.summary{display:flex;gap:18px;flex-wrap:wrap;color:#706b80;font-size:12px;margin-top:16px}.summary strong{color:#302b49}.item{display:flex;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid #eeecf3;break-inside:avoid;page-break-inside:avoid}.number{width:22px;flex:0 0 22px;color:#9b96ad;font-size:10px}.item-image,.placeholder{width:70px;height:70px;flex:0 0 70px;object-fit:contain;border:1px solid #eeecf3;border-radius:8px}.placeholder{display:grid;place-items:center;color:#a39db5;font-size:26px}.details{flex:1;min-width:0}.category{background:#f0edff;color:#5846b7;border-radius:4px;padding:3px 7px;font-size:10px;font-weight:700}.priority{color:#817b92;font-size:10px}.item h2{font-size:15px;margin:6px 0 3px;overflow-wrap:anywhere}.item p{margin:3px 0;color:#686579;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere}.store a{color:#5947b7;text-decoration:none}.price{white-space:nowrap;font-size:14px}.footer{display:flex;justify-content:space-between;gap:12px;margin-top:24px;padding-top:14px;border-top:1px solid #eeecf3;color:#9690a5;font-size:10px}.footer strong{color:#6553c7}@page{size:auto;margin:12mm}@media print{body{padding:0;background:#fff}.sheet{max-width:none;padding:0;border:0;border-radius:0}.item{padding:12px 0}.item-image,.placeholder{width:64px;height:64px;flex-basis:64px}}@media screen and (max-width:560px){.sheet{padding:20px 14px}.item{gap:8px}.number{width:16px;flex-basis:16px}.item-image,.placeholder{width:52px;height:52px;flex-basis:52px}.price{font-size:12px}h1{font-size:24px}}' +
+    '</style></head><body><main class="sheet"><div class="brand">wishly.</div><header class="heading"><h1>' + title + '</h1><p class="subtitle">' + (owner ? 'For ' + owner + ' · ' : '') + occasion + '</p><div class="summary"><span><strong>' + items.length + '</strong> ' + (items.length === 1 ? 'item' : 'items') + '</span>' +
+    (priced.length ? '<span><strong>' + priced.length + '</strong> priced</span><span>Listed total <strong>$' + money(total) + '</strong></span>' : '') +
+    '</div></header>' + (rows || '<p>This wishlist does not have any items yet.</p>') + '<footer class="footer"><span>Made with <strong>Wishly</strong></span><span>Wishlist copy</span></footer></main></body></html>';
   printWindow.document.open();
   printWindow.document.write(page);
   printWindow.document.close();
+  const images = Array.from(printWindow.document.images);
+  Promise.all(images.map(img => img.complete ? Promise.resolve() : new Promise(resolve => {
+    img.onload = resolve; img.onerror = resolve; setTimeout(resolve, 2500);
+  }))).then(() => setTimeout(() => { printWindow.focus(); printWindow.print(); }, 250));
 }
 function toast(message) {
   notice.textContent = message;
