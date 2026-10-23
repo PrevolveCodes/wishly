@@ -1143,6 +1143,7 @@ body.dashboard-page>.topbar .top-nav{margin-left:auto}
 .sidebar-link:hover{background:#f2efff;color:var(--purple)}
 .sidebar-link.is-active{background:#eeeaff;color:var(--purple);font-weight:700}
 .sidebar-symbol{display:inline-flex;align-items:center;justify-content:center;width:22px;flex:0 0 22px;font-size:23px;line-height:1}
+.sidebar-icon{display:block;width:22px;height:22px;flex:0 0 22px;object-fit:contain}
 .sidebar-bottom{margin-top:auto}
 .sidebar-premium{padding:16px 14px;margin:0 0 14px;border:1px solid var(--line);border-radius:15px;background:#fbfaff}
 .sidebar-premium strong{font-family:Manrope,sans-serif;font-size:14px}
