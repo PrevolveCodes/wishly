@@ -10,6 +10,7 @@
   <title>Overview — Wishly</title>
   <link rel="stylesheet" href="styles.css?v=sidebar-icons-2">
   <script src="theme.js" defer></script>
+  <script type="module" src="signout.js"></script>
 </head>
 <body class="dashboard-page">
   <aside class="wishly-sidebar" aria-label="Wishly sidebar">
@@ -28,6 +29,7 @@
         <p>More ways to make your wishlists your own.</p>
         <span class="premium-coming-soon">Coming later</span>
       </div>
+      <button class="sidebar-signout" id="sidebar-sign-out" type="button"><span class="sidebar-symbol" aria-hidden="true">↪</span> Sign out</button>
     </div>
   </aside>
   <main class="dashboard-main">
@@ -40,5 +42,8 @@
       <div class="dashboard-mark" aria-hidden="true">♡</div>
     </section>
   </main>
+  <dialog id="signout-dialog" class="modal signout-modal" aria-labelledby="signout-title">
+    <div class="signout-content"><div class="signout-mark" aria-hidden="true">↪</div><div class="eyebrow">ACCOUNT</div><h2 id="signout-title">Sign out of Wishly?</h2><p>You’ll need to sign in again to manage your wishlists.</p><div class="signout-actions"><button type="button" class="small-button" id="signout-cancel">Stay signed in</button><button type="button" class="button button-primary" id="signout-confirm">Sign out</button></div></div>
+  </dialog>
 </body>
 </html>
