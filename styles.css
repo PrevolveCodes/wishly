@@ -1247,3 +1247,18 @@ body .hero,body .dashboard-main,body .suggestions-main,body .signup-main{animati
 .theme-toggle:active{transform:translateY(0) scale(.985)}
 .theme-toggle:focus-visible{outline:2px solid var(--purple);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){.theme-toggle{transition:none!important}}
+
+
+/* Stop the About link's hover styling from flickering. */
+.top-nav a[href="#about"],
+.top-nav a[href="#about"]:hover,
+.top-nav a[href="#about"]:focus-visible{
+  transform:none!important;
+  animation:none!important;
+  transition:none!important;
+  box-shadow:none!important;
+}
+.top-nav a[href="#about"]:hover{
+  color:var(--purple-dark);
+  background:transparent;
+}
