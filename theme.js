@@ -1,5 +1,20 @@
 (() => {
   const KEY = "wishly-theme";
+
+  // Keep the shared page background clean. The old depth background used large
+  // translucent gradients that could appear as repeated hazy bands on pages.
+  const cleanPageBackground = () => {
+    if (document.getElementById("wishly-clean-background")) return;
+    const style = document.createElement("style");
+    style.id = "wishly-clean-background";
+    style.textContent = `
+      html, body { background-image: none !important; }
+      body:not(.dark-mode) { background-color: var(--paper, #f5f3ef) !important; }
+      body.dark-mode { background-image: none !important; }
+    `;
+    document.head.appendChild(style);
+  };
+
   const applyTheme = theme => {
     const dark = theme === "dark";
     document.body.classList.toggle("dark-mode", dark);
@@ -33,6 +48,7 @@
     saveTheme(next);
   };
 
+  cleanPageBackground();
   applyTheme(readTheme());
 
   const setup = () => {
@@ -50,6 +66,7 @@
       sidebarButton.dataset.themeBound = "true";
       sidebarButton.addEventListener("click", toggleTheme);
     }
+    cleanPageBackground();
     applyTheme(readTheme());
   };
 
