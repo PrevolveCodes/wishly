@@ -35,6 +35,8 @@
   <aside class="wishly-sidebar" aria-label="Wishly sidebar">
     <a class="sidebar-brand" href="./" aria-label="Wishly home"><img src="icon.png" alt=""><span>wishly<span class="brand-dot">.</span></span></a>
     <nav class="sidebar-nav" aria-label="Main navigation">
+      <a class="sidebar-link" href="dashboard.html"><span class="sidebar-symbol" aria-hidden="true">⌂</span><span>Overview</span></a>
+      <a class="sidebar-link" href="dashboard.html?view=make-list"><span class="sidebar-symbol" aria-hidden="true">＋</span><span>Make a List</span></a>
       <a class="sidebar-link" href="dashboard.html?view=lists"><span class="sidebar-symbol" aria-hidden="true">☷</span><span>My Lists</span></a>
       <a class="sidebar-link" href="suggestions.html" aria-current="page"><span class="sidebar-symbol" aria-hidden="true">♧</span><span>Gift Suggestions</span></a>
       <a class="sidebar-link" href="gift.html"><span class="sidebar-symbol" aria-hidden="true">♧</span><span>View a Wishlist</span></a>
@@ -78,13 +80,12 @@
       const category=document.querySelector("#category-filter").value, budget=document.querySelector("#budget-filter").value, q=document.querySelector("#idea-search").value.trim().toLowerCase();
       const filtered=ideas.filter(x=>(category==="All"||x.category===category)&&(budget==="all"||x.budget===budget||x.budget==="all")&&(x.name.toLowerCase().includes(q)||x.category.toLowerCase().includes(q)));
       grid.innerHTML="";
-      filtered.forEach(x=>{const card=document.createElement("article");card.className="suggestion-card";const tag=document.createElement("div");tag.className="suggestion-category";tag.textContent=x.category;const h=document.createElement("h2");h.textContent=x.name;const p=document.createElement("p");p.textContent=x.budget==="low"?"Usually under $15":x.budget==="mid"?"Usually $15–$50":x.budget==="high"?"Usually $50+": "Price varies";const b=document.createElement("button");b.className="small-button";b.type="button";b.textContent="Use this idea";b.addEventListener("click",()=>{location.href="dashboard.html?makeList=1&idea="+encodeURIComponent(x.name)});card.append(tag,h,p,b);grid.append(card)});
+      filtered.forEach(x=>{const card=document.createElement("article");card.className="suggestion-card";const tag=document.createElement("div");tag.className="suggestion-category";tag.textContent=x.category;const h=document.createElement("h2");h.textContent=x.name;const p=document.createElement("p");p.textContent=x.budget==="low"?"Usually under $15":x.budget==="mid"?"Usually $15–$50":x.budget==="high"?"Usually $50+": "Price varies";const b=document.createElement("button");b.className="small-button";b.type="button";b.textContent="Use this idea";b.addEventListener("click",()=>{location.href="dashboard.html?view=make-list&idea="+encodeURIComponent(x.name)});card.append(tag,h,p,b);grid.append(card)});
       empty.hidden=filtered.length!==0;
     }
     ["#category-filter","#budget-filter","#idea-search"].forEach(s=>document.querySelector(s).addEventListener(s==="#idea-search"?"input":"change",render));render();
     try { const app=initializeApp(firebaseConfig); const auth=getAuth(app); onAuthStateChanged(auth,user=>{const out=document.querySelector("#sidebar-sign-out");if(out){out.hidden=!user;out.addEventListener("click",()=>signOut(auth).then(()=>location.href="./"));}}); } catch(e) { console.warn("Wishly sign-out setup unavailable",e); }
     // Shared theme.js handles the sidebar toggle and persists the selected theme.
-
   </script>
 </body>
 </html>
