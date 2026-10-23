@@ -275,11 +275,7 @@ async function openWorkspace(list, mode) {
       ${!owner ? '<p class="workspace-sub" style="margin-top:16px">Purchase information is stored separately from the wishlist items.</p>' : ""}
     `;
     $("#copy-code")?.addEventListener("click", () => copyText(list.code, "Wishlist code copied."));
-    $("#print-wishlist")?.addEventListener("click", () => {
-      document.body.classList.add("printing-wishlist");
-      window.addEventListener("afterprint", () => document.body.classList.remove("printing-wishlist"), { once: true });
-      window.print();
-    });
+    $("#print-wishlist")?.addEventListener("click", () => openWishlistPrintView(list, items));
     $("#copy-share")?.addEventListener("click", () => copyText(`I made a wishlist on Wishly! Open ${new URL("gift.html?code=" + encodeURIComponent(list.code), location.href).href}`, "Sharing message copied."));
     $("#show-qr")?.addEventListener("click", () => {
       const panel = $("#qr-panel"); const target = $("#qr-code");
