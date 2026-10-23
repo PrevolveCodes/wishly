@@ -1,0 +1,19 @@
+/* Wishly dashboard startup screen */
+#dashboard-loading{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;background:#f5f3ef;color:#24252c;transition:opacity .35s ease,visibility .35s ease}
+#dashboard-loading.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+.dashboard-loading-inner{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:28px}
+.dashboard-loading-logo{width:82px;height:82px;display:block;object-fit:contain;animation:dashboardLogoFloat 1.4s ease-in-out infinite}
+.dashboard-loading-wordmark{font-family:Manrope,sans-serif;font-size:30px;font-weight:800;letter-spacing:-1.5px;line-height:1}
+.dashboard-loading-wordmark span{color:#6251d5}
+.dashboard-loading-message{margin:0;color:#777982;font-size:13px}
+.dashboard-loading-tip{margin:2px 0 0;max-width:340px;padding:11px 15px;border:1px solid #e6e2dc;border-radius:13px;background:#fff;font-size:12px;color:#5e5f67;box-shadow:0 8px 22px #342a1a0a}
+.dashboard-loading-dots{display:flex;gap:5px;margin-top:2px}
+.dashboard-loading-dots i{width:6px;height:6px;border-radius:50%;background:#6251d5;animation:dashboardDot .9s ease-in-out infinite}
+.dashboard-loading-dots i:nth-child(2){animation-delay:.15s}.dashboard-loading-dots i:nth-child(3){animation-delay:.3s}
+@keyframes dashboardLogoFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-7px) rotate(-2deg)}}
+@keyframes dashboardDot{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+@media(prefers-reduced-motion:reduce){#dashboard-loading{transition:none}.dashboard-loading-logo,.dashboard-loading-dots i{animation:none}}
+@media(max-width:420px){.dashboard-loading-logo{width:70px;height:70px}.dashboard-loading-wordmark{font-size:27px}.dashboard-loading-tip{max-width:290px}}
+.dark-mode #dashboard-loading,html.dark #dashboard-loading{background:#17171d;color:#f4f2f8}
+.dark-mode .dashboard-loading-tip,html.dark .dashboard-loading-tip{background:#222129;border-color:#393743;color:#bcb9c8}
+.dark-mode .dashboard-loading-message,html.dark .dashboard-loading-message{color:#9b99a7}
