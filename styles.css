@@ -1542,3 +1542,45 @@ body.dark-mode .suggestions-empty{background:#192439;border-color:#35405a;color:
 @media(prefers-reduced-motion:reduce){
   .action-card,.suggestion-card,.signup-card,.dashboard-welcome,.dashboard-create,.dashboard-lists,.workspace{animation:none!important}
 }
+
+
+/* Compact wishlist cover/icon in the saved-list rows. */
+.owned-list{
+  display:grid;
+  grid-template-columns:44px minmax(0,1fr) auto;
+  align-items:center;
+  gap:14px;
+  min-width:0;
+}
+.owned-list-icon{
+  width:44px;
+  height:44px;
+  flex:0 0 44px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:12px;
+  background:#eeeaff;
+  color:var(--purple);
+  font-size:23px;
+  line-height:1;
+}
+.owned-list-thumbnail{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:inherit;
+}
+.owned-list-info{min-width:0}
+.owned-list-info h3{margin:0 0 4px;overflow-wrap:anywhere}
+.owned-list-info p{margin:0;color:var(--muted);font-size:12px;overflow-wrap:anywhere}
+.owned-list-actions{display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap}
+@media(max-width:720px){
+  .owned-list{grid-template-columns:40px minmax(0,1fr);gap:11px}
+  .owned-list-icon{width:40px;height:40px}
+  .owned-list-actions{grid-column:2;justify-content:flex-start}
+}
+@media(max-width:420px){
+  .owned-list-actions .small-button{padding:7px 9px;font-size:11px}
+}
