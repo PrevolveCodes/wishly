@@ -7,6 +7,35 @@
   <title>Gift Suggestions — Wishly</title>
   <link rel="icon" type="image/png" href="icon.png">
   <link rel="stylesheet" href="styles.css?v=visual-pass-1">
+  <style>
+    .suggestions-main{max-width:1100px;margin:0 auto;padding:32px 30px 56px;min-width:0}
+    .suggestions-hero{padding:30px;background:linear-gradient(135deg,#fff 0%,#fbf9ff 70%,#f9f4ff 100%);border:1px solid #e7e3dc;border-radius:24px;box-shadow:0 12px 28px #342a1a08;margin-bottom:24px}
+    .suggestions-hero h1{font-size:clamp(36px,5vw,54px);letter-spacing:-2px;margin:12px 0}
+    .suggestions-hero>p{max-width:620px;color:var(--muted);margin-bottom:22px}
+    .suggestions-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:end}
+    .suggestions-controls label{margin:0;min-width:0}
+    .suggestions-controls input,.suggestions-controls select{margin-top:7px;background:#fff;min-width:0}
+    .suggestions-tools{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 14px;flex-wrap:wrap}
+    .suggestions-count{font-size:13px;color:var(--muted);margin:0}
+    .suggestions-tool-buttons{display:flex;gap:8px;flex-wrap:wrap}
+    .suggestions-tool-buttons button{border:1px solid var(--line);border-radius:10px;padding:9px 12px;background:#fff;color:var(--ink);font:600 12px 'DM Sans',sans-serif;cursor:pointer}
+    .suggestions-tool-buttons button[aria-pressed="true"]{background:#f0edff;border-color:#d8d0ff;color:#5543c2}
+    .suggestions-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .suggestion-card{position:relative;min-width:0;display:flex;flex-direction:column;align-items:flex-start;padding:20px;background:linear-gradient(150deg,#fff,#fdfcf9);border:1px solid #e8e5df;border-radius:17px;box-shadow:0 4px 12px #342a1a06;transition:transform .18s,box-shadow .18s,border-color .18s}
+    .suggestion-card:hover{transform:translateY(-2px);border-color:#dcd5f8;box-shadow:0 12px 24px #342a1a0d}
+    .suggestion-card h2{font:700 17px/1.3 Manrope,sans-serif;letter-spacing:-.4px;margin:13px 0 7px;overflow-wrap:anywhere}
+    .suggestion-card p{font-size:12px;line-height:1.6;color:var(--muted);margin:0 0 16px}
+    .suggestion-category{font-size:10px;font-weight:700;letter-spacing:.4px;color:#5b49c8;background:#f0edff;border-radius:6px;padding:5px 8px}
+    .suggestion-card .small-button{margin-top:auto}
+    .suggestion-card .favorite-button{position:absolute;top:13px;right:13px;border:1px solid #e8e4f2;background:#fff;border-radius:9px;width:32px;height:32px;cursor:pointer;color:#746d87;font-size:17px}
+    .suggestion-card .favorite-button[aria-pressed="true"]{color:#5947c7;background:#f0edff;border-color:#d8d0ff}
+    .suggestions-empty{padding:35px 18px;text-align:center;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:16px}
+    .dashboard-page.dark-mode .suggestions-hero,.dashboard-page.dark-mode .suggestion-card,.dashboard-page.dark-mode .suggestions-tool-buttons button,.dashboard-page.dark-mode .suggestions-controls input,.dashboard-page.dark-mode .suggestions-controls select{background:#24232d;color:#f3f1fa;border-color:#3b3947}
+    .dashboard-page.dark-mode .suggestion-card p,.dashboard-page.dark-mode .suggestions-count{color:#b8b4c7}
+    .dashboard-page.dark-mode .suggestion-category,.dashboard-page.dark-mode .suggestion-card .favorite-button[aria-pressed="true"],.dashboard-page.dark-mode .suggestions-tool-buttons button[aria-pressed="true"]{background:#353047;color:#d8d0ff;border-color:#51476c}
+    @media(max-width:850px){.suggestions-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.suggestions-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:560px){.suggestions-main{padding:18px 14px 35px}.suggestions-hero{padding:21px 17px;border-radius:18px}.suggestions-controls{grid-template-columns:1fr}.suggestions-grid{grid-template-columns:1fr}.suggestion-card{padding:18px}.suggestion-card h2{padding-right:32px}}
+  </style>
   <script src="theme.js" defer></script>
 </head>
 <body class="dashboard-page dark-mode">
@@ -42,26 +71,91 @@
         <label>Search ideas
           <input id="idea-search" type="search" placeholder="e.g. headphones, drawing">
         </label>
+        <label>Sort by
+          <select id="idea-sort"><option value="recommended">Recommended</option><option value="name">Name A–Z</option><option value="budget-low">Budget: low to high</option><option value="budget-high">Budget: high to low</option><option value="category">Category</option></select>
+        </label>
       </div>
     </section>
-    <section aria-label="Gift ideas"><div id="suggestions-grid" class="suggestions-grid"></div><p id="suggestions-empty" class="suggestions-empty" hidden>No ideas match those filters. Try another category or budget.</p></section>
+    <section aria-label="Gift ideas">
+      <div class="suggestions-tools">
+        <p id="suggestions-count" class="suggestions-count" aria-live="polite"></p>
+        <div class="suggestions-tool-buttons"><button id="favorites-filter" type="button" aria-pressed="false">♡ Saved ideas</button><button id="reset-filters" type="button">Reset filters</button></div>
+      </div>
+      <div id="suggestions-grid" class="suggestions-grid"></div>
+      <p id="suggestions-empty" class="suggestions-empty" hidden>No ideas match those filters. Try changing the category, budget, or search.</p>
+    </section>
   </main>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
     const firebaseConfig = { apiKey: "AIzaSyANtZF9yXTg3bvUWMFAPRwyE798av2gzl0", authDomain: "wishly-fd9ff.firebaseapp.com", projectId: "wishly-fd9ff", storageBucket: "wishly-fd9ff.firebasestorage.app", messagingSenderId: "250113116782", appId: "1:250113116782:web:c84ed484cacb2b029df47f", measurementId: "G-EG1Z8P6MZW" };
     const ideas = [
-      ["Wireless earbuds","Tech", "mid"],["Phone stand","Tech","low"],["Portable charger","Tech","mid"],["LED desk lamp","Room","mid"],["Soft blanket","Room","mid"],["Wall art or posters","Room","low"],["Favorite book or series","Books","low"],["Journal or notebook set","Books","low"],["Board game","Games","mid"],["LEGO set","Games","mid"],["Controller charging dock","Games","mid"],["Drawing pencils and sketchbook","Art & Crafts","low"],["Paint or marker set","Art & Crafts","mid"],["DIY craft kit","Art & Crafts","mid"],["Hoodie","Clothing","high"],["Cap or beanie","Clothing","low"],["Water bottle","Everyday","mid"],["Backpack","Everyday","high"],["Snack box","Everyday","low"],["Sports ball","Sports","mid"],["Sports water bottle","Sports","low"],["Resistance bands","Sports","low"],["Mechanical keyboard","Tech","high"],["Headphones","Tech","high"],["Gift card for a favorite store","Everyday","all"]
-    ].map(([name,category,budget])=>({name,category,budget}));
+      ["Wireless earbuds","Tech","mid","A useful everyday upgrade for music, videos, and calls."],
+      ["Phone stand","Tech","low","Keeps a phone upright for video calls or watching clips."],
+      ["Portable charger","Tech","mid","Handy for travel, school days, and long outings."],
+      ["LED desk lamp","Room","mid","Adds better lighting to a desk or bedside table."],
+      ["Soft blanket","Room","mid","A cozy pick for a bed, couch, or reading spot."],
+      ["Wall art or posters","Room","low","An easy way to personalize a bedroom or gaming space."],
+      ["Favorite book or series","Books","low","Choose a book, graphic novel, or the next volume in a series."],
+      ["Journal or notebook set","Books","low","Good for notes, planning, drawing, or journaling."],
+      ["Board game","Games","mid","A game to play with family or friends."],
+      ["LEGO set","Games","mid","Pick a set based on their favorite theme or building style."],
+      ["Controller charging dock","Games","mid","Keeps controllers charged and in one place."],
+      ["Drawing pencils and sketchbook","Art & Crafts","low","A simple starter set for sketching and practicing."],
+      ["Paint or marker set","Art & Crafts","mid","Useful for crafts, coloring, and art projects."],
+      ["DIY craft kit","Art & Crafts","mid","A ready-to-go project for making something new."],
+      ["Hoodie","Clothing","high","A comfortable staple; check size and preferred colors."],
+      ["Cap or beanie","Clothing","low","A smaller clothing gift that can match their style."],
+      ["Water bottle","Everyday","mid","Useful at school, practice, or on the go."],
+      ["Backpack","Everyday","high","Look for a size and layout that fits their daily needs."],
+      ["Snack box","Everyday","low","A mix of favorite snacks or treats."],
+      ["Sports ball","Sports","mid","Choose the right sport and official size if needed."],
+      ["Sports water bottle","Sports","low","A practical pick for practice and games."],
+      ["Resistance bands","Sports","low","Compact exercise gear for age-appropriate workouts."],
+      ["Mechanical keyboard","Tech","high","A desk upgrade; check layout, connection type, and noise preference."],
+      ["Headphones","Tech","high","Compare comfort, wired or wireless, and device compatibility."],
+      ["Gift card for a favorite store","Everyday","all","Lets them choose something they already want."]
+    ].map(([name,category,budget,description],index)=>({name,category,budget,description,index}));
     const grid=document.querySelector("#suggestions-grid"), empty=document.querySelector("#suggestions-empty");
+    const count=document.querySelector("#suggestions-count");
+    const favoritesButton=document.querySelector("#favorites-filter");
+    const savedKey="wishly-saved-gift-ideas";
+    let savedIdeas=[];
+    try { savedIdeas=JSON.parse(localStorage.getItem(savedKey)||"[]"); if(!Array.isArray(savedIdeas)) savedIdeas=[]; } catch { savedIdeas=[]; }
+    let onlyFavorites=false;
+    const budgetRank={low:0,mid:1,high:2,all:3};
     function render(){
-      const category=document.querySelector("#category-filter").value, budget=document.querySelector("#budget-filter").value, q=document.querySelector("#idea-search").value.trim().toLowerCase();
-      const filtered=ideas.filter(x=>(category==="All"||x.category===category)&&(budget==="all"||x.budget===budget||x.budget==="all")&&(x.name.toLowerCase().includes(q)||x.category.toLowerCase().includes(q)));
+      const category=document.querySelector("#category-filter").value;
+      const budget=document.querySelector("#budget-filter").value;
+      const q=document.querySelector("#idea-search").value.trim().toLowerCase();
+      const sort=document.querySelector("#idea-sort").value;
+      let filtered=ideas.filter(x=>(category==="All"||x.category===category)&&(budget==="all"||x.budget===budget||x.budget==="all")&&(x.name.toLowerCase().includes(q)||x.category.toLowerCase().includes(q)||x.description.toLowerCase().includes(q))&&(!onlyFavorites||savedIdeas.includes(x.name)));
+      if(sort==="name") filtered.sort((a,b)=>a.name.localeCompare(b.name));
+      else if(sort==="budget-low") filtered.sort((a,b)=>budgetRank[a.budget]-budgetRank[b.budget]||a.name.localeCompare(b.name));
+      else if(sort==="budget-high") filtered.sort((a,b)=>budgetRank[b.budget]-budgetRank[a.budget]||a.name.localeCompare(b.name));
+      else if(sort==="category") filtered.sort((a,b)=>a.category.localeCompare(b.category)||a.name.localeCompare(b.name));
+      else filtered.sort((a,b)=>a.index-b.index);
       grid.innerHTML="";
-      filtered.forEach(x=>{const card=document.createElement("article");card.className="suggestion-card";const tag=document.createElement("div");tag.className="suggestion-category";tag.textContent=x.category;const h=document.createElement("h2");h.textContent=x.name;const p=document.createElement("p");p.textContent=x.budget==="low"?"Usually under $15":x.budget==="mid"?"Usually $15–$50":x.budget==="high"?"Usually $50+": "Price varies";const b=document.createElement("button");b.className="small-button";b.type="button";b.textContent="Use this idea";b.addEventListener("click",()=>{location.href="dashboard.html?view=make-list&idea="+encodeURIComponent(x.name)});card.append(tag,h,p,b);grid.append(card)});
+      filtered.forEach(x=>{
+        const card=document.createElement("article");card.className="suggestion-card";
+        const tag=document.createElement("div");tag.className="suggestion-category";tag.textContent=x.category;
+        const favorite=document.createElement("button");favorite.type="button";favorite.className="favorite-button";favorite.setAttribute("aria-label",savedIdeas.includes(x.name)?"Remove saved idea":"Save idea");favorite.setAttribute("aria-pressed",String(savedIdeas.includes(x.name)));favorite.textContent=savedIdeas.includes(x.name)?"♥":"♡";
+        favorite.addEventListener("click",()=>{if(savedIdeas.includes(x.name))savedIdeas=savedIdeas.filter(n=>n!==x.name);else savedIdeas.push(x.name);try{localStorage.setItem(savedKey,JSON.stringify(savedIdeas));}catch{}render();});
+        const h=document.createElement("h2");h.textContent=x.name;
+        const p=document.createElement("p");p.textContent=x.description+" "+(x.budget==="low"?"Usually under $15":x.budget==="mid"?"Usually $15–$50":x.budget==="high"?"Usually $50+":"Price varies")+".";
+        const b=document.createElement("button");b.className="small-button";b.type="button";b.textContent="Use this idea";b.addEventListener("click",()=>{location.href="dashboard.html?view=make-list&idea="+encodeURIComponent(x.name)});
+        card.append(favorite,tag,h,p,b);grid.append(card);
+      });
+      count.textContent=filtered.length+" "+(filtered.length===1?"idea":"ideas")+" shown"+(savedIdeas.length?" · "+savedIdeas.length+" saved":"");
       empty.hidden=filtered.length!==0;
+      favoritesButton.setAttribute("aria-pressed",String(onlyFavorites));
+      favoritesButton.textContent=onlyFavorites?"♥ Showing saved":"♡ Saved ideas";
     }
-    ["#category-filter","#budget-filter","#idea-search"].forEach(s=>document.querySelector(s).addEventListener(s==="#idea-search"?"input":"change",render));render();
+    ["#category-filter","#budget-filter","#idea-sort"].forEach(s=>document.querySelector(s).addEventListener("change",render));
+    document.querySelector("#idea-search").addEventListener("input",render);
+    favoritesButton.addEventListener("click",()=>{onlyFavorites=!onlyFavorites;render();});
+    document.querySelector("#reset-filters").addEventListener("click",()=>{document.querySelector("#category-filter").value="All";document.querySelector("#budget-filter").value="all";document.querySelector("#idea-search").value="";document.querySelector("#idea-sort").value="recommended";onlyFavorites=false;render();});
+    render();
     try { const app=initializeApp(firebaseConfig); const auth=getAuth(app); onAuthStateChanged(auth,user=>{const out=document.querySelector("#sidebar-sign-out");if(out){out.hidden=!user;out.addEventListener("click",()=>signOut(auth).then(()=>location.href="./"));}}); } catch(e) { console.warn("Wishly sign-out setup unavailable",e); }
   </script>
   <script>
