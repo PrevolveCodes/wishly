@@ -1619,3 +1619,66 @@ body.dark-mode .suggestions-empty{background:#192439;border-color:#35405a;color:
   body.printing-wishlist #workspace .category-tag{background:#eee!important;color:#111!important}
   @page{size:auto;margin:14mm}
 }
+
+
+/* Mobile usability pass: compact navigation, safer widths, and touch-friendly controls. */
+html{overflow-x:hidden}body{overflow-x:hidden}
+button,a,input,select,textarea{touch-action:manipulation}
+button,a,.small-button,.icon-button,.sidebar-link,.sidebar-signout{-webkit-tap-highlight-color:transparent}
+:where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:3px solid #9384f4;outline-offset:2px}
+img,svg,video,canvas{max-width:100%}
+@media(max-width:680px){
+ body.dashboard-page>.topbar{display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:12px 14px;min-height:0}
+ body.dashboard-page>.topbar .top-nav{width:100%;margin:0;display:flex;flex-wrap:wrap;gap:7px}
+ body.dashboard-page>.topbar .top-nav>*{min-height:40px}
+ .wishly-sidebar{padding:10px 12px 12px;gap:8px}
+ .sidebar-brand{padding:0 3px 9px}
+ .sidebar-nav{display:flex;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;gap:7px;padding:2px 1px 9px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+ .sidebar-link{flex:0 0 auto;width:auto;min-height:42px;min-width:0;padding:9px 11px;gap:7px;scroll-snap-align:start;white-space:nowrap}
+ .sidebar-link span{white-space:nowrap}
+ .sidebar-icon{width:19px;height:19px;flex-basis:19px}
+ .sidebar-bottom{display:flex;flex-direction:row;align-items:stretch;gap:8px;margin-top:4px}
+ .sidebar-premium{flex:1;min-width:0;padding:9px 11px;margin:0}
+ .sidebar-premium p{font-size:11px;margin:3px 0 5px}
+ .sidebar-signout{width:auto;flex:0 0 auto;align-self:stretch;padding:10px;border-top:0;border:1px solid var(--line);border-radius:10px;white-space:nowrap}
+ body.dashboard-page>.dashboard-main{margin:0;padding:17px 14px 30px;width:100%;max-width:none}
+ .dashboard-welcome{display:block;padding:20px 17px!important}
+ .dashboard-welcome-copy{min-width:0;width:100%}
+ .dashboard-grid{grid-template-columns:minmax(0,1fr);gap:14px}
+ .dashboard-create,.dashboard-lists{min-width:0;padding:18px!important}
+ .owned-list{min-width:0;gap:10px}
+ .owned-list-info{overflow-wrap:anywhere}
+ .owned-list-actions{padding-left:0;width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .owned-list-actions .small-button{min-width:0;width:100%;white-space:normal}
+ .workspace,.dashboard-page .workspace,.gift-page .workspace{width:100%;min-width:0;padding:15px 12px;margin:14px 0 24px;border-radius:16px}
+ .workspace-head{min-width:0}
+ .workspace-head>*,.workspace-head .code-chip{max-width:100%;overflow-wrap:anywhere}
+ .workspace-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .workspace-actions>*{width:100%;min-width:0;max-width:none;white-space:normal;justify-content:center;text-align:center}
+ .list-tools{grid-template-columns:minmax(0,1fr)}
+ .list-summary{min-width:0}
+ .wish-item{min-width:0;grid-template-columns:42px minmax(0,1fr);gap:9px;padding:11px}
+ .wish-item .item-info{min-width:0;overflow-wrap:anywhere}
+ .wish-item .item-info h3,.wish-item .item-info p{overflow-wrap:anywhere}
+ .wish-item .item-price{white-space:normal}
+ .gift-search-card,.signup-card{max-width:100%;min-width:0}
+ .gift-search-form,.account-form,.form-row{grid-template-columns:minmax(0,1fr)}
+ .gift-search-form>*{min-width:0}
+ .overview-main,.suggestions-main{width:100%;min-width:0;padding-left:14px;padding-right:14px}
+ .overview-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .overview-stats article{padding:12px;gap:9px}
+ .overview-stat-icon{width:34px;height:34px;flex-basis:34px}
+ .overview-stats strong,.overview-stats article>*{min-width:0;overflow-wrap:anywhere}
+ .suggestions-controls,.suggestions-grid{grid-template-columns:minmax(0,1fr)}
+ .suggestions-tools{align-items:flex-start}
+ input,select,textarea{font-size:16px}
+ .button,.small-button,.icon-button,.sidebar-link,.sidebar-signout{min-height:40px}
+}
+@media(max-width:390px){
+ .sidebar-bottom{flex-direction:column}
+ .sidebar-signout{width:100%;justify-content:center}
+ .sidebar-premium{width:100%}
+ .workspace-actions,.owned-list-actions,.overview-stats{grid-template-columns:minmax(0,1fr)}
+ .section-heading{flex-wrap:wrap}
+ .top-nav{flex-wrap:wrap}
+}
