@@ -1175,8 +1175,12 @@ body.dark-mode .premium-coming-soon{background:#303b72;color:#d7d0ff}
   .sidebar-brand img{width:30px;height:30px}
   .sidebar-nav{display:flex;flex-wrap:wrap;gap:6px;overflow:visible;padding-bottom:3px}
   .sidebar-link{width:auto;min-width:0;min-height:40px;padding:9px 11px;font-size:12px;gap:7px;flex:1 1 145px}
-  .sidebar-symbol{width:22px;flex-basis:22px;font-size:18px}\n  .sidebar-icon{width:22px;height:22px;flex-basis:22px}
-  .sidebar-bottom{display:flex;flex-direction:column;gap:10px;margin-top:12px}\n  .sidebar-premium{margin:0;padding:12px 14px}\n  .sidebar-premium p{margin:5px 0 8px}\n  .sidebar-signout{width:100%;min-height:40px}
+  .sidebar-symbol{width:22px;flex-basis:22px;font-size:18px}
+  .sidebar-icon{width:22px;height:22px;flex-basis:22px}
+  .sidebar-bottom{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+  .sidebar-premium{margin:0;padding:12px 14px}
+  .sidebar-premium p{margin:5px 0 8px}
+  .sidebar-signout{width:100%;min-height:40px}
   body.dashboard-page>.topbar{margin-left:0;min-height:54px;padding:10px 16px}
   body.dashboard-page>.topbar .top-nav{gap:12px}
   body.dashboard-page>.dashboard-main{margin:0;padding:20px 16px 30px}
