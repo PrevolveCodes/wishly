@@ -65,7 +65,7 @@ function renderUpcoming(lists) {
   const list = upcoming[0];
   const eventDate = new Date(`${list.eventDate}T00:00:00`);
   const dateLabel = eventDate.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
-  box.innerHTML = `<div class="upcoming-icon">⌛</div><div class="upcoming-copy"><div class="eyebrow">COMING UP NEXT</div><h2>${escapeHtml(list.title || "Wishlist")}</h2><p>${escapeHtml(list.occasion || "Other")} · ${escapeHtml(dateLabel)}</p><div class="upcoming-countdown" id="upcoming-countdown" role="timer" aria-live="off">Calculating countdown…</div></div><a class="small-button" href="dashboard.html?view=lists&code=${encodeURIComponent(list.code)}">View →</a>`;
+  box.innerHTML = `<div class="upcoming-icon">⌛</div><div class="upcoming-copy"><h2>${escapeHtml(list.title || "Wishlist")}</h2><p>${escapeHtml(list.occasion || "Other")} · ${escapeHtml(dateLabel)}</p><div class="upcoming-countdown" id="upcoming-countdown" role="timer" aria-live="off">Calculating countdown…</div></div><a class="small-button" href="dashboard.html?view=lists&code=${encodeURIComponent(list.code)}">View →</a>`;
   const countdown = $("#upcoming-countdown");
   const updateCountdown = () => {
     const remaining = eventDate.getTime() - Date.now();
