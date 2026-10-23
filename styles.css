@@ -1598,3 +1598,6 @@ body.dark-mode .suggestions-empty{background:#192439;border-color:#35405a;color:
 .owned-list-actions .small-button{white-space:nowrap}
 @media(max-width:720px){.owned-list{grid-template-columns:40px minmax(0,1fr);gap:10px 12px;padding:14px}.owned-list-icon{width:40px;height:40px;grid-column:1;grid-row:1}.owned-list-info{grid-column:2;grid-row:1}.owned-list-actions{grid-column:2;grid-row:2;justify-content:flex-start;flex-wrap:wrap}}
 @media(max-width:420px){.owned-list{padding:12px;gap:10px}.owned-list-actions .small-button{padding:7px 9px;font-size:11px}}
+
+/* Use the My Lists artwork in the Overview hero tile. */
+.overview-list-mark img{display:block;width:52px;height:52px;object-fit:contain}
