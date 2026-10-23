@@ -3,3 +3,7 @@ body.dark-mode .overview-stats article,body.dark-mode .overview-list-card,body.d
 @media(max-width:900px){.overview-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.overview-steps{grid-template-columns:1fr}}
 @media(max-width:680px){.overview-main{padding:20px 15px 32px}.overview-stats{gap:9px}.overview-stats article{padding:13px}.overview-list-card{grid-template-columns:44px minmax(0,1fr);gap:10px}.overview-list-icon{width:44px;height:44px}.overview-list-card>.small-button{grid-column:2;justify-self:start}.overview-upcoming{grid-template-columns:44px minmax(0,1fr)}.overview-upcoming>.small-button{grid-column:2;justify-self:start}.overview-section-heading{align-items:flex-start}.overview-section-heading>span{display:none}}
 @media(max-width:430px){.overview-stats{grid-template-columns:1fr 1fr}.overview-stat-icon{width:34px;height:34px;flex-basis:34px;font-size:17px}.overview-stats strong{font-size:19px}.overview-stats article{gap:8px}.overview-list-card{padding:12px}.overview-upcoming{padding:15px}.overview-page .dashboard-welcome-copy h1{font-size:36px}}
+
+
+/* Display the My Lists PNG inside the Wishlists statistic icon. */
+.overview-stat-icon img{display:block;width:23px;height:23px;object-fit:contain}
