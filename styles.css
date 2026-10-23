@@ -1212,3 +1212,29 @@ body.dark-mode .premium-coming-soon{background:#303b72;color:#d7d0ff}
 body.dark-mode .signout-modal{background:#202126;color:#f4f4f6;border-color:#3d3e47}
 body.dark-mode .signout-mark{background:#302b4e;color:#bcb2ff}
 @media(max-width:420px){.signout-content{padding:23px}.signout-actions{flex-direction:column-reverse;align-items:stretch}.signout-actions>*{width:100%!important}}
+
+
+/* Motion pass: subtle movement and depth across Wishly */
+@keyframes wishly-enter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes wishly-soft-pop{0%{opacity:0;transform:scale(.975) translateY(8px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+body .hero,body .dashboard-main,body .suggestions-main,body .signup-main{animation:wishly-enter .55s cubic-bezier(.2,.7,.2,1) both}
+.hero-art{animation:wishly-soft-pop .8s .12s cubic-bezier(.2,.7,.2,1) both}
+.action-card,.signup-card,.suggestions-hero,.suggestion-card,.dashboard-welcome,.dashboard-create,.dashboard-lists,.workspace{animation:wishly-enter .55s cubic-bezier(.2,.7,.2,1) both}
+.action-card:nth-child(2),.suggestion-card:nth-child(2){animation-delay:.08s}
+.action-card:nth-child(3),.suggestion-card:nth-child(3){animation-delay:.14s}
+.action-card:nth-child(4),.suggestion-card:nth-child(4){animation-delay:.2s}
+.wishly-sidebar{animation:wishly-enter .45s cubic-bezier(.2,.7,.2,1) both}
+.sidebar-link{transition:transform .18s ease,background-color .18s ease,color .18s ease,box-shadow .18s ease}
+.sidebar-link:hover{transform:translateX(3px)}
+.sidebar-link.is-active{box-shadow:inset 3px 0 0 var(--purple)}
+.sidebar-icon{transition:transform .2s ease}
+.sidebar-link:hover .sidebar-icon{transform:scale(1.09)}
+.button,.small-button,.icon-button,.nav-account,.top-nav a,.top-nav button{transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease,border-color .18s ease,color .18s ease}
+.button:hover,.small-button:hover,.icon-button:hover{transform:translateY(-2px)}
+.button:active,.small-button:active,.icon-button:active{transform:translateY(0) scale(.985)}
+.action-card,.suggestion-card,.workspace,.signup-card{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.action-card:hover,.suggestion-card:hover,.workspace:hover,.signup-card:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(47,38,87,.10);border-color:#d8d0fb}
+.brand-mark,.sidebar-brand img{transition:transform .25s ease,box-shadow .25s ease}
+.brand:hover .brand-mark,.sidebar-brand:hover img{transform:rotate(-7deg) scale(1.05)}
+.signout-modal[open]{animation:wishly-soft-pop .22s cubic-bezier(.2,.7,.2,1) both}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
