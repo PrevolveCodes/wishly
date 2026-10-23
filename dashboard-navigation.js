@@ -1,6 +1,14 @@
 (() => {
   const params = new URLSearchParams(location.search);
-  const view = params.get("view") || "overview";
+  const requestedView = params.get("view");
+
+  // The plain dashboard URL should open the real Overview page, not an empty Make a List shell.
+  if (location.pathname.endsWith("/dashboard.html") && (!requestedView || requestedView === "overview")) {
+    window.location.replace("overview.html");
+    return;
+  }
+
+  const view = requestedView || "overview";
   const main = document.getElementById("dashboard-main");
   if (!main) return;
   const welcome = main.querySelector(".dashboard-welcome");
