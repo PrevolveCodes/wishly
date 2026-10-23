@@ -1266,3 +1266,20 @@ body .hero,body .dashboard-main,body .suggestions-main,body .signup-main{animati
   color:var(--purple-dark);
   background:transparent;
 }
+
+
+/* Let the two gift boxes gently float on the landing page. */
+@keyframes wishly-gift-float-back {
+  0%,100% { transform: translateY(0) rotate(-8deg); }
+  50% { transform: translateY(-9px) rotate(-8deg); }
+}
+@keyframes wishly-gift-float-front {
+  0%,100% { transform: translateY(0) rotate(5deg); }
+  50% { transform: translateY(-13px) rotate(5deg); }
+}
+.hero-art.gift-art .gift-box-back { animation: wishly-gift-float-back 3.8s ease-in-out infinite; }
+.hero-art.gift-art .gift-box-front { animation: wishly-gift-float-front 3.2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-art.gift-art .gift-box-back,
+  .hero-art.gift-art .gift-box-front { animation: none !important; }
+}
