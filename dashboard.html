@@ -121,5 +121,11 @@
       <button class="button button-primary" id="item-submit" type="submit">Add to wishlist <span>+</span></button>
     </form>
   </dialog>
+  <script>
+    document.addEventListener("click", function (event) {
+      const link = event.target.closest(".sidebar-nav a.sidebar-link");
+      if (link && link.href) sessionStorage.setItem("wishly-sidebar-navigation", "1");
+    });
+  </script>
 </body>
 </html>
