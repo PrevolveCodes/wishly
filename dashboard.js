@@ -335,8 +335,9 @@ async function openWorkspace(list, mode) {
       cards.sort((a,b) => {
         if (sort === "name") return (a.dataset.name || "").localeCompare(b.dataset.name || "");
         if (sort === "price-low" || sort === "price-high") {
-          const ap = a.dataset.hasPrice === "true" ? Number(a.dataset.price) : Number.POSITIVE_INFINITY;
-          const bp = b.dataset.hasPrice === "true" ? Number(b.dataset.price) : Number.POSITIVE_INFINITY;
+          const fallback = sort === "price-low" ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY;
+          const ap = a.dataset.hasPrice === "true" ? Number(a.dataset.price) : fallback;
+          const bp = b.dataset.hasPrice === "true" ? Number(b.dataset.price) : fallback;
           return (sort === "price-low" ? ap-bp : bp-ap) || Number(a.dataset.index)-Number(b.dataset.index);
         }
         if (sort === "priority") return priorityRank(a.dataset.priority)-priorityRank(b.dataset.priority) || (a.dataset.name || "").localeCompare(b.dataset.name || "");
