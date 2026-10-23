@@ -287,7 +287,7 @@ async function openWorkspace(list, mode) {
         <div class="code-chip" title="Wishlist code">${escapeHtml(list.code)} ${owner ? '<button class="small-button" id="copy-code" type="button">Copy</button>' : ""}</div>
       </div>
       ${owner ? '<p class="workspace-sub">Keep this code safe and share it with your gift-givers. Add your first item below.</p><div class="workspace-actions"><button class="button button-primary" id="add-item" type="button" style="width:auto;margin:0;gap:22px">Add an item <span>+</span></button><button class="small-button" id="preview-wishlist" type="button">Preview as gift-giver</button><button class="small-button" id="copy-share" type="button">Copy sharing message</button><button class="small-button" id="print-wishlist" type="button">Print / Save PDF</button><button class="small-button" id="show-qr" type="button">Show QR code</button><button class="small-button" id="reveal-purchases-prank" type="button">Reveal what’s being bought</button></div><div id="qr-panel" class="qr-panel hidden"><div id="qr-code"></div><div><strong>Scan to open this wishlist</strong><p class="workspace-sub">Anyone with the link and code can view this list.</p><button class="small-button" id="download-qr" type="button">Download QR</button><button class="small-button" id="hide-qr" type="button">Close</button></div></div>' : '<p class="workspace-sub">Here are the gift ideas. Mark an item purchased to help other gift-givers avoid duplicates.</p>'}
-      <div class="list-tools"><label for="item-search">Search items</label><input id="item-search" type="search" placeholder="Search by name or category"><div class="list-summary"><span id="visible-count">${items.length} items</span><span>Total listed price: <strong id="price-total"></strong></span></div></div><div class="item-list">${items.length ? items.map((item, index) => {
+      <div class="list-tools"><label for="item-search">Search items</label><input id="item-search" type="search" placeholder="Search by name or category"><label for="item-category-filter">Category</label><select id="item-category-filter"><option value="">All categories</option>${[...new Set(items.map(item => String(item.category || "Other")))].sort((a,b)=>a.localeCompare(b)).map(category => '<option value="' + escapeHtml(category) + '">' + escapeHtml(category) + '</option>').join("")}</select><label for="item-sort">Sort</label><select id="item-sort"><option value="custom">Custom order</option><option value="name">Name: A–Z</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="priority">Priority</option><option value="category">Category</option></select><div class="list-summary"><span id="visible-count">${items.length} items</span><span>Total listed price: <strong id="price-total"></strong></span></div></div><div class="item-list">${items.length ? items.map((item, index) => {
         const purchased = Boolean(purchases[item.id]);
         const url = safeUrl(item.url);
         const price = item.price !== "" && item.price != null && Number.isFinite(Number(item.price))
@@ -296,7 +296,7 @@ async function openWorkspace(list, mode) {
         const actions = owner
           ? '<button class="small-button edit-item" data-index="' + index + '" type="button">Edit</button><button class="small-button remove-item" data-index="' + index + '" type="button">Remove</button>'
           : '<button class="small-button toggle-purchased" data-index="' + index + '" type="button" aria-pressed="' + purchased + '">' + (purchased ? "Marked purchased ✓" : "Mark purchased") + '</button>';
-        return `<article class="wish-item ${!owner && purchased ? "purchased" : ""}" data-index="${index}" ${owner ? 'draggable="true"' : ""} data-search="${escapeHtml((item.name + " " + (item.category || "")).toLowerCase())}" data-price="${Number(item.price) || 0}" data-has-price="${item.price !== "" && item.price != null && Number.isFinite(Number(item.price))}">
+        return `<article class="wish-item ${!owner && purchased ? "purchased" : ""}" data-index="${index}" ${owner ? 'draggable="true"' : ""} data-search="${escapeHtml((item.name + " " + (item.category || "")).toLowerCase())}" data-name="${escapeHtml(item.name || "")}" data-category="${escapeHtml(item.category || "Other")}" data-priority="${escapeHtml(item.priority || "Would love")}" data-price="${Number(item.price) || 0}" data-has-price="${item.price !== "" && item.price != null && Number.isFinite(Number(item.price))}">
           <div class="item-placeholder" aria-hidden="true">${safeUrl(item.imageUrl) ? '<img class="item-image" src="' + escapeHtml(safeUrl(item.imageUrl)) + '" alt="" loading="lazy">' : (!owner && purchased ? "✓" : "♡")}</div>
           <div class="item-info"><span class="category-tag">${escapeHtml(item.category || "Other")}</span><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.priority || "Would love")}${item.notes ? " · " + escapeHtml(item.notes) : ""}</p>${url ? '<a class="item-link" href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">View at store ↗</a>' : ""}</div>
           ${price}${actions}
@@ -319,13 +319,41 @@ async function openWorkspace(list, mode) {
     $("#hide-qr")?.addEventListener("click", () => $("#qr-panel")?.classList.add("hidden"));
     $("#reveal-purchases-prank")?.addEventListener("click", () => toast("Woah there! You really thought I’d tell you? Just kidding — gift reservations stay a secret from the list owner."));
     const searchInput = $("#item-search");
+    const categoryFilter = $("#item-category-filter");
+    const sortSelect = $("#item-sort");
     const filterCards = () => {
-      const term = (searchInput?.value || "").trim().toLowerCase(); let shown = 0; let total = 0;
-      workspace.querySelectorAll(".wish-item").forEach(card => { const match = (card.dataset.search || "").includes(term); card.classList.toggle("filtered-out", !match); if(match){shown++; if(card.dataset.hasPrice === "true") total += Number(card.dataset.price)||0;} });
+      const term = (searchInput?.value || "").trim().toLowerCase();
+      const category = categoryFilter?.value || "";
+      const cards = [...workspace.querySelectorAll(".wish-item")];
+      const priorityRank = value => ({ "must have": 0, "high": 0, "would love": 1, "medium": 1, "nice to have": 2, "low": 2 })[String(value || "").toLowerCase()] ?? 3;
+      cards.forEach(card => {
+        const matchesText = (card.dataset.search || "").includes(term);
+        const matchesCategory = !category || card.dataset.category === category;
+        card.classList.toggle("filtered-out", !(matchesText && matchesCategory));
+      });
+      const sort = sortSelect?.value || "custom";
+      cards.sort((a,b) => {
+        if (sort === "name") return (a.dataset.name || "").localeCompare(b.dataset.name || "");
+        if (sort === "price-low" || sort === "price-high") {
+          const ap = a.dataset.hasPrice === "true" ? Number(a.dataset.price) : Number.POSITIVE_INFINITY;
+          const bp = b.dataset.hasPrice === "true" ? Number(b.dataset.price) : Number.POSITIVE_INFINITY;
+          return (sort === "price-low" ? ap-bp : bp-ap) || Number(a.dataset.index)-Number(b.dataset.index);
+        }
+        if (sort === "priority") return priorityRank(a.dataset.priority)-priorityRank(b.dataset.priority) || (a.dataset.name || "").localeCompare(b.dataset.name || "");
+        if (sort === "category") return (a.dataset.category || "").localeCompare(b.dataset.category || "") || (a.dataset.name || "").localeCompare(b.dataset.name || "");
+        return Number(a.dataset.index)-Number(b.dataset.index);
+      });
+      const itemList = workspace.querySelector(".item-list");
+      cards.forEach(card => { itemList.appendChild(card); card.draggable = activeMode === "owner" && sort === "custom"; });
+      let shown = 0, total = 0;
+      cards.forEach(card => { if (!card.classList.contains("filtered-out")) { shown++; if (card.dataset.hasPrice === "true") total += Number(card.dataset.price) || 0; } });
       const count = $("#visible-count"); if(count) count.textContent = shown + (shown === 1 ? " item" : " items");
       const sum = $("#price-total"); if(sum) sum.textContent = total.toLocaleString(undefined,{style:"currency",currency:"USD"});
     };
-    searchInput?.addEventListener("input", filterCards); filterCards();
+    searchInput?.addEventListener("input", filterCards);
+    categoryFilter?.addEventListener("change", filterCards);
+    sortSelect?.addEventListener("change", filterCards);
+    filterCards();
     $("#add-item")?.addEventListener("click", () => {
       itemForm.reset();
       delete itemForm.dataset.editingId;
