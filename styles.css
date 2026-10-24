@@ -1805,3 +1805,8 @@ html body.dark-mode :is(button,.button,.small-button,.icon-button,input[type="su
     transition: none;
   }
 }
+
+
+/* Apple sign-in button: follows Wishly button styling. */
+.apple-button { display: flex; align-items: center; justify-content: center; gap: 10px; }
+.apple-logo { width: 20px; height: 20px; flex: 0 0 20px; }
