@@ -97,7 +97,9 @@ async function loadOverview(user) {
   const recent = $("#overview-recent-lists");
   try {
     const snap = await getDocs(query(collection(db, "wishlists"), where("ownerUid", "==", user.uid)));
+    // Keep archived lists out of the active overview, totals, recent cards, and countdowns.
     const lists = snap.docs.map(d => ({ code: d.id, ...d.data() }))
+      .filter(list => !list.archived)
       .sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
     let totalItems = 0;
     for (const list of lists) {
