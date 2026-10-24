@@ -1911,3 +1911,57 @@ html body [role="button"][aria-disabled="true"] {
   transform: none !important;
   box-shadow: none !important;
 }
+
+
+/* Restore the sidebar to its original flat navigation styling; keep the new
+   raised style on buttons elsewhere in the app. */
+html body .wishly-sidebar .sidebar-link {
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: transparent !important;
+  color: var(--muted) !important;
+  box-shadow: none !important;
+  transform: none;
+  filter: none !important;
+}
+html body .wishly-sidebar .sidebar-link:hover {
+  background: var(--soft, #f2efff) !important;
+  color: var(--ink) !important;
+  box-shadow: none !important;
+  transform: translateX(3px) !important;
+  filter: none !important;
+}
+html body .wishly-sidebar .sidebar-link.is-active {
+  box-shadow: inset 3px 0 0 var(--purple) !important;
+}
+html body .wishly-sidebar .sidebar-signout {
+  border: 0 !important;
+  border-top: 1px solid var(--line) !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  color: var(--muted) !important;
+  box-shadow: none !important;
+  transform: none;
+  filter: none !important;
+}
+html body .wishly-sidebar .sidebar-signout:hover {
+  background: transparent !important;
+  color: var(--ink) !important;
+  box-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+html body.dark-mode .wishly-sidebar .sidebar-link {
+  background: transparent !important;
+  color: #b9c5e6 !important;
+  box-shadow: none !important;
+}
+html body.dark-mode .wishly-sidebar .sidebar-link:hover {
+  background: #202b43 !important;
+  color: #e8e9f5 !important;
+}
+html body.dark-mode .wishly-sidebar .sidebar-signout {
+  background: transparent !important;
+  color: #b9c5e6 !important;
+  box-shadow: none !important;
+}
