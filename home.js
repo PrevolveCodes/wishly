@@ -47,7 +47,7 @@
     notice.setAttribute("role", "status");
     notice.setAttribute("aria-live", "polite");
     window.setTimeout(() => notice.classList.add("hidden"), 6500);
-    $("#secret-theme-toggle")?.addEventListener("click", event => {
+    document.querySelector("#secret-theme-toggle")?.addEventListener("click", event => {
       event.stopPropagation();
       const enabled = !document.body.classList.contains("wishly-secret-theme");
       applySecretTheme(enabled);
