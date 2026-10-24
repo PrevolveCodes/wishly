@@ -12,13 +12,17 @@ service cloud.firestore {
         && request.auth.token.firebase.sign_in_provider != 'anonymous';
     }
 
-    function isGiftGiver() {
+    function isGiftGiver(code) {
       return signedIn()
-        && request.auth.token.firebase.sign_in_provider == 'anonymous';
+        && exists(/databases/$(database)/documents/wishlists/$(code))
+        && (
+          request.auth.token.firebase.sign_in_provider == 'anonymous'
+          || get(/databases/$(database)/documents/wishlists/$(code)).data.ownerUid != request.auth.uid
+        );
     }
 
     function hasGiftAccess(code) {
-      return isGiftGiver()
+      return isGiftGiver(code)
         && exists(/databases/$(database)/documents/wishlists/$(code)/giftAccess/$(request.auth.uid))
         && get(/databases/$(database)/documents/wishlists/$(code)/giftAccess/$(request.auth.uid)).data.active == true;
     }
@@ -59,7 +63,7 @@ service cloud.firestore {
 
       match /giftAccessConfig/{configId} {
         allow get, list: if false;
-        allow create: if isGiftGiver()
+        allow create: if isGiftGiver(code)
           && configId == 'main'
           && !exists(/databases/$(database)/documents/wishlists/$(code)/giftAccessConfig/main)
           && request.resource.data.keys().hasOnly(['pinHash', 'createdAt'])
@@ -69,11 +73,11 @@ service cloud.firestore {
       }
 
       match /giftAccess/{uid} {
-        allow get: if isGiftGiver()
+        allow get: if isGiftGiver(code)
           && request.auth.uid == uid
           && resource.data.active == true;
         allow list: if false;
-        allow create: if isGiftGiver()
+        allow create: if isGiftGiver(code)
           && request.auth.uid == uid
           && request.resource.data.keys().hasOnly(['pinHash', 'active', 'createdAt'])
           && request.resource.data.pinHash is string
@@ -81,7 +85,7 @@ service cloud.firestore {
           && request.resource.data.active == true
           && exists(/databases/$(database)/documents/wishlists/$(code)/giftAccessConfig/main)
           && request.resource.data.pinHash == get(/databases/$(database)/documents/wishlists/$(code)/giftAccessConfig/main).data.pinHash;
-        allow update: if isGiftGiver()
+        allow update: if isGiftGiver(code)
           && request.auth.uid == uid
           && resource.data.active == true
           && request.resource.data.keys().hasOnly(['pinHash', 'active', 'createdAt'])
