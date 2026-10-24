@@ -57,7 +57,7 @@ service cloud.firestore {
           && request.resource.data.name is string
           && request.resource.data.name.size() > 0
           && request.resource.data.name.size() <= 100
-          && request.resource.data.keys().hasOnly(['name', 'category', 'url', 'imageUrl', 'price', 'priority', 'notes', 'createdAt']);
+          && request.resource.data.keys().hasOnly(['name', 'category', 'url', 'imageUrl', 'price', 'priority', 'notes', 'createdAt', 'sortOrder']);
         allow delete: if isOwner(code);
       }
 
@@ -101,7 +101,8 @@ service cloud.firestore {
           && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId))
           && request.resource.data.keys().hasOnly(['purchased', 'updatedAt'])
           && request.resource.data.purchased == true;
-        allow delete: if false;
+        // Owners may delete purchase status for an item they own, but cannot read it.
+        allow delete: if isOwner(code);
       }
 
       match /reservations/{itemId} {
@@ -117,7 +118,8 @@ service cloud.firestore {
           && request.resource.data.keys().hasOnly(['reserved', 'reservedBy', 'updatedAt'])
           && request.resource.data.reserved == true
           && request.resource.data.reservedBy == request.auth.uid;
-        allow delete: if hasGiftAccess(code) && resource.data.reservedBy == request.auth.uid;
+        // Owners may clean up status records when deleting an item/list, without being allowed to read them.
+        allow delete: if (hasGiftAccess(code) && resource.data.reservedBy == request.auth.uid) || isOwner(code);
       }
     }
   }
