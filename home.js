@@ -35,6 +35,7 @@
         notice.classList.add("wishly-secret-notice");
         notice.setAttribute("role", "status");
         notice.setAttribute("aria-live", "polite");
+        window.setTimeout(() => notice.classList.add("hidden"), 4500);
       }
       brand.classList.add("wishly-secret-found");
       window.setTimeout(() => brand.classList.remove("wishly-secret-found"), 1100);
