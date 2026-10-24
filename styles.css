@@ -1806,3 +1806,108 @@ html body.dark-mode :is(button,.button,.small-button,.icon-button,input[type="su
   }
 }
 
+
+/* Final consistency pass: override component-specific rules so every actual button
+   and button-like control uses the same Fortune Teller treatment. */
+html body button,
+html body input[type="button"],
+html body input[type="submit"],
+html body input[type="reset"],
+html body [role="button"],
+html body a.button,
+html body a.small-button,
+html body a.icon-button,
+html body a.nav-account,
+html body a.sidebar-link,
+html body a.sidebar-signout,
+html body a.theme-toggle,
+html body a.sidebar-theme-toggle,
+html body .button,
+html body .small-button,
+html body .icon-button,
+html body .nav-account,
+html body .theme-toggle,
+html body .sidebar-theme-toggle,
+html body .sidebar-signout,
+html body .reserve-toggle,
+html body .edit-item,
+html body .remove-item,
+html body .toggle-purchased,
+html body .gift-idea-buttons button,
+html body .suggestion-card button {
+  border: 1px solid #5947c7 !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg,#7968e4,#5946c5) !important;
+  color: #fff !important;
+  box-shadow: inset 0 1px 0 #ffffff55, 0 3px 0 #4535a5, 0 7px 14px #5946c526 !important;
+  transition: transform .16s, box-shadow .16s, filter .16s !important;
+}
+html body button:hover:not(:disabled),
+html body input[type="button"]:hover:not(:disabled),
+html body input[type="submit"]:hover:not(:disabled),
+html body input[type="reset"]:hover:not(:disabled),
+html body [role="button"]:hover:not(:disabled),
+html body a.button:hover,
+html body a.small-button:hover,
+html body a.icon-button:hover,
+html body a.nav-account:hover,
+html body a.sidebar-link:hover,
+html body a.sidebar-signout:hover,
+html body .button:hover:not(:disabled),
+html body .small-button:hover:not(:disabled),
+html body .icon-button:hover:not(:disabled) {
+  transform: translateY(-2px) !important;
+  box-shadow: inset 0 1px 0 #ffffff55, 0 4px 0 #4535a5, 0 10px 18px #5946c532 !important;
+  filter: brightness(1.035) !important;
+}
+html body button:active:not(:disabled),
+html body input[type="button"]:active:not(:disabled),
+html body input[type="submit"]:active:not(:disabled),
+html body input[type="reset"]:active:not(:disabled),
+html body [role="button"]:active:not(:disabled),
+html body a.button:active,
+html body a.small-button:active,
+html body a.icon-button:active,
+html body .button:active:not(:disabled),
+html body .small-button:active:not(:disabled),
+html body .icon-button:active:not(:disabled) {
+  transform: translateY(2px) !important;
+  box-shadow: inset 0 1px 0 #ffffff35, 0 1px 0 #4535a5 !important;
+}
+html body.dark-mode button,
+html body.dark-mode input[type="button"],
+html body.dark-mode input[type="submit"],
+html body.dark-mode input[type="reset"],
+html body.dark-mode [role="button"],
+html body.dark-mode a.button,
+html body.dark-mode a.small-button,
+html body.dark-mode a.icon-button,
+html body.dark-mode a.nav-account,
+html body.dark-mode a.sidebar-link,
+html body.dark-mode a.sidebar-signout,
+html body.dark-mode a.theme-toggle,
+html body.dark-mode a.sidebar-theme-toggle,
+html body.dark-mode .button,
+html body.dark-mode .small-button,
+html body.dark-mode .icon-button,
+html body.dark-mode .nav-account,
+html body.dark-mode .theme-toggle,
+html body.dark-mode .sidebar-theme-toggle,
+html body.dark-mode .sidebar-signout,
+html body.dark-mode .reserve-toggle,
+html body.dark-mode .edit-item,
+html body.dark-mode .remove-item,
+html body.dark-mode .toggle-purchased {
+  border-color: #6b5cda !important;
+  background: linear-gradient(135deg,#7667d9,#5142b9) !important;
+  color: #fff !important;
+  box-shadow: inset 0 1px 0 #ffffff35, 0 3px 0 #352b85, 0 7px 14px #00000030 !important;
+}
+html body button:disabled,
+html body input:disabled,
+html body [role="button"][aria-disabled="true"] {
+  cursor: not-allowed !important;
+  opacity: .55 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
