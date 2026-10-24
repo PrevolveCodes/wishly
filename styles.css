@@ -1688,3 +1688,39 @@ img,svg,video,canvas{max-width:100%}
 html{overflow-x:hidden}body{overflow-x:hidden}button,a,input,select,textarea{touch-action:manipulation}button,a,.small-button,.icon-button,.sidebar-link,.sidebar-signout{-webkit-tap-highlight-color:transparent}:where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:3px solid #9384f4;outline-offset:2px}img,svg,video,canvas{max-width:100%}
 @media(max-width:680px){body.dashboard-page>.topbar{display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:12px 14px;min-height:0}body.dashboard-page>.topbar .top-nav{width:100%;margin:0;display:flex;flex-wrap:wrap;gap:7px}body.dashboard-page>.topbar .top-nav>*{min-height:40px}.wishly-sidebar{padding:10px 12px 12px;gap:8px}.sidebar-brand{padding:0 3px 9px}.sidebar-nav{display:flex;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;gap:7px;padding:2px 1px 9px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}.sidebar-link{flex:0 0 auto;width:auto;min-height:42px;min-width:0;padding:9px 11px;gap:7px;scroll-snap-align:start;white-space:nowrap}.sidebar-link span{white-space:nowrap}.sidebar-icon{width:19px;height:19px;flex-basis:19px}.sidebar-bottom{display:flex;flex-direction:row;align-items:stretch;gap:8px;margin-top:4px}.sidebar-premium{flex:1;min-width:0;padding:9px 11px;margin:0}.sidebar-premium p{font-size:11px;margin:3px 0 5px}.sidebar-signout{width:auto;flex:0 0 auto;align-self:stretch;padding:10px;border-top:0;border:1px solid var(--line);border-radius:10px;white-space:nowrap}body.dashboard-page>.dashboard-main{margin:0;padding:17px 14px 30px;width:100%;max-width:none}.dashboard-welcome{display:block;padding:20px 17px!important}.dashboard-welcome-copy{min-width:0;width:100%}.dashboard-grid{grid-template-columns:minmax(0,1fr);gap:14px}.dashboard-create,.dashboard-lists{min-width:0;padding:18px!important}.owned-list{min-width:0;gap:10px}.owned-list-info{overflow-wrap:anywhere}.owned-list-actions{padding-left:0;width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.owned-list-actions .small-button{min-width:0;width:100%;white-space:normal}.workspace,.dashboard-page .workspace,.gift-page .workspace{width:100%;min-width:0;padding:15px 12px;margin:14px 0 24px;border-radius:16px}.workspace-head{min-width:0}.workspace-head>*,.workspace-head .code-chip{max-width:100%;overflow-wrap:anywhere}.workspace-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.workspace-actions>*{width:100%;min-width:0;max-width:none;white-space:normal;justify-content:center;text-align:center}.list-tools{grid-template-columns:minmax(0,1fr)}.list-summary{min-width:0}.wish-item{min-width:0;grid-template-columns:42px minmax(0,1fr);gap:9px;padding:11px}.wish-item .item-info{min-width:0;overflow-wrap:anywhere}.wish-item .item-info h3,.wish-item .item-info p{overflow-wrap:anywhere}.wish-item .item-price{white-space:normal}.gift-search-card,.signup-card{max-width:100%;min-width:0}.gift-search-form,.account-form,.form-row{grid-template-columns:minmax(0,1fr)}.gift-search-form>*{min-width:0}.overview-main,.suggestions-main{width:100%;min-width:0;padding-left:14px;padding-right:14px}.overview-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.overview-stats article{padding:12px;gap:9px}.overview-stat-icon{width:34px;height:34px;flex-basis:34px}.overview-stats strong,.overview-stats article>*{min-width:0;overflow-wrap:anywhere}.suggestions-controls,.suggestions-grid{grid-template-columns:minmax(0,1fr)}.suggestions-tools{align-items:flex-start}input,select,textarea{font-size:16px}.button,.small-button,.icon-button,.sidebar-link,.sidebar-signout{min-height:40px}}
 @media(max-width:390px){.sidebar-bottom{flex-direction:column}.sidebar-signout{width:100%;justify-content:center}.sidebar-premium{width:100%}.workspace-actions,.owned-list-actions,.overview-stats{grid-template-columns:minmax(0,1fr)}.section-heading{flex-wrap:wrap}.top-nav{flex-wrap:wrap}}
+
+
+/* Gift-list readability fix: prevent wishlist text and controls from squeezing together. */
+.gift-page #workspace { min-width: 0; }
+.gift-page #workspace .workspace-head { display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap:16px; }
+.gift-page #workspace .workspace-head > div { min-width:0; max-width:100%; }
+.gift-page #workspace .workspace-head h2,
+.gift-page #workspace .workspace-sub { line-height:1.55; overflow-wrap:anywhere; word-break:normal; }
+.gift-page #workspace > .workspace-sub { margin:16px 0; max-width:75ch; }
+.gift-page #workspace .list-tools { grid-template-columns:minmax(0,1fr); gap:10px; }
+.gift-page #workspace .list-tools label { display:block; line-height:1.5; margin-top:4px; }
+.gift-page #workspace .list-tools input,
+.gift-page #workspace .list-tools select { width:100%; min-width:0; min-height:44px; }
+.gift-page #workspace .wish-item { display:grid; grid-template-columns:64px minmax(0,1fr) auto; align-items:start; gap:14px; padding:16px; }
+.gift-page #workspace .wish-item .item-placeholder { grid-column:1; grid-row:1 / span 3; width:64px; height:64px; }
+.gift-page #workspace .wish-item .item-info { grid-column:2; min-width:0; width:100%; }
+.gift-page #workspace .wish-item .item-info h3 { line-height:1.45; margin:7px 0 5px; overflow-wrap:anywhere; }
+.gift-page #workspace .wish-item .item-info p { line-height:1.65; white-space:normal; overflow-wrap:anywhere; }
+.gift-page #workspace .wish-item .item-link { line-height:1.6; }
+.gift-page #workspace .wish-item .item-price { grid-column:3; grid-row:1; white-space:nowrap; }
+.gift-page #workspace .wish-item .reserve-toggle { grid-column:3; grid-row:2; justify-self:end; align-self:start; max-width:100%; white-space:normal; line-height:1.4; }
+.gift-page #workspace .wish-item .reservation-status { grid-column:2 / -1; width:100%; min-width:0; padding:10px 12px; line-height:1.5; }
+.gift-page #workspace .wish-item .reservation-status strong,
+.gift-page #workspace .wish-item .reservation-status span { display:block; line-height:1.5; overflow-wrap:anywhere; }
+.gift-page #workspace .empty-state { line-height:1.7; white-space:normal; }
+.gift-page #workspace button { line-height:1.4; }
+@media (max-width:680px) {
+  .gift-page #workspace .wish-item { grid-template-columns:48px minmax(0,1fr); gap:10px; padding:12px; }
+  .gift-page #workspace .wish-item .item-placeholder { grid-column:1; grid-row:1; width:48px; height:48px; }
+  .gift-page #workspace .wish-item .item-info { grid-column:2; grid-row:1; }
+  .gift-page #workspace .wish-item .item-price { grid-column:2; grid-row:auto; white-space:normal; }
+  .gift-page #workspace .wish-item .reserve-toggle { grid-column:2; grid-row:auto; justify-self:start; }
+  .gift-page #workspace .wish-item .reservation-status { grid-column:1 / -1; }
+  .gift-page #workspace .workspace-head-actions { width:100%; justify-content:flex-start; }
+  .gift-page #workspace .workspace-head-actions .small-button { white-space:normal; }
+}
