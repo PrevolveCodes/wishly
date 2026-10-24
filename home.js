@@ -27,8 +27,19 @@
     body.wishly-secret-theme .gift-ribbon { background:#ffe18f; }
     .wishly-secret-actions { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:10px; }
     .wishly-secret-actions button { border:1px solid currentColor; border-radius:999px; padding:8px 12px; background:transparent; color:inherit; font:inherit; cursor:pointer; }
-    .wishly-fortune { margin:24px auto 0; padding:14px 18px; border:1px solid var(--line); border-radius:16px; background:var(--white); color:var(--ink); text-align:center; max-width:480px; }
-    .wishly-fortune p { margin:8px 0 0; color:var(--muted); }
+    .wishly-fortune { position:relative; isolation:isolate; overflow:hidden; margin:30px auto 12px; padding:25px 24px 23px; border:1px solid #ded7fb; border-radius:22px; background:radial-gradient(ellipse at 50% -25%,#eee9ff 0,transparent 70%),linear-gradient(145deg,#fff 0%,#faf8ff 100%); color:var(--ink); text-align:center; max-width:520px; box-shadow:0 12px 30px rgba(75,57,153,.09),inset 0 1px 0 #fff; }
+    .wishly-fortune::before { content:"✦"; position:absolute; z-index:-1; right:22px; top:8px; color:#c9bdf9; font-size:40px; transform:rotate(12deg); }
+    .wishly-fortune::after { content:"✧"; position:absolute; z-index:-1; left:20px; bottom:8px; color:#d9cafa; font-size:30px; }
+    .wishly-fortune-symbol { display:grid; place-items:center; width:46px; height:46px; margin:0 auto 12px; border:1px solid #e1d9ff; border-radius:15px; background:linear-gradient(145deg,#f1edff,#e5ddff); color:#6552cc; font-size:25px; box-shadow:inset 0 1px 0 #fff,0 5px 12px #6552cc16; }
+    .wishly-fortune h2 { margin:0 0 5px; font:800 20px Manrope,sans-serif; letter-spacing:-.6px; }
+    .wishly-fortune .wishly-fortune-intro { margin:0 auto 17px; max-width:340px; color:var(--muted); font-size:13px; }
+    .wishly-fortune .wishly-fortune-button { display:inline-flex; align-items:center; justify-content:center; gap:9px; min-height:44px; padding:11px 18px; border:1px solid #5947c7; border-radius:12px; background:linear-gradient(135deg,#7968e4,#5946c5); color:white; font:700 13px 'DM Sans',sans-serif; cursor:pointer; box-shadow:inset 0 1px 0 #ffffff55,0 3px 0 #4535a5,0 7px 14px #5946c526; transition:transform .16s,box-shadow .16s; }
+    .wishly-fortune .wishly-fortune-button:hover { transform:translateY(-2px); box-shadow:inset 0 1px 0 #ffffff55,0 4px 0 #4535a5,0 10px 18px #5946c532; }
+    .wishly-fortune .wishly-fortune-button:active { transform:translateY(2px); box-shadow:inset 0 1px 0 #ffffff35,0 1px 0 #4535a5; }
+    .wishly-fortune .wishly-fortune-result { margin:17px auto 0; max-width:390px; padding:12px 14px; border:1px dashed #d6cdf8; border-radius:12px; background:#fff; color:#5748a6; font-size:14px; font-weight:600; line-height:1.6; }
+    .wishly-fortune .wishly-fortune-result:empty { display:none; }
+    @media(max-width:520px) { .wishly-fortune { margin-top:22px; padding:22px 16px; } .wishly-fortune h2 { font-size:18px; } }
+    @media(prefers-reduced-motion:reduce) { .wishly-fortune .wishly-fortune-button { transition:none; } }
   `;
   document.head.appendChild(themeCss);
   const applySecretTheme = enabled => {
@@ -90,7 +101,7 @@
   // A small visible fortune button.
   const fortune = document.createElement("section");
   fortune.className = "wishly-fortune";
-  fortune.innerHTML = '<button type="button" id="wishly-fortune-button">Get a random gift fortune</button><p id="wishly-fortune-text" aria-live="polite">A tiny bit of Wishly wisdom, whenever you need it.</p>';
+  fortune.innerHTML = '<div class="wishly-fortune-symbol" aria-hidden="true">✧</div><h2>The Wishly Fortune Teller</h2><p class="wishly-fortune-intro">Need a little gift-day wisdom? Let fate pick a message for you.</p><button type="button" class="wishly-fortune-button" id="wishly-fortune-button">Reveal my fortune <span aria-hidden="true">✦</span></button><p class="wishly-fortune-result" id="wishly-fortune-text" aria-live="polite"></p>';
   const about = document.getElementById("about");
   if (about) about.insertAdjacentElement("afterend", fortune);
   const fortunes = [
