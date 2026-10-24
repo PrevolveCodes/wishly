@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  GoogleAuthProvider, OAuthProvider, signInWithPopup, onAuthStateChanged
+  GoogleAuthProvider, signInWithPopup, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -20,7 +20,6 @@ const form = $("#account-form");
 const submit = $("#account-submit");
 const toggle = $("#account-toggle");
 const googleButton = $("#google-sign-in");
-const appleButton = $("#apple-sign-in");
 const status = $("#account-status");
 const notice = $("#notice");
 let mode = "signup";
@@ -62,7 +61,6 @@ onAuthStateChanged(auth, user => {
     submit.disabled = true;
     toggle.classList.add("hidden");
     googleButton.classList.add("hidden");
-    appleButton.classList.add("hidden");
     form.querySelectorAll("label,input").forEach(el => el.classList.add("hidden"));
   }
 });
@@ -97,17 +95,3 @@ googleButton.addEventListener("click", async () => {
   }
 });
 
-appleButton.addEventListener("click", async () => {
-  appleButton.disabled = true;
-  try {
-    const provider = new OAuthProvider("apple.com");
-    provider.addScope("email");
-    provider.addScope("name");
-    await signInWithPopup(auth, provider);
-    toast("Signed in with Apple. Returning to Wishly…");
-    window.location.href = "dashboard.html";
-  } catch (error) {
-    toast(friendlyError(error));
-    appleButton.disabled = false;
-  }
-});
