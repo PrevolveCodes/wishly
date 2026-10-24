@@ -38,6 +38,12 @@
     .wishly-fortune .wishly-fortune-button:active { transform:translateY(2px); box-shadow:inset 0 1px 0 #ffffff35,0 1px 0 #4535a5; }
     .wishly-fortune .wishly-fortune-result { margin:17px auto 0; max-width:390px; padding:12px 14px; border:1px dashed #d6cdf8; border-radius:12px; background:#fff; color:#5748a6; font-size:14px; font-weight:600; line-height:1.6; }
     .wishly-fortune .wishly-fortune-result:empty { display:none; }
+    body.dark-mode .wishly-fortune { border-color:#39364e; background:radial-gradient(ellipse at 50% -25%,rgba(112,94,190,.22) 0,transparent 70%),linear-gradient(145deg,#22222e 0%,#1c1c27 100%); color:var(--ink); box-shadow:0 12px 30px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.035); }
+    body.dark-mode .wishly-fortune::before { color:#5c507d; }
+    body.dark-mode .wishly-fortune::after { color:#51476d; }
+    body.dark-mode .wishly-fortune-symbol { border-color:#46405f; background:linear-gradient(145deg,#34304a,#29263c); color:#c5b8ff; box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 5px 12px rgba(0,0,0,.15); }
+    body.dark-mode .wishly-fortune .wishly-fortune-result { border-color:#49415f; background:#292735; color:#d7ceff; }
+    body.wishly-secret-theme.dark-mode .wishly-fortune { border-color:#514064; background:radial-gradient(ellipse at 50% -25%,rgba(133,91,176,.22) 0,transparent 70%),linear-gradient(145deg,#26212f,#1d1a25); }
     @media(max-width:520px) { .wishly-fortune { margin-top:22px; padding:22px 16px; } .wishly-fortune h2 { font-size:18px; } }
     @media(prefers-reduced-motion:reduce) { .wishly-fortune .wishly-fortune-button { transition:none; } }
   `;
