@@ -2064,3 +2064,37 @@ html.wishly-winter body.dark-mode .overview-upcoming-card {
 @media (prefers-reduced-motion: reduce) {
   .wishly-snowflake { animation: none !important; display: none !important; }
 }
+
+
+/* Keep sidebar navigation and sign-out controls in their original flat style. */
+html body .wishly-sidebar .sidebar-link,
+html body .wishly-sidebar .sidebar-link:hover,
+html body .wishly-sidebar .sidebar-link.is-active {
+  border: 0 !important;
+  background: transparent !important;
+  color: var(--muted) !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+html body .wishly-sidebar .sidebar-link:hover {
+  background: var(--soft, #eaf4ff) !important;
+  transform: translateX(3px) !important;
+}
+html body .wishly-sidebar .sidebar-link.is-active {
+  box-shadow: inset 3px 0 0 var(--purple) !important;
+}
+html body .wishly-sidebar .sidebar-signout,
+html body .wishly-sidebar .sidebar-signout:hover {
+  border: 0 !important;
+  border-top: 1px solid var(--line) !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  color: var(--muted) !important;
+  box-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+html body.dark-mode .wishly-sidebar .sidebar-link { color: #b9c5e6 !important; }
+html body.dark-mode .wishly-sidebar .sidebar-link:hover { background: #203c5a !important; }
+html.wishly-winter body .wishly-sidebar .sidebar-link.is-active { box-shadow: inset 3px 0 0 #bd3038 !important; }
+html.wishly-winter body.dark-mode .wishly-sidebar .sidebar-link { color: #b9c5e6 !important; }
