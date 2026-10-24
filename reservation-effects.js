@@ -38,17 +38,21 @@
     }
     .wishly-confetti-piece {
       position: absolute;
-      top: -16px;
-      width: 8px;
-      height: 13px;
+      left: 50%;
+      top: 43%;
+      width: 9px;
+      height: 15px;
       border-radius: 2px;
-      animation: wishly-confetti-fall var(--fall-time) cubic-bezier(.2,.7,.3,1) forwards;
-      transform: translate3d(0,0,0) rotate(0deg);
+      opacity: 1;
+      animation: wishly-confetti-burst var(--fall-time) cubic-bezier(.12,.72,.22,1) forwards;
+      transform: translate(-50%, -50%) rotate(0deg);
+      will-change: transform, opacity;
     }
-    @keyframes wishly-confetti-fall {
-      0% { transform: translate3d(0,0,0) rotate(0deg); opacity: 1; }
-      75% { opacity: 1; }
-      100% { transform: translate3d(var(--drift), 105vh, 0) rotate(var(--spin)); opacity: 0; }
+    @keyframes wishly-confetti-burst {
+      0% { transform: translate(-50%, -50%) rotate(0deg) scale(.35); opacity: 1; }
+      12% { opacity: 1; }
+      65% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--spin)) scale(1); opacity: 1; }
+      100% { transform: translate(calc(-50% + var(--end-x)), calc(-50% + var(--end-y))) rotate(calc(var(--spin) * 1.7)) scale(.75); opacity: 0; }
     }
     @media (prefers-reduced-motion: reduce) {
       .wishly-reservation-banner { transition: none; }
@@ -76,16 +80,27 @@
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const layer = document.createElement('div');
     layer.className = 'wishly-confetti';
-    const pieces = 72;
+    const pieces = 125;
     for (let i = 0; i < pieces; i += 1) {
       const piece = document.createElement('span');
       piece.className = 'wishly-confetti-piece';
-      piece.style.left = `${Math.random() * 100}%`;
-      piece.style.setProperty('--drift', `${(Math.random() - 0.5) * 260}px`);
-      piece.style.setProperty('--spin', `${(Math.random() - 0.5) * 1100}deg`);
-      piece.style.setProperty('--fall-time', `${1.15 + Math.random() * 1.05}s`);
-      piece.style.animationDelay = `${Math.random() * 0.18}s`;
-      piece.style.background = `hsl(${Math.floor(Math.random() * 360)} 70% 58%)`;
+      const angle = Math.random() * Math.PI * 2;
+      const distance = 110 + Math.random() * Math.min(window.innerWidth * 0.52, 460);
+      const dx = Math.cos(angle) * distance;
+      const dy = Math.sin(angle) * distance * 0.72;
+      piece.style.setProperty('--dx', `${dx}px`);
+      piece.style.setProperty('--dy', `${dy}px`);
+      piece.style.setProperty('--end-x', `${dx * 1.18}px`);
+      piece.style.setProperty('--end-y', `${dy * 1.18 + 170 + Math.random() * 130}px`);
+      piece.style.setProperty('--spin', `${(Math.random() - 0.5) * 1500}deg`);
+      piece.style.setProperty('--fall-time', `${1.35 + Math.random() * 0.9}s`);
+      piece.style.animationDelay = `${Math.random() * 0.1}s`;
+      piece.style.background = `hsl(${Math.floor(Math.random() * 360)} 78% 58%)`;
+      if (Math.random() < 0.25) {
+        piece.style.width = '6px';
+        piece.style.height = '6px';
+        piece.style.borderRadius = '50%';
+      }
       layer.appendChild(piece);
     }
     document.body.appendChild(layer);
