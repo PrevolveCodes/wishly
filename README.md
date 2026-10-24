@@ -1,29 +1,39 @@
 # Wishly
 
-Wishly is a mobile-friendly wishlist app. Creators register with email and password, create a list, and share a code with gift-givers.
+Wishly is a mobile-friendly wishlist app. Creators register with email/password or Google sign-in, create wishlists, and share a wishlist code with gift-givers.
 
 ## Firebase setup
 
-This project uses Firebase Authentication (email/password and anonymous gift-giver sessions) and Cloud Firestore.
-
-1. In Firebase Console for project `wishly-fd9ff`, enable **Authentication → Sign-in method → Email/Password**.
-2. Also enable **Anonymous** sign-in for the gift-giver flow.
+1. In Firebase Console for project `wishly-fd9ff`, enable **Authentication → Sign-in method → Email/Password** and **Google** if you want Google sign-in.
+2. Enable **Anonymous** sign-in for the gift-giver flow.
 3. Create a Cloud Firestore database in **Production mode**.
-4. Open **Firestore Database → Rules**, replace the editor with the contents of `firestore.rules`, and click **Publish**.
-5. Host this folder on HTTPS, such as GitHub Pages. ES module imports from Google's Firebase CDN require a web server/HTTPS; opening `index.html` as a local file may not work.
+4. Open **Firestore Database → Rules**, replace the editor with the contents of `firestore.rules`, and click **Publish**. Updating the file in GitHub does not automatically publish the rules to Firebase.
+5. Host this folder over HTTPS, such as GitHub Pages. Opening `index.html` as a local file may not work because the app imports Firebase modules from Google's CDN.
 6. Add your deployed site domain under **Authentication → Settings → Authorized domains** if it is not already listed.
 
-## Data layout
+## Firestore data layout
 
-- `wishlists/{code}`: public list metadata and owner UID
-- `wishlists/{code}/items/{itemId}`: item details, editable only by the signed-in owner
-- `wishlists/{code}/purchases/{itemId}`: purchase status, readable/writable by anonymous gift-giver sessions only
+- `wishlists/{code}`: wishlist metadata and owner UID. The code lookup is public so a gift-giver can find a list.
+- `wishlists/{code}/items/{itemId}`: item details, editable only by the owner.
+- `wishlists/{code}/giftAccessConfig/main`: hash for the private gift password. Client rules deliberately deny reading this document so the hash is not exposed.
+- `wishlists/{code}/giftAccess/{uid}`: per-session authorization record for a gift-giver.
+- `wishlists/{code}/purchases/{itemId}`: purchase status, stored separately from owner-readable item details.
+- `wishlists/{code}/reservations/{itemId}`: reservation status, stored separately from owner-readable item details.
 
-The purchase status is stored separately so it is not included in owner-readable item documents. These rules prevent a normal signed-in creator session from reading purchase records. However, a creator who deliberately signs out and uses a guest session could still access the gift-giver path if they know the code. Stronger role separation would require a trusted server-side component that can distinguish owners from gift-givers; do not promise absolute secrecy with a code-only guest flow.
+## Privacy limits
+
+Wishly's client-side rules hide purchase and reservation records from a normal signed-in owner session. However, the app currently uses anonymous client sessions for gift-giver access. Firestore rules cannot reliably prove that an anonymous session belongs to the same person as a signed-in wishlist owner. Someone who controls the owner account and deliberately opens a separate guest session may be able to enter the gift-giver flow if they know the wishlist code and the gift password, or claim first-time setup before other gift-givers do.
+
+Do not promise absolute owner secrecy with this client-only design. Stronger separation requires a trusted server-side component, such as Firebase Cloud Functions, that manages gift access and reservation actions. The browser must never be trusted to decide its own role.
+
+## Deleting data
+
+The dashboard now deletes each item's purchase and reservation records when deleting that item or deleting a wishlist. It also attempts to delete the known gift-password configuration document. Firestore does not automatically delete subcollections when a parent document is deleted, and client rules intentionally prevent listing gift-access session records. Old `giftAccess/{uid}` documents may therefore remain orphaned after a wishlist is deleted; complete cleanup requires trusted server-side code.
 
 ## Important
 
 - Never publish service-account credentials or private server keys in frontend files. The Firebase web configuration is intended to be used by a client app; Firestore Security Rules are what protect data.
 - Do not use open rules such as `allow read, write: if true;`.
 - Rules in this repository must be manually published in the Firebase Console unless Firebase CLI deployment is separately configured.
+- Older `app.js` and `gift.js` files contain legacy flows. The current pages use `dashboard.js` and `gift-access.js`; avoid wiring the legacy files back into the live pages without reviewing their security rules.
 - Existing localStorage prototype lists will not migrate automatically to Firestore.
