@@ -62,27 +62,35 @@ function renderUpcoming(lists) {
     box.innerHTML = '<div class="overview-upcoming-empty"><strong>No upcoming dates yet.</strong><p>Add an event date when creating a wishlist and Wishly will show a live countdown here.</p><a class="small-button" href="dashboard.html?view=make-list">Create a wishlist →</a></div>';
     return;
   }
-  const list = upcoming[0];
-  const eventDate = new Date(`${list.eventDate}T00:00:00`);
-  const dateLabel = eventDate.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
-  box.innerHTML = `<div class="upcoming-icon">⌛</div><div class="upcoming-copy"><h2>${escapeHtml(list.title || "Wishlist")}</h2><p>${escapeHtml(list.occasion || "Other")} · ${escapeHtml(dateLabel)}</p><div class="upcoming-countdown" id="upcoming-countdown" role="timer" aria-live="off">Calculating countdown…</div></div><a class="small-button" href="dashboard.html?view=lists&code=${encodeURIComponent(list.code)}">View →</a>`;
-  const countdown = $("#upcoming-countdown");
-  const updateCountdown = () => {
-    const remaining = eventDate.getTime() - Date.now();
-    if (remaining <= 0) {
-      countdown.textContent = "Today is the day!";
-      if (countdownTimer) clearInterval(countdownTimer);
-      return;
-    }
-    const totalSeconds = Math.floor(remaining / 1000);
-    const days = Math.floor(totalSeconds / 86400);
-    const hours = Math.floor((totalSeconds % 86400) / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-    countdown.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s to go`;
+
+  box.innerHTML = upcoming.map((list, index) => {
+    const eventDate = new Date(`${list.eventDate}T00:00:00`);
+    const dateLabel = eventDate.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+    return `<article class="overview-upcoming-card">
+      <div class="upcoming-icon" aria-hidden="true">⌛</div>
+      <div class="upcoming-copy"><h2>${escapeHtml(list.title || "Wishlist")}</h2><p>${escapeHtml(list.occasion || "Other")} · ${escapeHtml(dateLabel)}</p><div class="upcoming-countdown" data-countdown-date="${escapeHtml(list.eventDate)}" role="timer" aria-live="off">Calculating countdown…</div></div>
+      <a class="small-button" href="dashboard.html?view=lists&code=${encodeURIComponent(list.code)}">View →</a>
+    </article>`;
+  }).join("");
+
+  const updateCountdowns = () => {
+    box.querySelectorAll("[data-countdown-date]").forEach(countdown => {
+      const eventDate = new Date(`${countdown.dataset.countdownDate}T00:00:00`);
+      const remaining = eventDate.getTime() - Date.now();
+      if (remaining <= 0) {
+        countdown.textContent = "Today is the day!";
+        return;
+      }
+      const totalSeconds = Math.floor(remaining / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      countdown.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s to go`;
+    });
   };
-  updateCountdown();
-  countdownTimer = setInterval(updateCountdown, 1000);
+  updateCountdowns();
+  countdownTimer = setInterval(updateCountdowns, 1000);
 }
 
 async function loadOverview(user) {
