@@ -1724,3 +1724,40 @@ html{overflow-x:hidden}body{overflow-x:hidden}button,a,input,select,textarea{tou
   .gift-page #workspace .workspace-head-actions { width:100%; justify-content:flex-start; }
   .gift-page #workspace .workspace-head-actions .small-button { white-space:normal; }
 }
+
+
+/* Hidden Wishly logo Easter egg. */
+.wishly-secret-notice {
+  position: fixed;
+  z-index: 1000;
+  left: 50%;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  transform: translateX(-50%);
+  padding: 14px 19px;
+  border: 1px solid rgba(126, 105, 225, .28);
+  border-radius: 14px;
+  background: var(--surface, #fff);
+  color: var(--text, #302b49);
+  box-shadow: 0 12px 34px rgba(42, 31, 85, .18);
+  text-align: center;
+  line-height: 1.5;
+  animation: wishly-secret-appear .28s ease-out both;
+}
+.wishly-secret-found {
+  animation: wishly-secret-wiggle .55s ease-in-out;
+}
+@keyframes wishly-secret-appear {
+  from { opacity: 0; transform: translate(-50%, 12px) scale(.96); }
+  to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+@keyframes wishly-secret-wiggle {
+  0%, 100% { transform: rotate(0) scale(1); }
+  25% { transform: rotate(-7deg) scale(1.08); }
+  55% { transform: rotate(7deg) scale(1.08); }
+  80% { transform: rotate(-3deg) scale(1.03); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wishly-secret-notice, .wishly-secret-found { animation: none !important; }
+}
