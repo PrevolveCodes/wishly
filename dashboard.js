@@ -299,7 +299,7 @@ async function openWorkspace(list, mode) {
           ? '<div class="item-price">$' + Number(item.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "</div>"
           : "";
         const actions = owner
-          ? '<button class="small-button edit-item" data-index="' + index + '" type="button">Edit</button><button class="small-button remove-item" data-index="' + index + '" type="button">Remove</button>'
+          ? '<div class="item-actions"><button class="small-button edit-item" data-index="' + index + '" type="button">Edit</button><button class="small-button remove-item" data-index="' + index + '" type="button">Remove</button></div>'
           : '<button class="small-button toggle-purchased" data-index="' + index + '" type="button" aria-pressed="' + purchased + '">' + (purchased ? "Marked purchased ✓" : "Mark purchased") + '</button>';
         return `<article class="wish-item ${!owner && purchased ? "purchased" : ""}" data-index="${index}" ${owner ? 'draggable="true"' : ""} data-search="${escapeHtml((item.name + " " + (item.category || "")).toLowerCase())}" data-name="${escapeHtml(item.name || "")}" data-category="${escapeHtml(item.category || "Other")}" data-priority="${escapeHtml(item.priority || "Would love")}" data-price="${Number(item.price) || 0}" data-has-price="${item.price !== "" && item.price != null && Number.isFinite(Number(item.price))}">
           <div class="item-placeholder" aria-hidden="true">${safeUrl(item.imageUrl) ? '<img class="item-image" src="' + escapeHtml(safeUrl(item.imageUrl)) + '" alt="" loading="lazy">' : (!owner && purchased ? "✓" : "♡")}</div>
