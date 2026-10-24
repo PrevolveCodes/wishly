@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  GoogleAuthProvider, signInWithPopup, onAuthStateChanged
+  GoogleAuthProvider, OAuthProvider, signInWithPopup, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -20,6 +20,7 @@ const form = $("#account-form");
 const submit = $("#account-submit");
 const toggle = $("#account-toggle");
 const googleButton = $("#google-sign-in");
+const appleButton = $("#apple-sign-in");
 const status = $("#account-status");
 const notice = $("#notice");
 let mode = "signup";
@@ -38,8 +39,10 @@ function friendlyError(error) {
     "auth/user-not-found": "No account was found for that email.",
     "auth/wrong-password": "Email or password is incorrect.",
     "auth/too-many-requests": "Too many attempts. Wait a little and try again.",
-    "auth/popup-closed-by-user": "Google sign-in was cancelled. You can try again.",
-    "auth/popup-blocked": "Your browser blocked the Google sign-in window. Allow pop-ups for this site and try again.",
+    "auth/popup-closed-by-user": "Sign-in was cancelled. You can try again.",
+    "auth/operation-not-allowed": "This sign-in method is not enabled in Firebase Authentication yet.",
+    "auth/unsupported-provider": "This sign-in provider is not configured for this app yet.",
+    "auth/popup-blocked": "Your browser blocked the sign-in window. Allow pop-ups for this site and try again.",
     "auth/unauthorized-domain": "This website domain is not authorized in Firebase Authentication settings."
   };
   return messages[error?.code] || error?.message || "Something went wrong. Please try again.";
@@ -59,6 +62,7 @@ onAuthStateChanged(auth, user => {
     submit.disabled = true;
     toggle.classList.add("hidden");
     googleButton.classList.add("hidden");
+    appleButton.classList.add("hidden");
     form.querySelectorAll("label,input").forEach(el => el.classList.add("hidden"));
   }
 });
@@ -90,5 +94,20 @@ googleButton.addEventListener("click", async () => {
   } catch (error) {
     toast(friendlyError(error));
     googleButton.disabled = false;
+  }
+});
+
+appleButton.addEventListener("click", async () => {
+  appleButton.disabled = true;
+  try {
+    const provider = new OAuthProvider("apple.com");
+    provider.addScope("email");
+    provider.addScope("name");
+    await signInWithPopup(auth, provider);
+    toast("Signed in with Apple. Returning to Wishly…");
+    window.location.href = "dashboard.html";
+  } catch (error) {
+    toast(friendlyError(error));
+    appleButton.disabled = false;
   }
 });
