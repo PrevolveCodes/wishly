@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f6f2">
+  <meta name="description" content="See your Wishly achievements.">
+  <title>Achievements — Wishly</title>
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="stylesheet" href="styles.css?v=fun-features-1">
+  <link rel="stylesheet" href="achievements.css?v=achievements-1">
+  <script src="theme.js" defer></script>
+  <script type="module" src="signout.js"></script>
+  <script type="module" src="achievements.js?v=achievements-1"></script>
+</head>
+<body class="dashboard-page achievements-page">
+  <aside class="wishly-sidebar" aria-label="Wishly sidebar">
+    <a class="sidebar-brand" href="./" aria-label="Wishly home"><img src="icon.png" alt=""><span>wishly<span class="brand-dot">.</span></span></a>
+    <nav class="sidebar-nav" aria-label="Main navigation">
+      <a class="sidebar-link" href="overview.html"><img class="sidebar-icon" src="overview_icon.png" alt=""><span>Overview</span></a>
+      <a class="sidebar-link" href="dashboard.html?view=make-list"><img class="sidebar-icon" src="make_list.png" alt=""><span>Make a List</span></a>
+      <a class="sidebar-link" href="dashboard.html?view=lists"><img class="sidebar-icon" src="my_lists.png" alt=""><span>My Lists</span></a>
+      <a class="sidebar-link" href="suggestions.html"><img class="sidebar-icon" src="gift_suggestions.png" alt=""><span>Gift Suggestions</span></a>
+      <a class="sidebar-link is-active" href="achievements.html" aria-current="page"><span class="sidebar-icon" aria-hidden="true">🏆</span><span>Achievements</span></a>
+      <a class="sidebar-link" href="gift.html"><img class="sidebar-icon" src="view_list.png" alt=""><span>View a Wishlist</span></a>
+      <button class="sidebar-link sidebar-theme-toggle" id="sidebar-theme-toggle" type="button"><img class="sidebar-icon" src="darklight_mode.png" alt=""><span>Toggle dark mode</span></button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="sidebar-premium"><strong>Wishly Premium</strong><p>More ways to make your wishlists your own.</p><span class="premium-coming-soon">Coming later</span></div>
+      <button class="sidebar-signout" id="sidebar-sign-out" type="button"><img class="sidebar-icon" src="sign_out.png" alt=""> Sign out</button>
+    </div>
+  </aside>
+  <main class="dashboard-main achievements-main">
+    <section class="dashboard-welcome">
+      <div class="dashboard-welcome-copy"><div class="eyebrow">LITTLE WINS</div><h1>Achievements<span>.</span></h1><p>Keep building your wishlists and unlock little milestones along the way.</p></div>
+      <div class="dashboard-mark" aria-hidden="true">★</div>
+    </section>
+    <section class="achievement-progress">
+      <div><strong id="achievement-count">Loading…</strong><span>achievements unlocked</span></div>
+      <div class="achievement-progress-track"><span id="achievement-progress-bar"></span></div>
+    </section>
+    <section id="achievement-grid" class="achievement-grid" aria-live="polite"><div class="achievement-loading">Loading your achievements…</div></section>
+    <p id="achievement-message" class="achievement-message" role="status"></p>
+  </main>
+  <dialog id="signout-dialog" class="modal signout-modal" aria-labelledby="signout-title">
+    <div class="signout-content"><div class="signout-mark" aria-hidden="true">↪</div><div class="eyebrow">ACCOUNT</div><h2 id="signout-title">Sign out of Wishly?</h2><p>You’ll need to sign in again to manage your wishlists.</p><div class="signout-actions"><button type="button" class="small-button" id="signout-cancel">Stay signed in</button><button type="button" class="button button-primary" id="signout-confirm">Sign out</button></div></div>
+  </dialog>
+</body>
+</html>
