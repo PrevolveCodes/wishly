@@ -55,6 +55,26 @@
       button.textContent = enabled ? "Turn secret theme off" : "Try secret theme";
     });
   };
+  // Keep the original five-tap logo Easter egg too.
+  const brand = document.querySelector(".topbar .brand");
+  let logoTaps = 0;
+  let logoTapTimer;
+  brand?.addEventListener("click", event => {
+    if (logoTaps >= 4) {
+      event.preventDefault();
+      logoTaps = 0;
+      window.clearTimeout(logoTapTimer);
+      showSecret();
+      brand.classList.add("wishly-secret-found");
+      window.setTimeout(() => brand.classList.remove("wishly-secret-found"), 700);
+      return;
+    }
+    logoTaps += 1;
+    window.clearTimeout(logoTapTimer);
+    logoTapTimer = window.setTimeout(() => { logoTaps = 0; }, 1800);
+    event.preventDefault();
+  });
+
   document.addEventListener("keydown", event => {
     if (event.ctrlKey || event.altKey || event.metaKey) return;
     if (event.key.length !== 1) return;
