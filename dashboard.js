@@ -454,6 +454,7 @@ createForm.addEventListener("submit", async event => {
     createForm.reset();
     await loadOwnedLists(user);
     await openWorkspace({ ...list, createdAt: new Date() }, "owner");
+    window.wishlyCelebrate?.();
     toast("Wishlist created. Copy the code to share it.");
   } catch (error) {
     toast(friendlyError(error));
@@ -498,6 +499,7 @@ itemForm.addEventListener("submit", async event => {
     delete itemForm.dataset.editingId;
     dialog.close();
     await openWorkspace(activeList, "owner");
+    if (!editingId) window.wishlyCelebrate?.();
     toast(editingId ? "Item updated." : "Item added to your wishlist.");
   } catch (error) {
     toast(friendlyError(error));
