@@ -201,11 +201,16 @@ async function loadOwnedLists(user = auth.currentUser) {
         button.textContent = "Deleting…";
         try {
           const items = await getDocs(collection(db, "wishlists", list.code, "items"));
-          for (let i = 0; i < items.docs.length; i += 400) {
+          for (let i = 0; i < items.docs.length; i += 150) {
             const batch = writeBatch(db);
-            items.docs.slice(i, i + 400).forEach(item => batch.delete(item.ref));
+            items.docs.slice(i, i + 150).forEach(item => {
+              batch.delete(item.ref);
+              batch.delete(doc(db, "wishlists", list.code, "purchases", item.id));
+              batch.delete(doc(db, "wishlists", list.code, "reservations", item.id));
+            });
             await batch.commit();
           }
+          await deleteDoc(doc(db, "wishlists", list.code, "giftAccessConfig", "main")).catch(() => {});
           await deleteDoc(doc(db, "wishlists", list.code));
           if (activeListId === list.code) {
             activeListId = null;
@@ -402,8 +407,11 @@ async function openWorkspace(list, mode) {
       const item = activeItemDocs[Number(button.dataset.index)];
       if (!item || !confirm("Remove this item from your wishlist?")) return;
       try {
-        await deleteDoc(doc(db, "wishlists", activeListId, "items", item.id));
-        await deleteDoc(doc(db, "wishlists", activeListId, "purchases", item.id)).catch(() => {});
+        const batch = writeBatch(db);
+        batch.delete(doc(db, "wishlists", activeListId, "items", item.id));
+        batch.delete(doc(db, "wishlists", activeListId, "purchases", item.id));
+        batch.delete(doc(db, "wishlists", activeListId, "reservations", item.id));
+        await batch.commit();
         await openWorkspace(activeList, "owner");
         toast("Item removed.");
       } catch (error) { toast(friendlyError(error)); }
