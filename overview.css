@@ -14,3 +14,41 @@ body.dark-mode .overview-stats article,body.dark-mode .overview-list-card,body.d
 
 /* Give the countdowns its own clear section heading. */
 .overview-countdowns-section{margin-top:28px}.overview-countdowns-section>.overview-section-heading{margin-bottom:12px}.overview-countdowns-section>.overview-section-heading h2{margin:0;font:800 23px/1.2 Manrope,sans-serif;letter-spacing:-.8px}.overview-countdowns-section .overview-upcoming{margin-top:0}
+
+
+/* Show every upcoming event as its own countdown card. */
+.overview-countdowns-section .overview-upcoming {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  margin-top: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.overview-countdowns-section .overview-upcoming-card {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  padding: 19px;
+  border: 1px solid #ddd7fa;
+  border-radius: 18px;
+  background: linear-gradient(115deg, #f3f0ff, #fbfaff);
+  box-shadow: 0 10px 24px #5142c20d;
+}
+.overview-upcoming-card .upcoming-copy { min-width: 0; }
+.overview-upcoming-card .upcoming-copy h2 { overflow-wrap: anywhere; }
+.overview-upcoming-card .upcoming-countdown { font-variant-numeric: tabular-nums; }
+body.dark-mode .overview-countdowns-section .overview-upcoming-card {
+  background: linear-gradient(115deg, #252747, #1b263c);
+  border-color: #383b63;
+}
+@media(max-width:680px) {
+  .overview-countdowns-section .overview-upcoming { grid-template-columns: minmax(0, 1fr); padding: 0; }
+  .overview-countdowns-section .overview-upcoming-card { grid-template-columns: 44px minmax(0, 1fr); padding: 15px; }
+  .overview-countdowns-section .overview-upcoming-card > .small-button { grid-column: 2; justify-self: start; }
+}
