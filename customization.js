@@ -20,7 +20,7 @@ const safeUrl = value => {
   try { const url = new URL(value); return ["https:", "http:"].includes(url.protocol) ? url.href : ""; }
   catch { return ""; }
 };
-const safeColor = value => /^#[0-9a-fA-F]{6}$/.test(value || "") ? value : "#8b78ff";
+const safeColor = value => /^#[0-9a-fA-F]{6}$/.test(value || "") ? value : "#2878e7";
 const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
 function applyCustomization(root, list) {
@@ -54,15 +54,19 @@ async function getList(code) {
 function dashboardMode() {
   const workspace = $("#workspace");
   if (!workspace) return;
-  let lastCode = "";
   const observer = new MutationObserver(async () => {
     const chip = workspace.querySelector(".code-chip");
     const actions = workspace.querySelector(".workspace-actions");
-    if (!chip || !actions || workspace.dataset.customizationReady === "true") return;
+    if (!chip || !actions) return;
     const code = (chip.textContent || "").replace(/Copy/g, "").trim();
     if (!/^[A-HJ-NP-Z2-9]{10}$/.test(code)) return;
-    workspace.dataset.customizationReady = "true";
-    lastCode = code;
+    if (workspace.dataset.customizationCode === code && actions.querySelector("#customize-list")) return;
+
+    workspace.dataset.customizationCode = code;
+    actions.querySelector("#customize-list")?.remove();
+    workspace.querySelector(".wishlist-custom-banner")?.remove();
+    workspace.classList.remove("has-list-customization");
+
     const button = document.createElement("button");
     button.className = "small-button";
     button.id = "customize-list";
@@ -70,8 +74,16 @@ function dashboardMode() {
     button.textContent = "Customize wishlist";
     actions.appendChild(button);
     button.addEventListener("click", async () => openEditor(code, true));
-    const list = await getList(code);
-    applyCustomization(workspace, list);
+
+    try {
+      const list = await getList(code);
+      const currentCode = (workspace.querySelector(".code-chip")?.textContent || "").replace(/Copy/g, "").trim();
+      if (list && currentCode === code && workspace.dataset.customizationCode === code) {
+        applyCustomization(workspace, list);
+      }
+    } catch (error) {
+      console.error("Wishly: could not load wishlist customization", error);
+    }
   });
   observer.observe(workspace, {childList:true, subtree:true});
 }
@@ -82,7 +94,7 @@ function ensureDialog() {
   dialog = document.createElement("dialog");
   dialog.id = "customize-dialog";
   dialog.className = "modal customization-modal";
-  dialog.innerHTML = `<form method="dialog" id="customize-form"><div class="modal-top"><div><div class="eyebrow">WISHLIST DESIGN</div><h2>Customize your wishlist</h2></div><button class="icon-button" id="customize-close" type="button" aria-label="Close">×</button></div><p class="workspace-sub">Make this wishlist feel like yours. These details are visible to gift-givers.</p><label for="custom-cover">Cover image URL</label><input id="custom-cover" type="url" placeholder="https://…image.jpg"><label for="custom-color">Theme color</label><div class="custom-color-row"><input id="custom-color" type="color" value="#8b78ff"><input id="custom-color-text" maxlength="7" value="#8b78ff" aria-label="Theme color hex code"></div><label for="custom-date">Event date</label><input id="custom-date" type="date"><label for="custom-message">Message for gift-givers</label><textarea id="custom-message" maxlength="300" rows="4" placeholder="Thanks for checking out my wishlist!"></textarea><div class="custom-preview" id="custom-preview">Your customization preview will appear here.</div><button class="button button-primary" id="custom-save" type="submit">Save customization <span>✓</span></button></form>`;
+  dialog.innerHTML = `<form method="dialog" id="customize-form"><div class="modal-top"><div><div class="eyebrow">WISHLIST DESIGN</div><h2>Customize your wishlist</h2></div><button class="icon-button" id="customize-close" type="button" aria-label="Close">×</button></div><p class="workspace-sub">Make this wishlist feel like yours. These details are visible to gift-givers.</p><label for="custom-cover">Cover image URL</label><input id="custom-cover" type="url" placeholder="https://…image.jpg"><label for="custom-color">Theme color</label><div class="custom-color-row"><input id="custom-color" type="color" value="#2878e7"><input id="custom-color-text" maxlength="7" value="#2878e7" aria-label="Theme color hex code"></div><label for="custom-date">Event date</label><input id="custom-date" type="date"><label for="custom-message">Message for gift-givers</label><textarea id="custom-message" maxlength="300" rows="4" placeholder="Thanks for checking out my wishlist!"></textarea><div class="custom-preview" id="custom-preview">Your customization preview will appear here.</div><button class="button button-primary" id="custom-save" type="submit">Save customization <span>✓</span></button></form>`;
   document.body.appendChild(dialog);
   $("#customize-close").addEventListener("click", () => dialog.close());
   $("#custom-color").addEventListener("input", e => $("#custom-color-text").value = e.target.value);
@@ -136,13 +148,25 @@ function showToast(message) {
 async function giftMode() {
   const workspace = $("#workspace");
   if (!workspace) return;
-  const code = new URLSearchParams(location.search).get("code")?.toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, "").slice(0, 10);
-  if (!code) return;
-  let applied = false;
+  let lastAppliedHead = null;
+  let loadingHead = null;
   const observer = new MutationObserver(async () => {
-    if (applied || !workspace.querySelector(".workspace-head")) return;
-    const list = await getList(code);
-    if (list) { applyCustomization(workspace, list); applied = true; }
+    const code = new URLSearchParams(location.search).get("code")?.toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, "").slice(0, 10);
+    const head = workspace.querySelector(".workspace-head");
+    if (!code || !head || head === lastAppliedHead || head === loadingHead) return;
+    loadingHead = head;
+    try {
+      const list = await getList(code);
+      const currentCode = new URLSearchParams(location.search).get("code")?.toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, "").slice(0, 10);
+      if (list && currentCode === code && workspace.querySelector(".workspace-head") === head) {
+        applyCustomization(workspace, list);
+        lastAppliedHead = head;
+      }
+    } catch (error) {
+      console.error("Wishly: could not load shared wishlist customization", error);
+    } finally {
+      if (loadingHead === head) loadingHead = null;
+    }
   });
   observer.observe(workspace, {childList:true, subtree:true});
 }
