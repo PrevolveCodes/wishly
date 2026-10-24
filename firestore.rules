@@ -120,7 +120,7 @@ service cloud.firestore {
           && request.resource.data.reserved == true
           && request.resource.data.reservedBy == request.auth.uid;
         // Owners may clean up status records when deleting an item/list, without being allowed to read them.
-        allow delete: if (hasGiftAccess(code) && resource.data.reservedBy == request.auth.uid) || isOwner(code);
+        allow delete: if isOwner(code) || (hasGiftAccess(code) && resource.data.reservedBy == request.auth.uid);
       }
     }
   }
