@@ -85,7 +85,7 @@ service cloud.firestore {
     match /threads/{threadId} {
       allow get, list: if familyEmailMember(resource.data.familyId) && request.auth.token.email.lower() in resource.data.participantEmails;
       allow create: if familyEmailMember(request.resource.data.familyId) && request.auth.token.email.lower() in request.resource.data.participantEmails && request.resource.data.keys().hasOnly(['type','familyId','participantEmails','createdBy','createdAt']);
-      allow update: if familyEmailMember(resource.data.familyId) && request.auth.token.email.lower() in resource.data.participantEmails && request.resource.data.familyId == resource.data.familyId;
+      allow update: if familyEmailMember(resource.data.familyId) && request.resource.data.familyId == resource.data.familyId;
       allow delete: if false;
       match /messages/{messageId} {
         function threadAllowed() {
