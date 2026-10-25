@@ -30,11 +30,26 @@
     .suggestion-card .favorite-button{position:absolute;top:13px;right:13px;border:1px solid #e8e4f2;background:#fff;border-radius:9px;width:32px;height:32px;cursor:pointer;color:#746d87;font-size:17px}
     .suggestion-card .favorite-button[aria-pressed="true"]{color:#5947c7;background:#f0edff;border-color:#d8d0ff}
     .suggestions-empty{padding:35px 18px;text-align:center;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:16px}
-    .dashboard-page.dark-mode .suggestions-hero,.dashboard-page.dark-mode .suggestion-card,.dashboard-page.dark-mode .suggestions-tool-buttons button,.dashboard-page.dark-mode .suggestions-controls input,.dashboard-page.dark-mode .suggestions-controls select{background:#24232d;color:#f3f1fa;border-color:#3b3947}
-    .dashboard-page.dark-mode .suggestion-card p,.dashboard-page.dark-mode .suggestions-count{color:#b8b4c7}
-    .dashboard-page.dark-mode .suggestion-category,.dashboard-page.dark-mode .suggestion-card .favorite-button[aria-pressed="true"],.dashboard-page.dark-mode .suggestions-tool-buttons button[aria-pressed="true"]{background:#353047;color:#d8d0ff;border-color:#51476c}
+    .suggestion-modal{width:min(520px,calc(100vw - 28px));border:1px solid #e5e1eb;border-radius:18px;padding:0;background:#fff;color:#28252f;box-shadow:0 24px 70px #211a3b30}
+    .suggestion-modal::backdrop{background:#17131f66;backdrop-filter:blur(2px)}
+    .suggestion-modal-inner{padding:24px}
+    .suggestion-modal h2{margin:0 0 6px;font-size:23px;letter-spacing:-.5px}
+    .suggestion-modal p{margin:0 0 18px;color:#777180;font-size:13px;line-height:1.5}
+    .suggestion-list-options{display:grid;gap:9px;max-height:310px;overflow:auto;margin-bottom:16px}
+    .suggestion-list-option{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;border:1px solid #e5e1eb;border-radius:11px;padding:12px 14px;background:#faf9fd;color:#302c3a;cursor:pointer}
+    .suggestion-list-option:hover{border-color:#bdb2ed;background:#f5f2ff}
+    .suggestion-list-option strong{font-size:14px}
+    .suggestion-list-option span{font-size:11px;color:#827b8d}
+    .suggestion-modal-actions{display:flex;justify-content:flex-end;gap:8px}
+    .suggestion-modal .modal-close{border:1px solid #ded9e6;border-radius:10px;padding:9px 13px;background:#fff;color:#423d4b;font:600 12px 'DM Sans',sans-serif;cursor:pointer}
+    .suggestion-modal.dark-mode{background:#24232d;color:#f3f1fa;border-color:#3b3947}
+    .dashboard-page.dark-mode .suggestion-modal{background:#24232d;color:#f3f1fa;border-color:#3b3947}
+    .dashboard-page.dark-mode .suggestion-modal p,.dashboard-page.dark-mode .suggestion-list-option span{color:#b8b4c7}
+    .dashboard-page.dark-mode .suggestion-list-option{background:#2d2b37;color:#f3f1fa;border-color:#464252}
+    .dashboard-page.dark-mode .suggestion-list-option:hover{background:#353047;border-color:#685b8e}
+    .dashboard-page.dark-mode .suggestion-modal .modal-close{background:#2d2b37;color:#f3f1fa;border-color:#464252}
     @media(max-width:850px){.suggestions-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.suggestions-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media(max-width:560px){.suggestions-main{padding:18px 14px 35px}.suggestions-hero{padding:21px 17px;border-radius:18px}.suggestions-controls{grid-template-columns:1fr}.suggestions-grid{grid-template-columns:1fr}.suggestion-card{padding:18px}.suggestion-card h2{padding-right:32px}}
+    @media(max-width:560px){.suggestions-main{padding:18px 14px 35px}.suggestions-hero{padding:21px 17px;border-radius:18px}.suggestions-controls{grid-template-columns:1fr}.suggestions-grid{grid-template-columns:1fr}.suggestion-card{padding:18px}.suggestion-card h2{padding-right:32px}.suggestion-modal-inner{padding:20px}}
   </style>
   <script src="theme.js" defer></script>
 </head>
@@ -86,45 +101,107 @@
       <p id="suggestions-empty" class="suggestions-empty" hidden>No ideas match those filters. Try changing the category, budget, or search.</p>
     </section>
   </main>
+
+  <dialog id="add-to-list-dialog" class="suggestion-modal" aria-labelledby="add-to-list-title">
+    <div class="suggestion-modal-inner">
+      <h2 id="add-to-list-title">Which list?</h2>
+      <p id="add-to-list-description">Choose which wishlist should get this gift idea.</p>
+      <div id="suggestion-list-options" class="suggestion-list-options"></div>
+      <div class="suggestion-modal-actions"><button id="close-add-to-list" class="modal-close" type="button">Cancel</button></div>
+    </div>
+  </dialog>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+    import { getFirestore, collection, getDocs, addDoc, serverTimestamp, query, where } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
     const firebaseConfig = { apiKey: "AIzaSyANtZF9yXTg3bvUWMFAPRwyE798av2gzl0", authDomain: "wishly-fd9ff.firebaseapp.com", projectId: "wishly-fd9ff", storageBucket: "wishly-fd9ff.firebasestorage.app", messagingSenderId: "250113116782", appId: "1:250113116782:web:c84ed484cacb2b029df47f", measurementId: "G-EG1Z8P6MZW" };
-    const ideas = [
-      ["Wireless earbuds","Tech","mid","A useful everyday upgrade for music, videos, and calls."],
-      ["Phone stand","Tech","low","Keeps a phone upright for video calls or watching clips."],
-      ["Portable charger","Tech","mid","Handy for travel, school days, and long outings."],
-      ["LED desk lamp","Room","mid","Adds better lighting to a desk or bedside table."],
-      ["Soft blanket","Room","mid","A cozy pick for a bed, couch, or reading spot."],
-      ["Wall art or posters","Room","low","An easy way to personalize a bedroom or gaming space."],
-      ["Favorite book or series","Books","low","Choose a book, graphic novel, or the next volume in a series."],
-      ["Journal or notebook set","Books","low","Good for notes, planning, drawing, or journaling."],
-      ["Board game","Games","mid","A game to play with family or friends."],
-      ["LEGO set","Games","mid","Pick a set based on their favorite theme or building style."],
-      ["Controller charging dock","Games","mid","Keeps controllers charged and in one place."],
-      ["Drawing pencils and sketchbook","Art & Crafts","low","A simple starter set for sketching and practicing."],
-      ["Paint or marker set","Art & Crafts","mid","Useful for crafts, coloring, and art projects."],
-      ["DIY craft kit","Art & Crafts","mid","A ready-to-go project for making something new."],
-      ["Hoodie","Clothing","high","A comfortable staple; check size and preferred colors."],
-      ["Cap or beanie","Clothing","low","A smaller clothing gift that can match their style."],
-      ["Water bottle","Everyday","mid","Useful at school, practice, or on the go."],
-      ["Backpack","Everyday","high","Look for a size and layout that fits their daily needs."],
-      ["Snack box","Everyday","low","A mix of favorite snacks or treats."],
-      ["Sports ball","Sports","mid","Choose the right sport and official size if needed."],
-      ["Sports water bottle","Sports","low","A practical pick for practice and games."],
-      ["Resistance bands","Sports","low","Compact exercise gear for age-appropriate workouts."],
-      ["Mechanical keyboard","Tech","high","A desk upgrade; check layout, connection type, and noise preference."],
-      ["Headphones","Tech","high","Compare comfort, wired or wireless, and device compatibility."],
-      ["Gift card for a favorite store","Everyday","all","Lets them choose something they already want."]
-    ].map(([name,category,budget,description],index)=>({name,category,budget,description,index}));
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    let currentUser = null;
+    let ownedLists = [];
+    let selectedIdea = null;
+
     const grid=document.querySelector("#suggestions-grid"), empty=document.querySelector("#suggestions-empty");
     const count=document.querySelector("#suggestions-count");
     const favoritesButton=document.querySelector("#favorites-filter");
+    const addDialog=document.querySelector("#add-to-list-dialog");
+    const listOptions=document.querySelector("#suggestion-list-options");
+    const addDescription=document.querySelector("#add-to-list-description");
     const savedKey="wishly-saved-gift-ideas";
     let savedIdeas=[];
     try { savedIdeas=JSON.parse(localStorage.getItem(savedKey)||"[]"); if(!Array.isArray(savedIdeas)) savedIdeas=[]; } catch { savedIdeas=[]; }
     let onlyFavorites=false;
     const budgetRank={low:0,mid:1,high:2,all:3};
+    const budgetText={low:"Usually under $15",mid:"Usually $15–$50",high:"Usually $50+",all:"Price varies"};
+
+    function openAddToList(idea) {
+      selectedIdea = idea;
+      if (!currentUser) {
+        location.href = "signup.html";
+        return;
+      }
+      addDescription.textContent = `Choose which wishlist should get “${idea.name}”.`;
+      listOptions.innerHTML = "<div class=\"suggestions-empty\">Loading your wishlists…</div>";
+      addDialog.showModal();
+      loadListsForPicker();
+    }
+
+    async function loadListsForPicker() {
+      try {
+        const snap = await getDocs(query(collection(db,"wishlists"),where("ownerUid","==",currentUser.uid)));
+        ownedLists = snap.docs.map(d=>({code:d.id,...d.data()})).filter(list=>!list.archived).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+        if (!ownedLists.length) {
+          listOptions.innerHTML = '<div class="suggestions-empty">You don’t have any wishlists yet. Create one first, then come back here.</div>';
+          return;
+        }
+        listOptions.innerHTML = ownedLists.map(list => `<button class="suggestion-list-option" type="button" data-code="${String(list.code).replace(/"/g,"&quot;")}"><strong>${escapeHtml(list.title || "Untitled wishlist")}</strong><span>${escapeHtml(list.occasion || "Other")}</span></button>`).join("");
+        listOptions.querySelectorAll(".suggestion-list-option").forEach(button=>button.addEventListener("click",()=>addIdeaToList(button.dataset.code)));
+      } catch (error) {
+        listOptions.innerHTML = '<div class="suggestions-empty">Could not load your wishlists. Please try again.</div>';
+        console.error("Wishly: failed to load lists for suggestion picker",error);
+      }
+    }
+
+    async function addIdeaToList(code) {
+      if (!selectedIdea || !currentUser) return;
+      const buttons = [...listOptions.querySelectorAll("button")];
+      buttons.forEach(button=>button.disabled=true);
+      try {
+        const itemsSnap = await getDocs(collection(db,"wishlists",code,"items"));
+        const alreadyThere = itemsSnap.docs.some(itemDoc=>String(itemDoc.data().name||"").trim().toLowerCase()===selectedIdea.name.trim().toLowerCase());
+        if (alreadyThere) {
+          addDescription.textContent = `${selectedIdea.name} is already on that wishlist.`;
+          buttons.forEach(button=>button.disabled=false);
+          return;
+        }
+        await addDoc(collection(db,"wishlists",code,"items"),{
+          name:selectedIdea.name,
+          category:selectedIdea.category,
+          priority:"Would love",
+          notes:selectedIdea.description+" "+budgetText[selectedIdea.budget]+".",
+          url:"",
+          imageUrl:"",
+          price:"",
+          createdAt:serverTimestamp(),
+          sortOrder:Date.now()
+        });
+        const list=ownedLists.find(item=>item.code===code);
+        addDialog.close();
+        selectedIdea=null;
+        alert(`Added to ${list?.title || "your wishlist"}.`);
+      } catch (error) {
+        console.error("Wishly: failed to add gift suggestion",error);
+        addDescription.textContent = error?.code === "permission-denied" ? "Firebase denied the change. Check that your latest Firestore rules are published." : "Could not add that idea. Please try again.";
+        buttons.forEach(button=>button.disabled=false);
+      }
+    }
+
+    document.querySelector("#close-add-to-list").addEventListener("click",()=>addDialog.close());
+    addDialog.addEventListener("click",event=>{if(event.target===addDialog)addDialog.close();});
+
+    function escapeHtml(value){return String(value??"").replace(/[&<>\"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'\"':"&quot;","'":"&#39;"}[c]));}
     function render(){
       const category=document.querySelector("#category-filter").value;
       const budget=document.querySelector("#budget-filter").value;
@@ -143,8 +220,8 @@
         const favorite=document.createElement("button");favorite.type="button";favorite.className="favorite-button";favorite.setAttribute("aria-label",savedIdeas.includes(x.name)?"Remove saved idea":"Save idea");favorite.setAttribute("aria-pressed",String(savedIdeas.includes(x.name)));favorite.textContent=savedIdeas.includes(x.name)?"♥":"♡";
         favorite.addEventListener("click",()=>{if(savedIdeas.includes(x.name))savedIdeas=savedIdeas.filter(n=>n!==x.name);else savedIdeas.push(x.name);try{localStorage.setItem(savedKey,JSON.stringify(savedIdeas));}catch{}render();});
         const h=document.createElement("h2");h.textContent=x.name;
-        const p=document.createElement("p");p.textContent=x.description+" "+(x.budget==="low"?"Usually under $15":x.budget==="mid"?"Usually $15–$50":x.budget==="high"?"Usually $50+":"Price varies")+".";
-        const b=document.createElement("button");b.className="small-button";b.type="button";b.textContent="Use this idea";b.addEventListener("click",()=>{location.href="dashboard.html?view=make-list&idea="+encodeURIComponent(x.name)});
+        const p=document.createElement("p");p.textContent=x.description+" "+budgetText[x.budget]+".";
+        const b=document.createElement("button");b.className="small-button";b.type="button";b.textContent="Add to list";b.addEventListener("click",()=>openAddToList(x));
         card.append(favorite,tag,h,p,b);grid.append(card);
       });
       count.textContent=filtered.length+" "+(filtered.length===1?"idea":"ideas")+" shown"+(savedIdeas.length?" · "+savedIdeas.length+" saved":"");
@@ -156,8 +233,12 @@
     document.querySelector("#idea-search").addEventListener("input",render);
     favoritesButton.addEventListener("click",()=>{onlyFavorites=!onlyFavorites;render();});
     document.querySelector("#reset-filters").addEventListener("click",()=>{document.querySelector("#category-filter").value="All";document.querySelector("#budget-filter").value="all";document.querySelector("#idea-search").value="";document.querySelector("#idea-sort").value="recommended";onlyFavorites=false;render();});
+    onAuthStateChanged(auth,user=>{
+      currentUser=user && !user.isAnonymous ? user : null;
+      const out=document.querySelector("#sidebar-sign-out");
+      if(out){out.hidden=!currentUser;out.onclick=()=>signOut(auth).then(()=>location.href="./");}
+    });
     render();
-    try { const app=initializeApp(firebaseConfig); const auth=getAuth(app); onAuthStateChanged(auth,user=>{const out=document.querySelector("#sidebar-sign-out");if(out){out.hidden=!user;out.addEventListener("click",()=>signOut(auth).then(()=>location.href="./"));}}); } catch(e) { console.warn("Wishly sign-out setup unavailable",e); }
   </script>
   <script>
     document.addEventListener("click", function (event) {
