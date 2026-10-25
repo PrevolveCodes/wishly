@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="styles.css?v=profile-controls-3">
   <link rel="stylesheet" href="dashboard-loading.css?v=loading-1">
   <link rel="stylesheet" href="customization.css">
+  <link rel="stylesheet" href="overview.css?v=countdown-2">
   <script>
     (function(){
       const tips = [
@@ -47,6 +48,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script defer src="celebration.js?v=fun-features-1"></script>
   <script type="module" src="dashboard.js?v=families-dms-1"></script>
+  <script type="module" src="overview.js?v=bugfix-1"></script>
   <script type="module" src="customization.js?v=bugfix-1"></script>
   <script defer src="dashboard-navigation.js"></script>
 </head>
@@ -63,9 +65,9 @@
   <aside class="wishly-sidebar" aria-label="Dashboard sidebar">
     <a class="sidebar-brand" href="./" aria-label="Wishly home"><img src="icon.png" alt=""><span>wishly<span class="brand-dot">.</span></span></a>
     <nav class="sidebar-nav" aria-label="Dashboard navigation">
-      <a class="sidebar-link" href="overview.html"><img class="sidebar-icon" src="overview_icon.png?v=sidebar-icons-fix-4" alt=""><span>Overview</span></a>
-      <a class="sidebar-link" href="dashboard.html?view=make-list"><img class="sidebar-icon" src="make_list.png?v=sidebar-icons-fix-4" alt=""><span>Make a List</span></a>
-      <a class="sidebar-link" href="dashboard.html?view=lists"><img class="sidebar-icon" src="my_lists.png?v=sidebar-icons-fix-4" alt=""><span>My Lists</span></a>
+      <a class="sidebar-link" href="dashboard.html" data-dashboard-view="overview"><img class="sidebar-icon" src="overview_icon.png?v=sidebar-icons-fix-4" alt=""><span>Overview</span></a>
+      <a class="sidebar-link" href="dashboard.html" data-dashboard-view="make-list"><img class="sidebar-icon" src="make_list.png?v=sidebar-icons-fix-4" alt=""><span>Make a List</span></a>
+      <a class="sidebar-link" href="dashboard.html" data-dashboard-view="lists"><img class="sidebar-icon" src="my_lists.png?v=sidebar-icons-fix-4" alt=""><span>My Lists</span></a>
       <a class="sidebar-link" href="families.html"><span class="sidebar-icon" aria-hidden="true">♧</span><span>Families</span></a>
       <a class="sidebar-link" href="messages.html"><span class="sidebar-icon" aria-hidden="true">✉</span><span>Messages</span></a>
       <a class="sidebar-link" href="achievements.html"><span class="sidebar-icon" aria-hidden="true">🏆</span><span>Achievements</span></a>
@@ -83,7 +85,47 @@
     </div>
   </aside>
   <main class="dashboard-main" id="dashboard-main">
-    <section class="dashboard-welcome">
+    <div id="overview-view" class="overview-main" hidden>
+    <section class="dashboard-welcome overview-hero">
+      <div class="dashboard-welcome-copy" style="display:block;width:100%;min-width:0;text-align:left;margin:0;padding:0">
+        <div class="eyebrow">OVERVIEW</div>
+        <h1 id="overview-greeting">Welcome back.</h1>
+        <p>Everything about your Wishly lists, in one place.</p>
+      </div>
+      <div class="dashboard-mark" aria-hidden="true">♡</div>
+    </section>
+
+    <section class="overview-stats" aria-label="Wishlist statistics">
+      <article><span class="overview-stat-icon"><img src="my_lists.png?v=sidebar-icons-fix-4" alt=""></span><div><strong id="overview-list-count">—</strong><span>Wishlists</span></div></article>
+      <article><span class="overview-stat-icon"><img src="make_list.png?v=sidebar-icons-fix-4" alt=""></span><div><strong id="overview-item-count">—</strong><span>Total items</span></div></article>
+      <article><span class="overview-stat-icon"><img src="view_list.png?v=sidebar-icons-fix-4" alt=""></span><div><strong id="overview-view-count">—</strong><span>List views</span></div></article>
+      <article><span class="overview-stat-icon"><img src="Upcoming.png?v=upcoming-icon-2" alt=""></span><div><strong id="overview-upcoming-count">—</strong><span>Upcoming</span></div></article>
+    </section>
+
+    <section class="overview-section">
+      <div class="overview-section-heading"><div><div class="eyebrow">RECENT</div><h2>Your recent wishlists</h2></div><span>Latest first</span></div>
+      <div id="overview-recent-lists" class="overview-recent-lists"><div class="overview-loading">Loading your wishlists…</div></div>
+    </section>
+
+    <section class="overview-countdowns-section">
+      <div class="overview-section-heading"><div><h2>Countdowns</h2></div></div>
+      <div class="overview-upcoming" id="overview-upcoming">
+        <div class="overview-loading">Loading your countdowns…</div>
+      </div>
+    </section>
+
+    <section class="overview-section activity-section">
+      <div class="overview-section-heading"><div><div class="eyebrow">YOUR WISHLY</div><h2>Getting started</h2></div></div>
+      <div class="overview-steps">
+        <div><b>01</b><strong>Create</strong><p>Make a wishlist for a birthday, Christmas, or anything else.</p></div>
+        <div><b>02</b><strong>Add items</strong><p>Add the things you actually want, with links and notes when useful.</p></div>
+        <div><b>03</b><strong>Share</strong><p>Give your gift-givers your wishlist code so they can view it.</p></div>
+      </div>
+    </section>
+
+    <section class="overview-tip"><div class="overview-tip-mark">i</div><div><div class="eyebrow">WISHLY TIP</div><p id="overview-tip-text">Add store links to make it easier for gift-givers to find the exact item.</p></div></section>
+  </div>
+    <section class="dashboard-welcome" id="dashboard-welcome">
       <div class="dashboard-welcome-copy" style="display:block;width:100%;min-width:0;text-align:left;margin:0;padding:0">
         <div class="eyebrow" style="display:block;width:auto;text-align:left;margin:0 0 2px">WISHLIST MANAGEMENT</div>
         <h1 style="display:block;width:100%;text-align:left;margin:12px 0">Make a list<span>.</span></h1>
@@ -91,7 +133,7 @@
       </div>
       <div class="dashboard-mark" aria-hidden="true">♡</div>
     </section>
-    <section class="dashboard-grid">
+    <section class="dashboard-grid" id="dashboard-grid">
       <article class="action-card create-card dashboard-create" id="make-a-list">
         <div class="card-icon lavender"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
         <div class="card-heading"><h2>Create a wishlist</h2><p>Give your list a name, then start adding ideas.</p></div>
