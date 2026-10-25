@@ -2215,3 +2215,32 @@ body.dashboard-page .dashboard-main #message-list > * {
     padding: 22px;
   }
 }
+
+
+/* Keep every dashboard tab visible on small screens instead of hiding them
+   in a horizontally scrolling navigation strip. */
+@media (max-width: 680px) {
+  body.dashboard-page .wishly-sidebar {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+  }
+  body.dashboard-page .sidebar-nav {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: visible;
+    gap: 7px;
+    padding: 2px 0 6px;
+  }
+  body.dashboard-page .sidebar-link {
+    flex: 1 1 calc(50% - 7px);
+    width: auto;
+    min-width: 0;
+    justify-content: flex-start;
+    white-space: normal;
+  }
+  body.dashboard-page .sidebar-link span {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
