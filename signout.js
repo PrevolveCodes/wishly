@@ -46,7 +46,7 @@ onAuthStateChanged(auth, async user => {
   }
 });
 const dialog = document.getElementById("signout-dialog");
-const openButton = document.getElementById("sidebar-sign-out");
+const openButton = document.getElementById("settings-sign-out");
 const cancelButton = document.getElementById("signout-cancel");
 const confirmButton = document.getElementById("signout-confirm");
 
