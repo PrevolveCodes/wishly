@@ -22,6 +22,7 @@ onAuthStateChanged(auth, async user => {
   controls.id = "wishly-account-controls";
   controls.className = "wishly-account-controls";
   controls.innerHTML = '<div class="wishly-profile-button"><img class="wishly-profile-avatar" alt=""><span class="wishly-profile-copy"><strong class="wishly-profile-name">Your profile</strong></span></div><a class="wishly-settings-button" href="settings.html" aria-label="Settings" title="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="m19.4 15 .1.1a1.7 1.7 0 0 1-2.4 2.4l-.1-.1a1.7 1.7 0 0 0-2.9 1.2v.2a1.7 1.7 0 0 1-3.4 0v-.2a1.7 1.7 0 0 0-2.9-1.2l-.1.1a1.7 1.7 0 0 1-2.4-2.4l.1-.1a1.7 1.7 0 0 0-1.2-2.9H4a1.7 1.7 0 0 1 0-3.4h.2a1.7 1.7 0 0 0 1.2-2.9l-.1-.1a1.7 1.7 0 0 1 2.4-2.4l.1.1a1.7 1.7 0 0 0 2.9-1.2V2a1.7 1.7 0 0 1 3.4 0v.2a1.7 1.7 0 0 0 2.9 1.2l.1-.1a1.7 1.7 0 0 1 2.4 2.4l-.1.1a1.7 1.7 0 0 0 1.2 2.9h.2a1.7 1.7 0 0 1 0 3.4h-.2a1.7 1.7 0 0 0-1.2 2.9Z"/></svg></a>';
+  if (document.getElementById("dashboard-main")) controls.querySelector(".wishly-settings-button")?.remove();
   const premium = sidebarBottom.querySelector(".sidebar-premium");
   if (premium) sidebarBottom.insertBefore(controls, premium); else sidebarBottom.prepend(controls);
   try {
