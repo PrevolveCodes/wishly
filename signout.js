@@ -21,7 +21,7 @@ onAuthStateChanged(auth, async user => {
   const controls = document.createElement("div");
   controls.id = "wishly-account-controls";
   controls.className = "wishly-account-controls";
-  controls.innerHTML = '<a class="wishly-profile-button" href="profile.html"><img class="wishly-profile-avatar" alt=""><span class="wishly-profile-copy"><strong class="wishly-profile-name">Your profile</strong><small class="wishly-profile-handle">Edit your profile</small></span></a><a class="wishly-settings-button" href="settings.html" aria-label="Settings" title="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="m19.4 15 .1.1a1.7 1.7 0 0 1-2.4 2.4l-.1-.1a1.7 1.7 0 0 0-2.9 1.2v.2a1.7 1.7 0 0 1-3.4 0v-.2a1.7 1.7 0 0 0-2.9-1.2l-.1.1a1.7 1.7 0 0 1-2.4-2.4l.1-.1a1.7 1.7 0 0 0-1.2-2.9H4a1.7 1.7 0 0 1 0-3.4h.2a1.7 1.7 0 0 0 1.2-2.9l-.1-.1a1.7 1.7 0 0 1 2.4-2.4l.1.1a1.7 1.7 0 0 0 2.9-1.2V2a1.7 1.7 0 0 1 3.4 0v.2a1.7 1.7 0 0 0 2.9 1.2l.1-.1a1.7 1.7 0 0 1 2.4 2.4l-.1.1a1.7 1.7 0 0 0 1.2 2.9h.2a1.7 1.7 0 0 1 0 3.4h-.2a1.7 1.7 0 0 0-1.2 2.9Z"/></svg></a>';
+  controls.innerHTML = '<div class="wishly-profile-button"><img class="wishly-profile-avatar" alt=""><span class="wishly-profile-copy"><strong class="wishly-profile-name">Your profile</strong></span></div><a class="wishly-settings-button" href="settings.html" aria-label="Settings" title="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="m19.4 15 .1.1a1.7 1.7 0 0 1-2.4 2.4l-.1-.1a1.7 1.7 0 0 0-2.9 1.2v.2a1.7 1.7 0 0 1-3.4 0v-.2a1.7 1.7 0 0 0-2.9-1.2l-.1.1a1.7 1.7 0 0 1-2.4-2.4l.1-.1a1.7 1.7 0 0 0-1.2-2.9H4a1.7 1.7 0 0 1 0-3.4h.2a1.7 1.7 0 0 0 1.2-2.9l-.1-.1a1.7 1.7 0 0 1 2.4-2.4l.1.1a1.7 1.7 0 0 0 2.9-1.2V2a1.7 1.7 0 0 1 3.4 0v.2a1.7 1.7 0 0 0 2.9 1.2l.1-.1a1.7 1.7 0 0 1 2.4 2.4l-.1.1a1.7 1.7 0 0 0 1.2 2.9h.2a1.7 1.7 0 0 1 0 3.4h-.2a1.7 1.7 0 0 0-1.2 2.9Z"/></svg></a>';
   const premium = sidebarBottom.querySelector(".sidebar-premium");
   if (premium) sidebarBottom.insertBefore(controls, premium); else sidebarBottom.prepend(controls);
   try {
@@ -29,7 +29,6 @@ onAuthStateChanged(auth, async user => {
     const profile = snap.exists() ? snap.data() : {};
     const name = profile.displayName || user.displayName || (user.email ? user.email.split("@")[0] : "Your profile");
     controls.querySelector(".wishly-profile-name").textContent = name;
-    controls.querySelector(".wishly-profile-handle").textContent = profile.username ? "@" + profile.username : "Set up your profile";
     const avatar = controls.querySelector(".wishly-profile-avatar");
     const photo = profile.photoURL || user.photoURL || "";
     if (photo && /^https:\/\//i.test(photo)) { avatar.src = photo; avatar.alt = name + " profile picture"; }
