@@ -26,6 +26,221 @@ service cloud.firestore {
         && exists(/databases/$(database)/documents/families/$(familyId))
         && get(/databases/$(database)/documents/families/$(familyId)).data.memberEmails.hasAny([request.auth.token.email.lower()]);
     }
+
+    match /users/{uid} {
+      allow get: if fullAccount() && request.auth.uid == uid;
+      allow list: if false;
+      allow create, update: if fullAccount() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['displayName','username','photoURL','updatedAt'])
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() > 0
+        && request.resource.data.displayName.size() <= 50
+        && request.resource.data.username is string
+        && request.resource.data.username.matches('^[a-z0-9_]{3,20}
+      allow get: if true;
+      allow list: if fullAccount() && resource.data.ownerUid == request.auth.uid;
+      allow create: if fullAccount() && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.keys().hasOnly(['code','ownerUid','ownerName','title','occasion','createdAt','coverImageUrl','themeColor','eventDate','customMessage'])
+        && request.resource.data.code == code && request.resource.data.ownerName is string
+        && request.resource.data.ownerName.size() > 0 && request.resource.data.title is string && request.resource.data.title.size() > 0;
+      allow update: if isOwner(code) && request.resource.data.ownerUid == resource.data.ownerUid && request.resource.data.code == resource.data.code;
+      allow delete: if isOwner(code);
+      match /items/{itemId} {
+        allow get, list: if exists(/databases/$(database)/documents/wishlists/$(code));
+        allow create: if isOwner(code) && request.resource.data.keys().hasOnly(['name','category','url','imageUrl','price','priority','notes','createdAt','sortOrder']) && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100;
+        allow update: if isOwner(code) && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100 && request.resource.data.keys().hasOnly(['name','category','url','imageUrl','price','priority','notes','createdAt','sortOrder']);
+        allow delete: if isOwner(code);
+      }
+      match /giftAccessConfig/{configId} {
+        allow get, list: if false;
+        allow create: if isGiftGiver(code) && configId == 'main' && !exists(/databases/$(database)/documents/wishlists/$(code)/giftAccessConfig/main) && request.resource.data.keys().hasOnly(['pinHash','createdAt']) && request.resource.data.pinHash is string && request.resource.data.pinHash.size() == 64;
+        allow update: if false;
+        allow delete: if isOwner(code) && configId == 'main';
+      }
+      match /giftAccess/{uid} {
+        allow get: if isGiftGiver(code) && request.auth.uid == uid && resource.data.active == true;
+        allow list: if false;
+        allow create: if isGiftGiver(code) && request.auth.uid == uid && request.resource.data.keys().hasOnly(['pinHash','active','createdAt']) && request.resource.data.pinHash is string && request.resource.data.pinHash.size() == 64 && request.resource.data.active == true && exists(/databases/$(database)/documents/wishlists/$(code)/giftAccessConfig/main) && request.resource.data.pinHash == get(/databases/$(database)/documents/wishlists/$(code)/giftAccessConfig/main).data.pinHash;
+        allow update: if isGiftGiver(code) && request.auth.uid == uid && resource.data.active == true && request.resource.data.keys().hasOnly(['pinHash','active','createdAt']) && request.resource.data.pinHash == resource.data.pinHash && request.resource.data.active == true;
+        allow delete: if false;
+      }
+      match /familyShares/{familyId} {
+        allow get, list: if isOwner(code) || (request.auth != null && request.auth.token.firebase.sign_in_provider != 'anonymous' && request.auth.token.email != null && resource.data.invitedEmails.hasAny([request.auth.token.email.lower()]));
+        allow create: if isOwner(code) && request.resource.data.familyId == familyId && request.resource.data.keys().hasOnly(['familyId','familyName','invitedEmails','passwordStatus','delegatedToEmail','createdBy','createdAt']) && request.resource.data.invitedEmails is list && request.resource.data.passwordStatus == 'unclaimed' && request.resource.data.createdBy == request.auth.uid;
+        allow update: if isOwner(code) ||
+          (request.auth != null
+            && request.auth.token.firebase.sign_in_provider != 'anonymous'
+            && request.auth.token.email != null
+            && resource.data.invitedEmails.hasAny([request.auth.token.email.lower()])
+            && request.resource.data.familyId == resource.data.familyId
+            && request.resource.data.familyName == resource.data.familyName
+            && request.resource.data.invitedEmails == resource.data.invitedEmails
+            && request.resource.data.createdBy == resource.data.createdBy
+            && request.resource.data.createdAt == resource.data.createdAt
+            && request.resource.data.keys().hasOnly(['familyId','familyName','invitedEmails','passwordStatus','delegatedToEmail','createdBy','createdAt'])
+            && (
+              (request.resource.data.passwordStatus == 'delegated'
+                && request.resource.data.delegatedToEmail in resource.data.invitedEmails
+                && request.resource.data.delegatedToEmail != request.auth.token.email.lower())
+              ||
+              (request.resource.data.passwordStatus == 'set'
+                && (resource.data.passwordStatus == 'unclaimed'
+                  || resource.data.delegatedToEmail == request.auth.token.email.lower())
+                && request.resource.data.delegatedToEmail == request.auth.token.email.lower())
+            )
+          );
+        allow delete: if isOwner(code);
+      }
+      match /purchases/{itemId} {
+        allow get, list: if hasGiftAccess(code) && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId));
+        allow create, update: if hasGiftAccess(code) && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId)) && request.resource.data.keys().hasOnly(['purchased','updatedAt']) && request.resource.data.purchased == true;
+        allow delete: if isOwner(code);
+      }
+      match /reservations/{itemId} {
+        allow get, list: if hasGiftAccess(code) && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId));
+        allow create: if hasGiftAccess(code) && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId)) && request.resource.data.keys().hasOnly(['reserved','reservedBy','updatedAt']) && request.resource.data.reserved == true && request.resource.data.reservedBy == request.auth.uid;
+        allow update: if hasGiftAccess(code) && resource.data.reservedBy == request.auth.uid && request.resource.data.keys().hasOnly(['reserved','reservedBy','updatedAt']) && request.resource.data.reserved == true && request.resource.data.reservedBy == request.auth.uid;
+        allow delete: if isOwner(code) || (hasGiftAccess(code) && resource.data.reservedBy == request.auth.uid);
+      }
+    }
+    match /families/{familyId} {
+      allow get, list: if fullAccount() && (resource.data.ownerUid == request.auth.uid || resource.data.memberUids.hasAny([request.auth.uid]) || (request.auth.token.email != null && resource.data.pendingEmails.hasAny([request.auth.token.email.lower()])));
+      allow create: if fullAccount() && request.resource.data.ownerUid == request.auth.uid && request.resource.data.memberUids is list && request.resource.data.memberUids.size() == 1 && request.resource.data.memberUids.hasOnly([request.auth.uid]) && request.resource.data.memberEmails is list && request.resource.data.pendingEmails is list && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 60 && request.resource.data.keys().hasOnly(['name','ownerUid','memberUids','memberEmails','pendingEmails','createdAt']);
+      allow update: if fullAccount() && (
+        resource.data.ownerUid == request.auth.uid ||
+        (resource.data.memberUids.hasAny([request.auth.uid]) && request.resource.data.memberUids.hasAll(resource.data.memberUids) && request.resource.data.memberEmails.hasAll(resource.data.memberEmails)) ||
+        (request.auth.token.email != null && resource.data.pendingEmails.hasAny([request.auth.token.email.lower()]) && request.resource.data.memberUids.hasAll(resource.data.memberUids) && request.resource.data.memberEmails.hasAny([request.auth.token.email.lower()]) && !request.resource.data.pendingEmails.hasAny([request.auth.token.email.lower()]))
+      ) && request.resource.data.keys().hasOnly(['name','ownerUid','memberUids','memberEmails','pendingEmails','createdAt']);
+      allow delete: if fullAccount() && resource.data.ownerUid == request.auth.uid;
+    }
+    match /threads/{threadId} {
+      allow get, list: if familyEmailMember(resource.data.familyId) && request.auth.token.email.lower() in resource.data.participantEmails;
+      allow create: if familyEmailMember(request.resource.data.familyId) && request.auth.token.email.lower() in request.resource.data.participantEmails && request.resource.data.keys().hasOnly(['type','familyId','participantEmails','createdBy','createdAt']);
+      allow update: if familyEmailMember(resource.data.familyId) && request.resource.data.familyId == resource.data.familyId;
+      allow delete: if false;
+      match /messages/{messageId} {
+        function threadAllowed() {
+          return familyEmailMember(get(/databases/$(database)/documents/threads/$(threadId)).data.familyId)
+            && request.auth.token.email.lower() in get(/databases/$(database)/documents/threads/$(threadId)).data.participantEmails;
+        }
+        allow get, list: if threadAllowed();
+        allow create: if threadAllowed() && request.resource.data.senderUid == request.auth.uid && request.resource.data.senderEmail == request.auth.token.email.lower() && request.resource.data.text is string && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 2000 && request.resource.data.keys().hasOnly(['text','senderUid','senderEmail','senderName','createdAt']);
+        allow update, delete: if false;
+      }
+    }
+  }
+})
+        && request.resource.data.photoURL is string
+        && request.resource.data.photoURL.size() <= 500
+        && (request.resource.data.photoURL == '' || request.resource.data.photoURL.matches('^https://.*'));
+      allow delete: if fullAccount() && request.auth.uid == uid;
+    }
+    match /usernames/{username} {
+      allow get: if true;
+      allow list: if false;
+      allow create: if fullAccount()
+        && request.resource.data.keys().hasOnly(['uid'])
+        && request.resource.data.uid == request.auth.uid
+        && username.matches('^[a-z0-9_]{3,20}
+      allow get: if true;
+      allow list: if fullAccount() && resource.data.ownerUid == request.auth.uid;
+      allow create: if fullAccount() && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.keys().hasOnly(['code','ownerUid','ownerName','title','occasion','createdAt','coverImageUrl','themeColor','eventDate','customMessage'])
+        && request.resource.data.code == code && request.resource.data.ownerName is string
+        && request.resource.data.ownerName.size() > 0 && request.resource.data.title is string && request.resource.data.title.size() > 0;
+      allow update: if isOwner(code) && request.resource.data.ownerUid == resource.data.ownerUid && request.resource.data.code == resource.data.code;
+      allow delete: if isOwner(code);
+      match /items/{itemId} {
+        allow get, list: if exists(/databases/$(database)/documents/wishlists/$(code));
+        allow create: if isOwner(code) && request.resource.data.keys().hasOnly(['name','category','url','imageUrl','price','priority','notes','createdAt','sortOrder']) && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100;
+        allow update: if isOwner(code) && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100 && request.resource.data.keys().hasOnly(['name','category','url','imageUrl','price','priority','notes','createdAt','sortOrder']);
+        allow delete: if isOwner(code);
+      }
+      match /giftAccessConfig/{configId} {
+        allow get, list: if false;
+        allow create: if isGiftGiver(code) && configId == 'main' && !exists(/databases/$(database)/documents/wishlists/$(code)/giftAccessConfig/main) && request.resource.data.keys().hasOnly(['pinHash','createdAt']) && request.resource.data.pinHash is string && request.resource.data.pinHash.size() == 64;
+        allow update: if false;
+        allow delete: if isOwner(code) && configId == 'main';
+      }
+      match /giftAccess/{uid} {
+        allow get: if isGiftGiver(code) && request.auth.uid == uid && resource.data.active == true;
+        allow list: if false;
+        allow create: if isGiftGiver(code) && request.auth.uid == uid && request.resource.data.keys().hasOnly(['pinHash','active','createdAt']) && request.resource.data.pinHash is string && request.resource.data.pinHash.size() == 64 && request.resource.data.active == true && exists(/databases/$(database)/documents/wishlists/$(code)/giftAccessConfig/main) && request.resource.data.pinHash == get(/databases/$(database)/documents/wishlists/$(code)/giftAccessConfig/main).data.pinHash;
+        allow update: if isGiftGiver(code) && request.auth.uid == uid && resource.data.active == true && request.resource.data.keys().hasOnly(['pinHash','active','createdAt']) && request.resource.data.pinHash == resource.data.pinHash && request.resource.data.active == true;
+        allow delete: if false;
+      }
+      match /familyShares/{familyId} {
+        allow get, list: if isOwner(code) || (request.auth != null && request.auth.token.firebase.sign_in_provider != 'anonymous' && request.auth.token.email != null && resource.data.invitedEmails.hasAny([request.auth.token.email.lower()]));
+        allow create: if isOwner(code) && request.resource.data.familyId == familyId && request.resource.data.keys().hasOnly(['familyId','familyName','invitedEmails','passwordStatus','delegatedToEmail','createdBy','createdAt']) && request.resource.data.invitedEmails is list && request.resource.data.passwordStatus == 'unclaimed' && request.resource.data.createdBy == request.auth.uid;
+        allow update: if isOwner(code) ||
+          (request.auth != null
+            && request.auth.token.firebase.sign_in_provider != 'anonymous'
+            && request.auth.token.email != null
+            && resource.data.invitedEmails.hasAny([request.auth.token.email.lower()])
+            && request.resource.data.familyId == resource.data.familyId
+            && request.resource.data.familyName == resource.data.familyName
+            && request.resource.data.invitedEmails == resource.data.invitedEmails
+            && request.resource.data.createdBy == resource.data.createdBy
+            && request.resource.data.createdAt == resource.data.createdAt
+            && request.resource.data.keys().hasOnly(['familyId','familyName','invitedEmails','passwordStatus','delegatedToEmail','createdBy','createdAt'])
+            && (
+              (request.resource.data.passwordStatus == 'delegated'
+                && request.resource.data.delegatedToEmail in resource.data.invitedEmails
+                && request.resource.data.delegatedToEmail != request.auth.token.email.lower())
+              ||
+              (request.resource.data.passwordStatus == 'set'
+                && (resource.data.passwordStatus == 'unclaimed'
+                  || resource.data.delegatedToEmail == request.auth.token.email.lower())
+                && request.resource.data.delegatedToEmail == request.auth.token.email.lower())
+            )
+          );
+        allow delete: if isOwner(code);
+      }
+      match /purchases/{itemId} {
+        allow get, list: if hasGiftAccess(code) && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId));
+        allow create, update: if hasGiftAccess(code) && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId)) && request.resource.data.keys().hasOnly(['purchased','updatedAt']) && request.resource.data.purchased == true;
+        allow delete: if isOwner(code);
+      }
+      match /reservations/{itemId} {
+        allow get, list: if hasGiftAccess(code) && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId));
+        allow create: if hasGiftAccess(code) && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId)) && request.resource.data.keys().hasOnly(['reserved','reservedBy','updatedAt']) && request.resource.data.reserved == true && request.resource.data.reservedBy == request.auth.uid;
+        allow update: if hasGiftAccess(code) && resource.data.reservedBy == request.auth.uid && request.resource.data.keys().hasOnly(['reserved','reservedBy','updatedAt']) && request.resource.data.reserved == true && request.resource.data.reservedBy == request.auth.uid;
+        allow delete: if isOwner(code) || (hasGiftAccess(code) && resource.data.reservedBy == request.auth.uid);
+      }
+    }
+    match /families/{familyId} {
+      allow get, list: if fullAccount() && (resource.data.ownerUid == request.auth.uid || resource.data.memberUids.hasAny([request.auth.uid]) || (request.auth.token.email != null && resource.data.pendingEmails.hasAny([request.auth.token.email.lower()])));
+      allow create: if fullAccount() && request.resource.data.ownerUid == request.auth.uid && request.resource.data.memberUids is list && request.resource.data.memberUids.size() == 1 && request.resource.data.memberUids.hasOnly([request.auth.uid]) && request.resource.data.memberEmails is list && request.resource.data.pendingEmails is list && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 60 && request.resource.data.keys().hasOnly(['name','ownerUid','memberUids','memberEmails','pendingEmails','createdAt']);
+      allow update: if fullAccount() && (
+        resource.data.ownerUid == request.auth.uid ||
+        (resource.data.memberUids.hasAny([request.auth.uid]) && request.resource.data.memberUids.hasAll(resource.data.memberUids) && request.resource.data.memberEmails.hasAll(resource.data.memberEmails)) ||
+        (request.auth.token.email != null && resource.data.pendingEmails.hasAny([request.auth.token.email.lower()]) && request.resource.data.memberUids.hasAll(resource.data.memberUids) && request.resource.data.memberEmails.hasAny([request.auth.token.email.lower()]) && !request.resource.data.pendingEmails.hasAny([request.auth.token.email.lower()]))
+      ) && request.resource.data.keys().hasOnly(['name','ownerUid','memberUids','memberEmails','pendingEmails','createdAt']);
+      allow delete: if fullAccount() && resource.data.ownerUid == request.auth.uid;
+    }
+    match /threads/{threadId} {
+      allow get, list: if familyEmailMember(resource.data.familyId) && request.auth.token.email.lower() in resource.data.participantEmails;
+      allow create: if familyEmailMember(request.resource.data.familyId) && request.auth.token.email.lower() in request.resource.data.participantEmails && request.resource.data.keys().hasOnly(['type','familyId','participantEmails','createdBy','createdAt']);
+      allow update: if familyEmailMember(resource.data.familyId) && request.resource.data.familyId == resource.data.familyId;
+      allow delete: if false;
+      match /messages/{messageId} {
+        function threadAllowed() {
+          return familyEmailMember(get(/databases/$(database)/documents/threads/$(threadId)).data.familyId)
+            && request.auth.token.email.lower() in get(/databases/$(database)/documents/threads/$(threadId)).data.participantEmails;
+        }
+        allow get, list: if threadAllowed();
+        allow create: if threadAllowed() && request.resource.data.senderUid == request.auth.uid && request.resource.data.senderEmail == request.auth.token.email.lower() && request.resource.data.text is string && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 2000 && request.resource.data.keys().hasOnly(['text','senderUid','senderEmail','senderName','createdAt']);
+        allow update, delete: if false;
+      }
+    }
+  }
+});
+      allow update: if fullAccount()
+        && resource.data.uid == request.auth.uid
+        && request.resource.data.keys().hasOnly(['uid'])
+        && request.resource.data.uid == request.auth.uid;
+      allow delete: if fullAccount() && resource.data.uid == request.auth.uid;
+    }
     match /wishlists/{code} {
       allow get: if true;
       allow list: if fullAccount() && resource.data.ownerUid == request.auth.uid;
