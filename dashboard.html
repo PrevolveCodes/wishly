@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="dashboard-loading.css?v=loading-1">
   <link rel="stylesheet" href="customization.css">
   <link rel="stylesheet" href="overview.css?v=countdown-2">
+  <link rel="stylesheet" href="achievements.css?v=achievements-2">
   <script>
     (function(){
       const tips = [
@@ -49,6 +50,9 @@
   <script defer src="celebration.js?v=fun-features-1"></script>
   <script type="module" src="dashboard.js?v=families-dms-1"></script>
   <script type="module" src="overview.js?v=bugfix-1"></script>
+  <script type="module" src="families.js?v=spa-1"></script>
+  <script type="module" src="messages.js?v=spa-1"></script>
+  <script type="module" src="achievements.js?v=spa-1"></script>
   <script type="module" src="customization.js?v=bugfix-1"></script>
   <script defer src="dashboard-navigation.js"></script>
 </head>
@@ -68,9 +72,9 @@
       <a class="sidebar-link" href="dashboard.html" data-dashboard-view="overview"><img class="sidebar-icon" src="overview_icon.png?v=sidebar-icons-fix-4" alt=""><span>Overview</span></a>
       <a class="sidebar-link" href="dashboard.html" data-dashboard-view="make-list"><img class="sidebar-icon" src="make_list.png?v=sidebar-icons-fix-4" alt=""><span>Make a List</span></a>
       <a class="sidebar-link" href="dashboard.html" data-dashboard-view="lists"><img class="sidebar-icon" src="my_lists.png?v=sidebar-icons-fix-4" alt=""><span>My Lists</span></a>
-      <a class="sidebar-link" href="families.html"><span class="sidebar-icon" aria-hidden="true">♧</span><span>Families</span></a>
-      <a class="sidebar-link" href="messages.html"><span class="sidebar-icon" aria-hidden="true">✉</span><span>Messages</span></a>
-      <a class="sidebar-link" href="achievements.html"><span class="sidebar-icon" aria-hidden="true">🏆</span><span>Achievements</span></a>
+      <a class="sidebar-link" href="dashboard.html" data-dashboard-view="families"><span class="sidebar-icon" aria-hidden="true">♧</span><span>Families</span></a>
+      <a class="sidebar-link" href="dashboard.html" data-dashboard-view="messages"><span class="sidebar-icon" aria-hidden="true">✉</span><span>Messages</span></a>
+      <a class="sidebar-link" href="dashboard.html" data-dashboard-view="achievements"><span class="sidebar-icon" aria-hidden="true">🏆</span><span>Achievements</span></a>
       <a class="sidebar-link" href="suggestions.html"><img class="sidebar-icon" src="gift_suggestions.png?v=sidebar-icons-fix-4" alt=""><span>Gift Suggestions</span></a>
       <a class="sidebar-link" href="gift.html"><img class="sidebar-icon" src="view_list.png?v=sidebar-icons-fix-4" alt=""><span>View a Wishlist</span></a>
       <button class="sidebar-link sidebar-theme-toggle" id="sidebar-theme-toggle" type="button"><img class="sidebar-icon" src="darklight_mode.png?v=sidebar-icons-fix-5" alt=""><span>Toggle dark mode</span></button>
@@ -151,6 +155,22 @@
       </section>
     </section>
     <section id="workspace" class="workspace hidden" aria-live="polite"></section>
+  <section id="families-view" class="dashboard-embedded-view families-main" hidden><section class="dashboard-welcome"><div class="dashboard-welcome-copy"><div class="eyebrow">SHARE WITH YOUR PEOPLE</div><h1>Families<span>.</span></h1><p>Create a family space, invite members by email, and share only the wishlists you choose.</p></div><div class="dashboard-mark" aria-hidden="true">♡</div></section>
+<section class="dashboard-grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));align-items:start"><article class="action-card"><div class="card-heading"><h2>Create a family</h2><p>Start a family space for the people you want to share with.</p></div><form id="create-family-form"><label for="family-name">Family name</label><input id="family-name" maxlength="60" placeholder="e.g. Smith Family" required><button class="button button-primary" type="submit">Create family →</button></form></article><article class="action-card"><div class="card-heading"><h2>Family invitations</h2><p>Accept invitations sent to your signed-in email address.</p></div><div id="pending-families">Loading invitations…</div></article></section>
+<section class="dashboard-lists" style="margin-top:28px"><div class="section-heading"><div><div class="eyebrow">YOUR GROUPS</div><h2>My families</h2></div></div><div id="family-list" class="owned-lists">Loading families…</div></section></section>
+<section id="messages-view" class="dashboard-embedded-view messages-main" hidden><section class="dashboard-welcome"><div class="dashboard-welcome-copy"><div class="eyebrow">PRIVATE FAMILY CONVERSATIONS</div><h1>Messages<span>.</span></h1><p>Direct messages and family group chats for members of your Wishly families.</p></div><div class="dashboard-mark" aria-hidden="true">✉</div></section><section class="dashboard-grid" style="grid-template-columns:minmax(230px,0.8fr) minmax(0,1.5fr);align-items:start"><article class="action-card"><div class="card-heading"><h2>Conversations</h2><p>Choose a family chat or start a DM.</p></div><div id="conversation-list">Loading conversations…</div><hr><form id="start-dm"><label for="dm-family">Family</label><select id="dm-family" required><option value="">Choose a family</option></select><label for="dm-person">Message a member</label><select id="dm-person" required><option value="">Choose a member</option></select><button class="button button-primary" type="submit">Start DM →</button></form></article><article class="action-card"><div class="card-heading"><h2 id="chat-title">Select a conversation</h2><p id="chat-subtitle">Your messages will appear here.</p></div><div id="message-list" style="min-height:240px;max-height:48vh;overflow:auto;display:flex;flex-direction:column;gap:10px;margin:16px 0"></div><form id="send-message"><label class="sr-only" for="message-text">Message</label><textarea id="message-text" maxlength="2000" rows="3" placeholder="Write a message…" required disabled></textarea><button id="send-button" class="button button-primary" type="submit" disabled>Send message →</button></form></article></section></section>
+<section id="achievements-view" class="dashboard-embedded-view achievements-main" hidden>
+    <section class="dashboard-welcome">
+      <div class="dashboard-welcome-copy"><div class="eyebrow">LITTLE WINS</div><h1>Achievements<span>.</span></h1><p>Keep building your wishlists and unlock little milestones along the way.</p></div>
+      <div class="dashboard-mark" aria-hidden="true">★</div>
+    </section>
+    <section class="achievement-progress">
+      <div><strong id="achievement-count">Loading…</strong><span>achievements unlocked</span></div>
+      <div class="achievement-progress-track"><span id="achievement-progress-bar"></span></div>
+    </section>
+    <section id="achievement-grid" class="achievement-grid" aria-live="polite"><div class="achievement-loading">Loading your achievements…</div></section>
+    <p id="achievement-message" class="achievement-message" role="status"></p>
+  </section>
   </main>
   <p id="notice" class="notice hidden" role="status"></p>
   <dialog id="signout-dialog" class="modal signout-modal" aria-labelledby="signout-title">
