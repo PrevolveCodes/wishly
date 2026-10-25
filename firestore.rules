@@ -95,7 +95,7 @@ service cloud.firestore {
     }
     match /families/{familyId} {
       allow get, list: if fullAccount() && (resource.data.ownerUid == request.auth.uid || resource.data.memberUids.hasAny([request.auth.uid]) || (request.auth.token.email != null && resource.data.pendingEmails.hasAny([request.auth.token.email.lower()])));
-      allow create: if fullAccount() && request.resource.data.ownerUid == request.auth.uid && request.resource.data.memberUids == [request.auth.uid] && request.resource.data.keys().hasOnly(['name','ownerUid','memberUids','memberEmails','pendingEmails','createdAt']);
+      allow create: if fullAccount() && request.resource.data.ownerUid == request.auth.uid && request.resource.data.memberUids is list && request.resource.data.memberUids.size() == 1 && request.resource.data.memberUids.hasOnly([request.auth.uid]) && request.resource.data.memberEmails is list && request.resource.data.pendingEmails is list && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 60 && request.resource.data.keys().hasOnly(['name','ownerUid','memberUids','memberEmails','pendingEmails','createdAt']);
       allow update: if fullAccount() && (
         resource.data.ownerUid == request.auth.uid ||
         (resource.data.memberUids.hasAny([request.auth.uid]) && request.resource.data.memberUids.hasAll(resource.data.memberUids) && request.resource.data.memberEmails.hasAll(resource.data.memberEmails)) ||
