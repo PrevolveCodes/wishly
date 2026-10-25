@@ -54,7 +54,7 @@
   <script type="module" src="messages.js?v=spa-1"></script>
   <script type="module" src="achievements.js?v=spa-1"></script>
   <script type="module" src="customization.js?v=bugfix-1"></script>
-  <script defer src="dashboard-navigation.js?v=spa-2"></script>
+  <script defer src="dashboard-navigation.js?v=spa-3"></script>
   <style>.dashboard-embedded-view[hidden] { display: none !important; }</style>
   <style>
 
@@ -63,6 +63,13 @@
 .dashboard-embedded-view[hidden] { display: none !important; }
 </style>
   <script type="module" src="suggestions.js?v=spa-1"></script>
+  <style>
+
+.settings-main{width:min(760px,calc(100% - 32px));margin:34px auto 60px;min-width:0}.settings-card{padding:clamp(22px,4vw,36px);border:1px solid var(--line);border-radius:24px;background:var(--card);box-shadow:0 14px 40px #172a3b0c}.settings-card h1{margin:8px 0}.settings-intro,.settings-help{color:var(--muted)}.settings-intro{margin:0 0 25px}.settings-form{display:grid;gap:8px}.settings-form label{margin-top:13px}.settings-form input{width:100%;min-width:0;box-sizing:border-box}.settings-help{font-size:12px;margin:0 0 4px}.settings-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.settings-status{min-height:22px;color:var(--muted);font-size:13px}.settings-signout{margin-top:28px;padding-top:22px;border-top:1px solid var(--line)}.settings-signout h2{font-size:18px;margin:0 0 6px}.settings-signout p{margin:0 0 12px}.settings-avatar-preview{display:flex;align-items:center;gap:13px;margin:18px 0}.settings-avatar-preview img,.settings-avatar-preview span{width:60px;height:60px;border-radius:50%;object-fit:cover;background:#dcecff;display:grid;place-items:center;font-size:22px;font-weight:800;color:#1858a8}@media(max-width:600px){.settings-main{margin:20px auto}}
+
+.dashboard-embedded-view[hidden] { display: none !important; }
+</style>
+  <script type="module" src="settings.js?v=spa-1"></script>
 </head>
 <body class="dashboard-page">
   <div id="dashboard-loading" role="status" aria-live="polite">
@@ -84,6 +91,7 @@
       <a class="sidebar-link" href="dashboard.html" data-dashboard-view="messages"><span class="sidebar-icon" aria-hidden="true">✉</span><span>Messages</span></a>
       <a class="sidebar-link" href="dashboard.html" data-dashboard-view="achievements"><span class="sidebar-icon" aria-hidden="true">🏆</span><span>Achievements</span></a>
       <a class="sidebar-link" href="dashboard.html" data-dashboard-view="suggestions"><img class="sidebar-icon" src="gift_suggestions.png?v=sidebar-icons-fix-4" alt=""><span>Gift Suggestions</span></a>
+      <a class="sidebar-link" href="dashboard.html" data-dashboard-view="settings"><span class="sidebar-icon" aria-hidden="true">⚙</span><span>Settings</span></a>
       <a class="sidebar-link" href="gift.html"><img class="sidebar-icon" src="view_list.png?v=sidebar-icons-fix-4" alt=""><span>View a Wishlist</span></a>
       <button class="sidebar-link sidebar-theme-toggle" id="sidebar-theme-toggle" type="button"><img class="sidebar-icon" src="darklight_mode.png?v=sidebar-icons-fix-5" alt=""><span>Toggle dark mode</span></button>
     </nav>
@@ -185,6 +193,7 @@
   
 <dialog id="add-to-list-dialog" class="suggestion-modal" aria-labelledby="add-to-list-title"><div class="suggestion-modal-inner"><h2 id="add-to-list-title">Which list?</h2><p id="add-to-list-description">Choose which wishlist should get this gift idea.</p><div id="suggestion-list-options" class="suggestion-list-options"></div><div class="suggestion-modal-actions"><button id="close-add-to-list" class="modal-close" type="button">Cancel</button></div></div></dialog>
 </section>
+  <section id="settings-view" class="dashboard-embedded-view settings-main" hidden><div class="eyebrow">ACCOUNT PREFERENCES</div><section class="settings-card"><h1>Profile and settings<span>.</span></h1><p class="settings-intro">Choose how people see you on Wishly. Your email stays private.</p><form id="settings-form" class="settings-form"><label for="display-name">Display name</label><input id="display-name" name="displayName" maxlength="50" autocomplete="nickname" required placeholder="Your name"><label for="username">Username</label><input id="username" name="username" maxlength="20" minlength="3" pattern="[A-Za-z0-9_]{3,20}" autocomplete="username" required placeholder="yourname"><p class="settings-help">3–20 characters. Use letters, numbers, or underscores. Usernames are unique.</p><label for="photo-url">Profile picture URL</label><input id="photo-url" name="photoURL" type="url" maxlength="500" placeholder="https://example.com/photo.jpg"><p class="settings-help">Use a direct HTTPS image link. Leave blank to use your initials.</p><div class="settings-avatar-preview"><span id="avatar-fallback">W</span><img id="avatar-preview" class="hidden" alt="Profile picture preview"></div><div class="settings-status" id="settings-status" role="status"></div><div class="settings-actions"><button class="button button-primary" id="save-settings" type="submit">Save changes <span>→</span></button><a class="small-button" href="profile.html">View profile</a></div><div class="settings-signout"><h2>Sign out</h2><p class="settings-help">Sign out of your Wishly account on this device.</p><button class="small-button" id="settings-sign-out" type="button">Sign out</button></div></form></section></section>
   </main>
   <p id="notice" class="notice hidden" role="status"></p>
   <dialog id="signout-dialog" class="modal signout-modal" aria-labelledby="signout-title">
