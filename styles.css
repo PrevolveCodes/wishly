@@ -2151,3 +2151,67 @@ html.wishly-winter body .suggestion-card button:active:not(:disabled) {
 .dashboard-page #workspace .wish-item .item-actions{grid-column:3;grid-row:1 / span 2;display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:7px;min-width:76px}
 .dashboard-page #workspace .wish-item .item-actions .small-button{width:100%;min-width:76px;white-space:nowrap}
 @media(max-width:680px){.dashboard-page #workspace .wish-item .item-actions{grid-column:2;grid-row:auto;display:flex;flex-direction:row;flex-wrap:wrap;gap:7px;min-width:0}.dashboard-page #workspace .wish-item .item-actions .small-button{width:auto;min-width:82px;flex:0 1 auto}}
+
+
+/* Families and Messages: give forms, actions, and conversation controls room to breathe. */
+body.dashboard-page .dashboard-main #create-family-form,
+body.dashboard-page .dashboard-main #start-dm,
+body.dashboard-page .dashboard-main #send-message {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+body.dashboard-page .dashboard-main #create-family-form label,
+body.dashboard-page .dashboard-main #start-dm label {
+  margin: 8px 0 0;
+}
+body.dashboard-page .dashboard-main #create-family-form input,
+body.dashboard-page .dashboard-main #start-dm select,
+body.dashboard-page .dashboard-main #send-message textarea {
+  min-width: 0;
+  min-height: 46px;
+}
+body.dashboard-page .dashboard-main #create-family-form .button,
+body.dashboard-page .dashboard-main #start-dm .button,
+body.dashboard-page .dashboard-main #send-message .button {
+  width: 100%;
+  min-height: 46px;
+  margin: 8px 0 0;
+  gap: 12px;
+  white-space: normal;
+  line-height: 1.45;
+}
+body.dashboard-page .dashboard-main #conversation-list,
+body.dashboard-page .dashboard-main #pending-families,
+body.dashboard-page .dashboard-main #family-list,
+body.dashboard-page .dashboard-main #message-list {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+body.dashboard-page .dashboard-main #conversation-list > *,
+body.dashboard-page .dashboard-main #pending-families > *,
+body.dashboard-page .dashboard-main #family-list > * {
+  margin-bottom: 10px;
+}
+body.dashboard-page .dashboard-main #conversation-list button,
+body.dashboard-page .dashboard-main #pending-families button,
+body.dashboard-page .dashboard-main #family-list button {
+  max-width: 100%;
+  min-height: 42px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+body.dashboard-page .dashboard-main #message-list > * {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 850px) {
+  body.dashboard-page .dashboard-main .dashboard-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 18px;
+  }
+  body.dashboard-page .dashboard-main .action-card {
+    padding: 22px;
+  }
+}
