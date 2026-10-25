@@ -1,8 +1,8 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 import { getFirestore, collection, doc, getDoc, getDocs, query, where, setDoc, updateDoc, arrayUnion, arrayRemove, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 const config={apiKey:"AIzaSyANtZF9yXTg3bvUWMFAPRwyE798av2gzl0",authDomain:"wishly-fd9ff.firebaseapp.com",projectId:"wishly-fd9ff",storageBucket:"wishly-fd9ff.firebasestorage.app",messagingSenderId:"250113116782",appId:"1:250113116782:web:c84ed484cacb2b029df47f"};
-const app=initializeApp(config),auth=getAuth(app),db=getFirestore(app),$=s=>document.querySelector(s);
+const app=getApps().length ? getApp() : initializeApp(config),auth=getAuth(app),db=getFirestore(app),$=s=>document.querySelector(s);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function toast(s){const n=$("#notice");n.textContent=s;n.classList.remove("hidden");clearTimeout(toast.t);toast.t=setTimeout(()=>n.classList.add("hidden"),4500)}
 let user=null,families=[];
