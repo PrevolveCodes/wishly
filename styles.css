@@ -2261,4 +2261,4 @@ body.dashboard-page .dashboard-main #message-list > * {
 html body.dark-mode .wishly-profile-button{color:#f0f2fa}
 html body.dark-mode .wishly-profile-button:hover,html body.dark-mode .wishly-settings-button:hover{background:#202b43;border-color:#3c5a7b}
 html body.dark-mode .wishly-settings-button{background:#1c2332;border-color:#39465c;color:#c5cee1}
-@media(max-width:680px){.wishly-account-controls{margin:8px 0;padding-top:10px}.wishly-profile-button{flex:1}.wishly-profile-name{max-width:calc(100vw - 150px)}}
+@media(max-width:680px){.wishly-account-controls{margin:8px 0;padding-top:10px}.wishly-profile-name{max-width:calc(100vw - 150px)}}
