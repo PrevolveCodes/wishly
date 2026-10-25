@@ -16,7 +16,7 @@
     suggestions: document.getElementById("suggestions-view"),
     settings: document.getElementById("settings-view")
   };
-  const links = [...document.querySelectorAll(".sidebar-nav a.sidebar-link")];
+  const links = [...document.querySelectorAll("a[data-dashboard-view]")];
   function showView(name) {
     if (!views[name]) name = "overview";
     Object.entries(views).forEach(([key, node]) => { if (node) node.hidden = key !== name; });
@@ -31,7 +31,7 @@
     main.dataset.currentView = name;
   }
   document.addEventListener("click", event => {
-    const link = event.target.closest(".sidebar-nav a.sidebar-link");
+    const link = event.target.closest("a[data-dashboard-view]");
     if (!link) return;
     const target = link.dataset.dashboardView || (link.getAttribute("href") || "").match(/dashboard\.html\?view=([^&]+)/)?.[1];
     if (!target || !views[target]) return;
