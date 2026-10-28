@@ -20,12 +20,12 @@ Wishly is a mobile-friendly wishlist app. Creators register with email/password 
 - `wishlists/{code}/purchases/{itemId}`: purchase status, stored separately from owner-readable item details.
 - `wishlists/{code}/reservations/{itemId}`: reservation status, stored separately from owner-readable item details.
 
-## Families, wishlist sharing, and messages
+## Families and wishlist sharing
 
 - `families/{familyId}` stores family membership and pending email invitations.
 - `wishlists/{code}/familyShares/{familyId}` stores which family members were invited to a specific wishlist and whether password setup is unclaimed, delegated, or complete.
 - The first invited family member can create the wishlist gift password or pass setup to another invited member. This password is per wishlist; family membership alone does not grant access to every list.
-- `threads/{threadId}` and its `messages` subcollection store family group chats and direct messages. DMs are restricted to participants who are also members of the referenced family.
+- Once gift access is open, gift-givers can copy a share link that pre-fills the password. The password is stored in the URL fragment, which is not sent to the web server, but anyone with the link can use it.
 - Family invitations are stored in Wishly, but the current static site does not send email notifications. Share the wishlist link with invited members; they must sign in with the invited email to use the family password flow.
 
 ## Privacy limits
