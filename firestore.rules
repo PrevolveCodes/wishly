@@ -127,20 +127,5 @@ service cloud.firestore {
       ) && request.resource.data.keys().hasOnly(['name','ownerUid','memberUids','memberEmails','pendingEmails','createdAt']);
       allow delete: if fullAccount() && resource.data.ownerUid == request.auth.uid;
     }
-    match /threads/{threadId} {
-      allow get, list: if familyEmailMember(resource.data.familyId) && request.auth.token.email.lower() in resource.data.participantEmails;
-      allow create: if familyEmailMember(request.resource.data.familyId) && request.auth.token.email.lower() in request.resource.data.participantEmails && request.resource.data.keys().hasOnly(['type','familyId','participantEmails','createdBy','createdAt']);
-      allow update: if familyEmailMember(resource.data.familyId) && request.resource.data.familyId == resource.data.familyId;
-      allow delete: if false;
-      match /messages/{messageId} {
-        function threadAllowed() {
-          return familyEmailMember(get(/databases/$(database)/documents/threads/$(threadId)).data.familyId)
-            && request.auth.token.email.lower() in get(/databases/$(database)/documents/threads/$(threadId)).data.participantEmails;
-        }
-        allow get, list: if threadAllowed();
-        allow create: if threadAllowed() && request.resource.data.senderUid == request.auth.uid && request.resource.data.senderEmail == request.auth.token.email.lower() && request.resource.data.text is string && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 2000 && request.resource.data.keys().hasOnly(['text','senderUid','senderEmail','senderName','createdAt']);
-        allow update, delete: if false;
-      }
-    }
   }
 }
