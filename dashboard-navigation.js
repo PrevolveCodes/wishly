@@ -11,7 +11,6 @@
     "make-list": create,
     lists,
     families: document.getElementById("families-view"),
-    messages: document.getElementById("messages-view"),
     achievements: document.getElementById("achievements-view"),
     suggestions: document.getElementById("suggestions-view"),
     settings: document.getElementById("settings-view")
@@ -27,7 +26,7 @@
       link.classList.toggle("active", target === name);
       if (target) link.setAttribute("aria-current", target === name ? "page" : "false");
     });
-    document.title = ({overview:"Wishly Dashboard", "make-list":"Make a List — Wishly",lists:"My Lists — Wishly",families:"Families — Wishly",messages:"Messages — Wishly",achievements:"Achievements — Wishly",suggestions:"Gift Suggestions — Wishly",settings:"Settings — Wishly"})[name] || "Wishly Dashboard";
+    document.title = ({overview:"Wishly Dashboard", "make-list":"Make a List — Wishly",lists:"My Lists — Wishly",families:"Families — Wishly",achievements:"Achievements — Wishly",suggestions:"Gift Suggestions — Wishly",settings:"Settings — Wishly"})[name] || "Wishly Dashboard";
     main.dataset.currentView = name;
   }
   document.addEventListener("click", event => {
