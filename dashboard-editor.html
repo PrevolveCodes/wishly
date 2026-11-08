@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f7f6f2"><title>Wishly Dashboard UI Editor</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="dashboard-editor.css"><script type="module" src="dashboard-editor.js"></script></head>
+<body class="ui-editor-page">
+<header class="ui-editor-header"><a href="dashboard.html">← Back to dashboard</a><div><strong>Wishly UI Editor</strong><span>Shared dashboard appearance</span></div><span id="editor-account">Checking account…</span></header>
+<main class="ui-editor-layout">
+<section class="ui-editor-controls">
+<div class="eyebrow">SITE DESIGN</div><h1>Dashboard editor</h1><p>Changes you publish here appear on the dashboard for everyone.</p>
+<div id="editor-status" role="status">Checking editor permissions…</div>
+<label>Dashboard headline<input id="design-headline" maxlength="70" value="Your wishlists, all in one place."></label>
+<label>Subtitle<input id="design-subtitle" maxlength="140" value="Keep track of the gifts you would love."></label>
+<div class="ui-editor-two"><label>Accent color<input id="design-accent" type="color" value="#2878e7"></label><label>Background color<input id="design-background" type="color" value="#f7f6f2"></label></div>
+<label>Upload a PNG or image<input id="design-image" type="file" accept="image/png,image/jpeg,image/webp"></label>
+<label>Image placement<select id="design-position"><option value="top">Above dashboard content</option><option value="before-overview">Inside overview, above statistics</option><option value="sidebar">In the sidebar</option></select></label>
+<div class="ui-editor-actions"><button id="preview-design" type="button">Preview changes</button><button id="publish-design" type="button" disabled>Publish for everyone</button></div>
+<p class="ui-editor-note">Images are stored in the shared design document. Keep uploads under 650 KB. Publishing is restricted by Firebase rules to the authorized Google account.</p>
+</section>
+<section class="ui-editor-preview-wrap"><div class="ui-editor-preview-label">LIVE PREVIEW</div><div class="ui-editor-preview" id="design-preview"><div class="preview-sidebar"><b>wishly.</b><span>Overview</span><span>My Lists</span><span>Families</span></div><div class="preview-main"><div class="preview-banner" id="preview-image-wrap" hidden><img id="preview-image" alt="Your uploaded dashboard image"></div><small>OVERVIEW</small><h2 id="preview-headline">Your wishlists, all in one place.</h2><p id="preview-subtitle">Keep track of the gifts you would love.</p><div class="preview-stats"><span>Wishlists</span><span>Total items</span><span>Upcoming</span></div><div class="preview-card">Your dashboard cards will use the selected accent color.</div></div></div></section>
+</main></body></html>
