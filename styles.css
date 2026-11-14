@@ -2374,3 +2374,90 @@ html body.dark-mode .wishly-settings-button{background:#1c2332;border-color:#394
     white-space: normal;
   }
 }
+
+
+/* Open wishlist layout: keep titles, item names, and controls readable. */
+.dashboard-page #workspace .workspace-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+}
+.dashboard-page #workspace .workspace-head > div:first-child {
+  flex: 1 1 280px;
+  min-width: 220px;
+  max-width: 100%;
+}
+.dashboard-page #workspace .workspace-head h2 {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+  line-height: 1.25;
+}
+.dashboard-page #workspace .workspace-head .code-chip {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.dashboard-page #workspace .workspace-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.dashboard-page #workspace .workspace-actions > button {
+  flex: 0 1 auto;
+  width: auto;
+  min-width: max-content;
+  max-width: 100%;
+  min-height: 40px;
+  padding: 9px 13px;
+  white-space: normal;
+  line-height: 1.35;
+}
+.dashboard-page #workspace .wish-item .item-info h3 {
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
+  line-height: 1.4;
+}
+.dashboard-page #workspace .wish-item .item-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 8px;
+  min-width: 92px;
+}
+.dashboard-page #workspace .wish-item .item-actions .small-button {
+  width: 100%;
+  min-width: 92px;
+  min-height: 38px;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+@media (max-width: 680px) {
+  .dashboard-page #workspace .workspace-head > div:first-child {
+    flex-basis: 100%;
+    min-width: 0;
+  }
+  .dashboard-page #workspace .workspace-actions > button {
+    min-width: 0;
+    flex: 0 1 auto;
+  }
+  .dashboard-page #workspace .wish-item .item-actions {
+    grid-column: 2;
+    flex-direction: row;
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+  .dashboard-page #workspace .wish-item .item-actions .small-button {
+    width: auto;
+    min-width: 82px;
+  }
+}
