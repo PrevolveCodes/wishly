@@ -2288,3 +2288,41 @@ html body.dark-mode .wishly-settings-button{background:#1c2332;border-color:#394
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+
+/* Prevent wishlist names and access codes from collapsing to one character per line. */
+.dashboard-lists:has(.my-lists-sidebar) {
+  grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.6fr);
+}
+.my-lists-sidebar .owned-list {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px 12px;
+}
+.my-lists-sidebar .owned-list-info {
+  min-width: 0;
+  width: 100%;
+}
+.my-lists-sidebar .owned-list-info h3,
+.my-lists-sidebar .owned-list-info p {
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+.my-lists-sidebar .owned-list-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+.my-lists-sidebar .owned-list-actions .small-button {
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+@media (max-width: 900px) {
+  .dashboard-lists:has(.my-lists-sidebar) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
