@@ -2461,3 +2461,46 @@ html body.dark-mode .wishly-settings-button{background:#1c2332;border-color:#394
     min-width: 82px;
   }
 }
+
+
+/* Final dashboard width fix: the wishlist panel needs the full dashboard row
+   before it can split My Wishlists and the open list into readable columns. */
+body.dashboard-page .dashboard-grid > .dashboard-lists {
+  grid-column: 1 / -1 !important;
+  width: 100%;
+  min-width: 0;
+}
+body.dashboard-page .dashboard-lists:has(> .my-lists-sidebar) {
+  display: grid !important;
+  grid-template-columns: minmax(240px, 0.78fr) minmax(0, 1.5fr) !important;
+  gap: 22px;
+  align-items: start;
+  width: 100%;
+  min-width: 0;
+}
+body.dashboard-page .dashboard-lists > .my-lists-sidebar,
+body.dashboard-page .dashboard-lists > #workspace {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+body.dashboard-page #workspace .workspace-head > div:first-child {
+  flex: 1 1 240px !important;
+  width: auto !important;
+  min-width: 0 !important;
+}
+body.dashboard-page #workspace .workspace-head h2,
+body.dashboard-page #workspace .wish-item .item-info h3 {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+}
+@media (max-width: 900px) {
+  body.dashboard-page .dashboard-lists:has(> .my-lists-sidebar) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
