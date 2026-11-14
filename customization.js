@@ -67,13 +67,7 @@ function dashboardMode() {
     workspace.querySelector(".wishlist-custom-banner")?.remove();
     workspace.classList.remove("has-list-customization");
 
-    const button = document.createElement("button");
-    button.className = "small-button";
-    button.id = "customize-list";
-    button.type = "button";
-    button.textContent = "Customize wishlist";
-    actions.appendChild(button);
-    button.addEventListener("click", async () => openEditor(code, true));
+    window.wishlyOpenCustomize = code => openEditor(code, true);
 
     try {
       const list = await getList(code);
