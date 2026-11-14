@@ -2326,3 +2326,51 @@ html body.dark-mode .wishly-settings-button{background:#1c2332;border-color:#394
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+
+/* My Lists button spacing override */
+.my-lists-sidebar .owned-list {
+  grid-template-columns: 44px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 12px;
+  padding: 15px;
+}
+.my-lists-sidebar .owned-list-info {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+.my-lists-sidebar .owned-list-actions {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+.my-lists-sidebar .owned-list-actions .small-button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-width: max-content;
+  min-height: 38px;
+  padding: 8px 12px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+@media (max-width: 420px) {
+  .my-lists-sidebar .owned-list-actions .small-button {
+    min-width: 0;
+    padding: 8px 10px;
+    white-space: normal;
+  }
+}
