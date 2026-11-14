@@ -463,6 +463,7 @@ createForm.addEventListener("submit", async event => {
     createForm.reset();
     await loadOwnedLists(user);
     await openWorkspace({ ...list, createdAt: new Date() }, "owner");
+    window.wishlyShowDashboardView?.("lists");
     window.wishlyCelebrate?.();
     toast("Wishlist created. Copy the code to share it.");
   } catch (error) {
