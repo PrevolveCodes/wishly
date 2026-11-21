@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 :root{--ink:#24252c;--muted:#777982;--paper:#f7f6f2;--white:#fff;--line:#e8e6e0;--purple:#2476d2;--purple-dark:#1858a8;--green:#6e8d72;--peach:#f8e7dc;--lavender:#eaf4ff;--radius:22px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.5}.topbar,footer{max-width:1120px;margin:auto;padding:25px 30px;display:flex;align-items:center;justify-content:space-between}.brand{display:inline-flex;align-items:center;gap:9px;color:var(--ink);text-decoration:none;font-family:Manrope,sans-serif;font-size:22px;font-weight:800;letter-spacing:-1px}.brand-mark{display:grid;place-items:center;width:32px;height:32px;background:var(--purple);color:white;border-radius:11px;font-size:23px;line-height:1;font-weight:700;letter-spacing:-2px}.brand-dot{color:var(--purple)}.top-note,footer>span{font-size:12px;color:var(--muted)}main{max-width:1000px;margin:auto;padding:30px 30px 0}.hero{position:relative;min-height:300px;padding:25px 0 36px;overflow:hidden}.eyebrow{font-size:10px;font-weight:700;letter-spacing:1.6px;color:var(--purple);display:flex;align-items:center;gap:8px}.eyebrow-dot{width:7px;height:7px;background:#8bbcf0;border-radius:50%}h1,h2,h3,p{margin-top:0}h1{font-family:Manrope,sans-serif;font-size:clamp(42px,6.3vw,68px);line-height:1.07;letter-spacing:-3.4px;margin:19px 0 15px;font-weight:800}h1 span{color:var(--purple)}.hero-copy{max-width:425px;color:var(--muted);font-size:15px;line-height:1.8;margin:0}.hero-art{position:absolute;width:275px;height:245px;right:35px;top:13px}.gift{position:absolute;border-radius:15px;transform:rotate(-9deg);box-shadow:0 16px 30px #6b56bd17}.gift-back{width:112px;height:130px;background:#e9bda9;left:54px;top:52px;transform:rotate(12deg)}.gift-front{width:133px;height:148px;background:#4d9be8;left:99px;top:76px;transform:rotate(7deg)}.gift-ribbon{position:absolute;left:54px;top:0;width:24px;height:100%;background:#f2c8a9}.gift-bow{position:absolute;left:43px;top:-17px;width:48px;height:30px;border:8px solid #f2c8a9;border-radius:50% 50% 6px 50%;transform:rotate(-17deg)}.art-tag{position:absolute;left:17px;bottom:21px;background:#fffdf8;padding:10px 15px;border-radius:9px;box-shadow:0 8px 25px #28213b10;font-size:12px;font-weight:700;transform:rotate(-9deg)}.art-tag span{color:#de8c81;margin-left:7px}.art-spark{position:absolute;color:#c0b5f6;font-size:31px}.spark-one{right:21px;top:37px}.spark-two{left:26px;top:42px;color:#e4b19b;font-size:25px}.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:5px}.action-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:25px 27px 26px;min-width:0}.card-icon{width:41px;height:41px;display:grid;place-items:center;border-radius:14px;margin-bottom:19px}.card-icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.lavender{background:var(--lavender);color:var(--purple)}.peach{background:var(--peach);color:#ad7159}.card-heading h2{font-family:Manrope,sans-serif;font-size:21px;letter-spacing:-.7px;margin-bottom:4px}.card-heading p{font-size:13px;color:var(--muted);margin-bottom:22px}label{display:block;font-size:12px;font-weight:700;margin:14px 0 7px}input,select,textarea{width:100%;font:inherit;font-size:14px;color:var(--ink);background:#fbfaf8;border:1px solid #e6e4df;border-radius:10px;padding:12px 13px;outline:none;transition:border-color .15s,box-shadow .15s}input:focus,select:focus,textarea:focus{border-color:#8bbcf0;box-shadow:0 0 0 3px #8c7ee51c}input::placeholder,textarea::placeholder{color:#a5a5ac}select{cursor:pointer}.button{width:100%;border:0;border-radius:11px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;font:600 13px 'DM Sans',sans-serif;cursor:pointer;margin-top:20px;transition:transform .15s,background .15s}.button:hover{transform:translateY(-1px)}.button span{font-size:18px;line-height:1}.button-primary{background:var(--purple);color:white}.button-primary:hover{background:var(--purple-dark)}.button-secondary{background:#eaf4ff;color:#216fca}.button-secondary:hover{background:#d7eaff}.helper{font-size:11px;color:var(--muted);margin-top:8px}.privacy-note{display:flex;align-items:flex-start;gap:9px;margin-top:24px;padding-top:17px;border-top:1px solid #efede8;color:var(--muted);font-size:11px;line-height:1.6}.lock-icon{font-size:17px;color:var(--green);line-height:1}.how-it-works{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;padding:45px 4px 52px}.how-it-works>div{border-top:1px solid #dedbd3;padding-top:16px}.step-number{color:var(--purple);font-size:10px;font-weight:700;letter-spacing:1px}.how-it-works h3{font-family:Manrope,sans-serif;font-size:14px;margin:8px 0 4px}.how-it-works p{font-size:12px;color:var(--muted);margin:0}.workspace{margin:12px 0 30px;background:white;border:1px solid var(--line);border-radius:var(--radius);padding:26px}.hidden{display:none!important}.workspace-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:20px}.workspace h2{font:800 25px Manrope,sans-serif;letter-spacing:-1px;margin:7px 0 5px}.workspace-sub{color:var(--muted);font-size:13px;margin:0}.code-chip{display:inline-flex;align-items:center;gap:10px;padding:9px 12px;background:#eaf4ff;color:#216fca;border-radius:10px;font-weight:700;letter-spacing:1px}.small-button,.icon-button{border:1px solid var(--line);background:white;color:var(--ink);border-radius:9px;padding:8px 11px;cursor:pointer;font:600 12px 'DM Sans',sans-serif}.workspace-actions{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.item-list{display:grid;gap:10px}.wish-item{display:flex;align-items:center;gap:13px;padding:14px;border:1px solid #eeece7;border-radius:14px}.item-placeholder{width:48px;height:48px;flex-shrink:0;border-radius:12px;background:#eaf4ff;display:grid;place-items:center;color:var(--purple);font-size:22px}.item-info{flex:1;min-width:0}.item-info h3{font-size:14px;margin:0 0 3px;overflow-wrap:anywhere}.item-info p{font-size:12px;color:var(--muted);margin:0;overflow-wrap:anywhere}.item-price{font-size:13px;font-weight:700;white-space:nowrap}.item-link{color:var(--purple);font-size:12px;text-decoration:none}.item-link:hover{text-decoration:underline}.purchased{opacity:.65}.purchased .item-info h3{text-decoration:line-through}.empty-state{padding:25px;text-align:center;color:var(--muted);background:#faf9f6;border-radius:12px;font-size:13px}.notice{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);max-width:calc(100% - 30px);padding:12px 17px;background:#292831;color:white;border-radius:11px;box-shadow:0 8px 25px #0002;font-size:13px;z-index:5}.modal{border:1px solid var(--line);border-radius:20px;padding:27px;width:min(460px,calc(100% - 28px));box-shadow:0 20px 80px #201b3733}.modal::backdrop{background:#24202c77;backdrop-filter:blur(3px)}.modal-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}.modal h2{font:800 25px Manrope,sans-serif;margin:7px 0 0;letter-spacing:-1px}.icon-button{font-size:22px;line-height:1;padding:3px 9px}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}textarea{resize:vertical}footer{border-top:1px solid #eae8e1;padding-top:21px;padding-bottom:26px}.footer-brand{font-size:17px}.footer-brand .brand-mark{width:26px;height:26px;border-radius:9px;font-size:19px}
-@media(max-width:720px){.topbar,footer{padding:19px 20px}main{padding:16px 20px 0}.hero{min-height:285px;padding-top:17px}.hero-art{right:-80px;top:80px;transform:scale(.74);transform-origin:top right;opacity:.6}h1{font-size:49px;letter-spacing:-2.5px;position:relative;z-index:1}.hero-copy{max-width:330px;position:relative;z-index:1;font-size:14px}.action-grid{grid-template-columns:1fr}.action-card{padding:23px}.how-it-works{gap:14px;padding:35px 0 40px}.how-it-works h3{font-size:12px}.how-it-works p{font-size:11px}.workspace{padding:19px}.workspace-head{flex-direction:column}.wish-item{gap:9px;padding:11px}.item-placeholder{width:40px;height:40px}.item-price{font-size:12px}.top-note{font-size:10px}}@media(max-width:390px){.hero-art{right:-105px;opacity:.4}.how-it-works{grid-template-columns:1fr;gap:18px}.how-it-works>div{display:grid;grid-template-columns:35px 1fr;column-gap:8px}.how-it-works .step-number{grid-row:span 2}.how-it-works h3{margin:0 0 3px}.form-row{grid-template-columns:1fr}.top-note{display:none}}
+
 
 /* Depth pass: keep the existing layout, but give surfaces a little physical presence. */
 :root{
@@ -115,7 +115,7 @@ input:focus,select:focus,textarea:focus{
   *,*::before,*::after{scroll-behavior:auto!important;transition:none!important}
 }
 
-.account-panel{display:grid;grid-template-columns:minmax(180px,.8fr) minmax(240px,1.2fr);gap:24px;align-items:start;background:linear-gradient(145deg,#fff,#faf8ff);border:1px solid #e7e3dc;border-radius:20px;padding:22px 25px;margin:0 0 24px;box-shadow:0 8px 22px #342a1a08}.account-copy h2{font:800 18px Manrope,sans-serif;letter-spacing:-.5px;margin:0 0 5px}.account-copy p{font-size:12px;color:var(--muted);margin:0}.account-form{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.account-form label{margin-top:0}.account-actions{grid-column:1/-1;display:flex;gap:8px;align-items:center;flex-wrap:wrap}.account-actions .button{width:auto;margin:10px 0 0;justify-content:center}.account-actions .small-button{margin-top:10px}.button:disabled{opacity:.55;cursor:not-allowed;transform:none}.account-panel input{min-width:0}@media(max-width:720px){.account-panel{grid-template-columns:1fr;padding:20px}.account-form{grid-template-columns:1fr}.account-actions{grid-column:auto}.account-actions .button{width:100%}}
+.account-panel{display:grid;grid-template-columns:minmax(180px,.8fr) minmax(240px,1.2fr);gap:24px;align-items:start;background:linear-gradient(145deg,#fff,#faf8ff);border:1px solid #e7e3dc;border-radius:20px;padding:22px 25px;margin:0 0 24px;box-shadow:0 8px 22px #342a1a08}.account-copy h2{font:800 18px Manrope,sans-serif;letter-spacing:-.5px;margin:0 0 5px}.account-copy p{font-size:12px;color:var(--muted);margin:0}.account-form{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.account-form label{margin-top:0}.account-actions{grid-column:1/-1;display:flex;gap:8px;align-items:center;flex-wrap:wrap}.account-actions .button{width:auto;margin:10px 0 0;justify-content:center}.account-actions .small-button{margin-top:10px}.button:disabled{opacity:.55;cursor:not-allowed;transform:none}.account-panel input{min-width:0}
 
 
 /* Google sign-in button */
@@ -149,24 +149,8 @@ input:focus,select:focus,textarea:focus{
 .button{min-height:46px;line-height:1.2}
 .button span{font-size:18px}
 .workspace-actions .button{min-height:44px}
-@media(max-width:720px){
- .topbar{min-height:72px}
- .top-nav{gap:13px}
- .top-nav a{font-size:12px}
- .nav-account{padding:9px 11px;font-size:12px}
- .hero{min-height:350px;padding-top:28px}
- .hero-art{right:-55px;top:100px}
- .hero-cta{position:relative;z-index:2}
- .card-heading{min-height:0}
- .action-card{min-height:0}
- .account-panel{grid-template-columns:1fr}
- .account-actions .button{width:100%}
-}
-@media(max-width:390px){
- .top-nav{gap:8px}
- .brand{font-size:20px}
- .nav-account{padding:8px 9px}
-}
+
+
 
 /* Dedicated sign-up page */
 .nav-account{display:inline-flex;align-items:center;text-decoration:none}
@@ -187,7 +171,7 @@ input:focus,select:focus,textarea:focus{
 .signup-form .google-button{margin-top:12px}
 .signup-toggle{margin-top:14px;align-self:center;padding:10px 13px}
 .signup-status{font-size:12px;color:var(--muted);text-align:center;margin:17px 0 0}
-@media(max-width:720px){.signup-main{padding-top:10px}.signup-card{border-radius:20px}.signup-intro h1{letter-spacing:-1.5px}}
+
 
 /* Landing page choices */
 .landing-choices .action-card>.button{margin-top:auto;text-decoration:none;display:flex;align-items:center;justify-content:space-between}
@@ -222,8 +206,8 @@ input:focus,select:focus,textarea:focus{
 .gift-search-form input{min-height:48px}
 .gift-search-form .button{min-height:48px;white-space:nowrap}
 .gift-search-card .signup-status{text-align:left;line-height:1.6}
-@media(max-width:760px){.dashboard-grid{grid-template-columns:1fr}.dashboard-welcome{padding-top:12px}.dashboard-mark{width:64px;height:64px;border-radius:22px;font-size:38px}.dashboard-lists{padding:20px}}
-@media(max-width:500px){.gift-search-form{grid-template-columns:1fr}.gift-search-form label{grid-column:auto}.gift-search-form .button{width:100%}.owned-list{align-items:flex-start;flex-wrap:wrap}.owned-list .small-button{margin-left:58px}.dashboard-welcome h1,.gift-intro h1{letter-spacing:-1.2px}}
+
+
 
 
 /* Wishly UI cleanup: quieter surfaces, consistent spacing, clearer hierarchy */
@@ -343,15 +327,7 @@ input:focus,select:focus,textarea:focus{
 .gift-search-card{padding:26px}
 .gift-search-card .signup-status{margin-bottom:0}
 .privacy-note{border-color:#eeece7}
-@media(max-width:720px){
-  .topbar{padding:18px 20px}
-  .action-card{padding:22px}
-  .workspace{padding:19px}
-  .dashboard-lists{padding:19px}
-  .signup-main{padding-top:8px;padding-bottom:36px}
-  .signup-card{padding:24px}
-  .gift-search-card{padding:20px}
-}
+
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{transition:none!important}
 }
@@ -415,23 +391,8 @@ main,.dashboard-main,.gift-main,.signup-main{padding-top:28px}
 .gift-search-form .button{height:50px;margin-top:0;padding:0 18px;gap:18px}
 .workspace{border-radius:18px;border-color:#e6e4ee;box-shadow:0 5px 20px #29234408}
 footer{max-width:none;padding-left:max(24px,calc((100vw - 1120px)/2));padding-right:max(24px,calc((100vw - 1120px)/2));background:#fff;border-top:1px solid #eae9f1}
-@media(max-width:760px){
-  .topbar{padding:16px 20px}
-  main,.dashboard-main,.gift-main,.signup-main{padding-top:18px}
-  .dashboard-welcome{padding:25px 22px;margin-bottom:20px;border-radius:18px}
-  .dashboard-welcome p{max-width:90%}
-  .dashboard-mark{width:54px;height:54px;font-size:31px;border-radius:16px}
-  .dashboard-grid{grid-template-columns:1fr;gap:16px}
-  .dashboard-create,.dashboard-lists{padding:22px}
-  .signup-card{padding:25px}
-  .gift-search-card{padding:22px}
-}
-@media(max-width:420px){
-  .dashboard-welcome{align-items:flex-start}
-  .dashboard-mark{display:none}
-  .dashboard-welcome p{max-width:none}
-  .section-heading h2{font-size:22px}
-}
+
+
 
 
 /* Wishlist categories and item editing */
@@ -466,198 +427,17 @@ main,.dashboard-main,.gift-main,.signup-main{width:100%;min-width:0}
 .modal input,.modal select,.modal textarea{max-width:100%;min-width:0}
 .form-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .form-row>div{min-width:0}
-@media(max-width:600px){
-  .topbar{padding:14px 16px!important;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-  .brand{flex:0 0 auto}
-  .top-nav{flex:1 1 100%;justify-content:flex-start;gap:8px 18px}
-  .top-nav a,.top-nav button{font-size:14px;padding:4px 0}
-  main,.dashboard-main,.gift-main,.signup-main{padding:16px!important}
-  .dashboard-main,.gift-main,.signup-main{margin:0 auto}
-  .dashboard-welcome{padding:22px 18px!important;margin:0 0 16px!important;border-radius:16px}
-  .dashboard-welcome h1{font-size:clamp(32px,9vw,42px);line-height:1.08;overflow-wrap:anywhere}
-  .dashboard-welcome p{font-size:14px;max-width:none}
-  .dashboard-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
-  .dashboard-create,.dashboard-lists,.signup-card,.gift-search-card{padding:18px!important;border-radius:15px}
-  .dashboard-create .card-heading h2,.section-heading h2{font-size:21px}
-  .section-heading{display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap}
-  .section-heading>div{min-width:0}
-  .owned-list{display:grid;grid-template-columns:40px minmax(0,1fr);gap:10px;padding:13px}
-  .owned-list-icon{grid-column:1;grid-row:1;width:40px;height:40px}
-  .owned-list-info{grid-column:2;grid-row:1;min-width:0}
-  .owned-list-info p{overflow-wrap:anywhere;line-height:1.5}
-  .owned-list .small-button{grid-column:2;grid-row:2;margin:0;justify-self:start;white-space:normal}
-  .workspace{padding:16px!important;margin-top:16px!important;border-radius:15px}
-  .workspace-head h2{font-size:25px;line-height:1.15;overflow-wrap:anywhere}
-  .workspace-sub{overflow-wrap:anywhere}
-  .code-chip{font-size:13px;padding:8px 10px}
-  .workspace-actions{align-items:stretch}
-  .workspace-actions .button,.workspace-actions .small-button{width:100%!important;justify-content:center}
-  .wish-item{grid-template-columns:34px minmax(0,1fr);gap:10px;padding:13px}
-  .wish-item .item-placeholder{width:34px;height:34px}
-  .wish-item .item-info h3{font-size:16px;line-height:1.35;overflow-wrap:anywhere}
-  .wish-item .item-info p{font-size:13px;line-height:1.5}
-  .wish-item .item-price{font-size:15px}
-  .wish-item .small-button{font-size:12px;padding:8px 10px}
-  .gift-intro{padding:14px 0 20px}
-  .gift-intro h1{font-size:clamp(32px,9vw,43px);line-height:1.08;overflow-wrap:anywhere}
-  .gift-intro p{font-size:14px;line-height:1.6}
-  .gift-search-form{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
-  .gift-search-form label{grid-column:auto}
-  .gift-search-form input,.gift-search-form .button{width:100%;min-width:0}
-  .signup-intro h1{font-size:clamp(31px,8vw,42px);line-height:1.12;letter-spacing:-1px;overflow-wrap:anywhere}
-  .signup-form input,.signup-form .button,.signup-form .google-button{width:100%;min-width:0}
-  footer{padding:18px 16px!important;gap:12px;flex-wrap:wrap}
-}
-@media(max-width:360px){
-  .topbar{padding:12px!important}
-  main,.dashboard-main,.gift-main,.signup-main{padding:12px!important}
-  .dashboard-create,.dashboard-lists,.signup-card,.gift-search-card,.workspace{padding:14px!important}
-  .wish-item{grid-template-columns:28px minmax(0,1fr);gap:8px;padding:10px}
-  .wish-item .item-placeholder{width:28px;height:28px}
-  .form-row{grid-template-columns:minmax(0,1fr)}
-  .workspace-head h2{font-size:22px}
-}
 
-@media(max-width:600px){
-  .wish-item .small-button{grid-column:1/-1;grid-row:auto;justify-self:stretch;width:100%;min-height:38px}
-  .wish-item .item-price{grid-column:2;grid-row:auto}
-}
-@media(max-width:360px){
-  .wish-item .small-button{font-size:13px;padding:9px 8px}
-}
+
+
+
+
 
 
 /* Final phone layout: wishlist cards must stack instead of squeezing content into columns. */
-@media (max-width: 600px) {
-  .dashboard-lists,
-  .workspace {
-    width: 100%;
-    min-width: 0;
-  }
 
-  .owned-list {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    padding: 14px;
-  }
 
-  .owned-list-icon {
-    width: 40px;
-    height: 40px;
-    flex: 0 0 40px;
-  }
 
-  .owned-list-info {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .owned-list-info h3 {
-    font-size: 16px;
-    line-height: 1.35;
-    overflow-wrap: anywhere;
-  }
-
-  .owned-list-info p {
-    font-size: 12px;
-    line-height: 1.5;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-  }
-
-  .owned-list .small-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    min-height: 42px;
-    margin: 2px 0 0;
-    padding: 10px 12px;
-    white-space: normal;
-    text-align: center;
-  }
-
-  .workspace-head {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-  }
-
-  .workspace-head > div:first-child {
-    width: 100%;
-    flex: none;
-  }
-
-  .workspace-head .code-chip {
-    align-self: flex-start;
-    max-width: 100%;
-    overflow-wrap: anywhere;
-  }
-
-  .wish-item {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 9px;
-    padding: 14px;
-  }
-
-  .wish-item .item-placeholder {
-    width: 36px;
-    height: 36px;
-    flex: 0 0 36px;
-  }
-
-  .wish-item .item-info {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .wish-item .item-info h3 {
-    font-size: 16px;
-    line-height: 1.35;
-    overflow-wrap: anywhere;
-  }
-
-  .wish-item .item-info p {
-    white-space: normal;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-  }
-
-  .wish-item .item-price {
-    align-self: flex-start;
-    white-space: normal;
-  }
-
-  .wish-item .small-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: none;
-    min-height: 40px;
-    margin: 0;
-    white-space: normal;
-    overflow-wrap: anywhere;
-  }
-}
-
-@media (max-width: 360px) {
-  .owned-list,
-  .wish-item {
-    padding: 12px;
-  }
-
-  .workspace h2 {
-    font-size: 22px;
-    line-height: 1.2;
-    overflow-wrap: anywhere;
-  }
-}
 
 
 /* Wishly item images, search summaries, QR sharing, and reservation controls */
@@ -676,7 +456,7 @@ main,.dashboard-main,.gift-main,.signup-main{width:100%;min-width:0}
 .qr-panel .small-button{margin:4px 5px 0 0}
 .reserve-toggle{border-color:#d9d4fb;color:#1858a8}
 .reserve-toggle:disabled{color:#777982;background:#f3f2ef;cursor:not-allowed;opacity:1}
-@media(max-width:600px){.qr-panel{flex-direction:column;align-items:stretch}.qr-panel>div:last-child{text-align:center}#qr-code{align-self:center;min-width:0}.list-summary{align-items:flex-start;flex-direction:column;gap:4px}}
+
 
 
 /* Clear reservation status for other gift-givers */
@@ -724,26 +504,7 @@ main,.dashboard-main,.gift-main,.signup-main{width:100%;min-width:0}
   white-space: normal;
   line-height: 1.35;
 }
-@media (max-width: 600px) {
-  .gift-page .wish-item {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    align-items: stretch;
-    gap: 10px;
-    padding: 14px;
-  }
-  .gift-page .wish-item .item-placeholder,
-  .gift-page .wish-item .item-info,
-  .gift-page .wish-item .item-price,
-  .gift-page .wish-item .reservation-status,
-  .gift-page .wish-item .reserve-toggle {
-    grid-column: 1 / -1 !important;
-    grid-row: auto !important;
-  }
-  .gift-page .wish-item .item-placeholder { width: 40px; height: 40px; }
-  .gift-page .wish-item .item-info { width: 100%; }
-  .gift-page .wish-item .reserve-toggle { min-height: 46px; }
-}
+
 
 
 /* Persistent dark mode */
@@ -884,16 +645,14 @@ body.dark-mode {
 .dark-mode .list-count { background: #302b48; color: #d8d0ff; }
 .dark-mode .signup-divider { color: #b0b0c0; }
 .dark-mode .filtered-out { display: none !important; }
-@media (max-width: 600px) {
-  .theme-toggle { padding: 7px 9px; }
-}
+
 
 
 /* Homepage gift illustration replaced with the uploaded artwork. */
 .hero-art{width:390px;height:330px;right:5px;top:5px;display:flex;align-items:center;justify-content:center;filter:none}
 .gift-boxes-image{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
-@media(max-width:720px){.hero-art{right:-20px;top:90px;width:300px;height:260px;transform:scale(.9);transform-origin:top right;opacity:.92}}
-@media(max-width:390px){.hero-art{right:-55px;top:105px;width:270px;height:235px;transform:scale(.82);opacity:.78}}
+
+
 
 
 /* Rebuilt homepage illustration: recognizable gift boxes with lids, wrapping bands, and bows. */
@@ -918,8 +677,8 @@ body.dark-mode {
 .gift-spark{position:absolute;color:#b7aaf7;font-size:31px;font-weight:700}
 .gift-spark-one{right:15px;top:42px}
 .gift-spark-two{left:22px;top:43px;color:#14b8a6;font-size:25px}
-@media(max-width:720px){.hero-art.gift-art{right:-28px;top:83px;width:310px;height:255px;transform:scale(.88);transform-origin:top right;opacity:.95}}
-@media(max-width:390px){.hero-art.gift-art{right:-62px;top:101px;width:285px;height:235px;transform:scale(.78);opacity:.85}}
+
+
 .dark-mode .gift-box-back{background:linear-gradient(110deg,#6286d2,#3456a9)!important}
 .dark-mode .gift-box-front{background:linear-gradient(110deg,#5271c5,#30468d)!important}
 .dark-mode .gift-lid{background:linear-gradient(180deg,#7295d8,#4162b8)!important}
@@ -986,15 +745,9 @@ input:focus,select:focus,textarea:focus{border-color:#9386e9;box-shadow:0 0 0 4p
 .gift-main{padding-top:28px}.gift-intro{max-width:760px;margin:0 auto 25px;text-align:center}.gift-intro .eyebrow{justify-content:center}.gift-intro h1{font-size:clamp(2.5rem,5.5vw,4rem);margin:16px 0}.gift-intro p{max-width:650px;margin:0 auto;color:var(--muted);font-size:15px;line-height:1.8}
 .gift-search-card{max-width:660px;margin:0 auto 30px;padding:28px}.gift-search-form{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:12px}.gift-search-form label{grid-column:1/-1;margin:0 0 -4px}.gift-search-form input{min-width:0}.gift-search-form .button{width:auto;min-width:160px;margin:0}.gift-search-card .signup-status{border-top:1px solid var(--line);padding-top:16px;margin:20px 0 0}.gift-page .workspace-head{align-items:center}.gift-page .wish-item{grid-template-columns:52px minmax(0,1fr) auto}.gift-page .wish-item .reserve-toggle{grid-column:3}.gift-access-panel{border-radius:17px;box-shadow:none}.gift-access-locked{border-radius:11px}
 .theme-toggle{border-radius:10px;padding:9px 12px;font-weight:700}.dark-mode .topbar{background:#1d1d28!important;border-color:#343442!important}.dark-mode .dashboard-welcome{background:linear-gradient(120deg,#29263c,#232230)!important;border-color:#413a63!important}.dark-mode .list-tools,.dark-mode .empty-state{background:#1b1b26!important}.dark-mode .wish-item:hover,.dark-mode .owned-list:hover{border-color:#6259a0!important}.dark-mode .google-button{background:#22222e;color:#eeeef5;border-color:#393947}.dark-mode .google-button:hover{background:#2b2b39}.dark-mode .button-secondary{border-color:#494064}.dark-mode .gift-search-form .button{box-shadow:none}
-@media(max-width:900px){.hero{min-height:345px}.hero-art.gift-art{right:-18px;transform:scale(.9);transform-origin:top right;opacity:.9}.hero h1,.hero-copy{max-width:52%}.dashboard-grid{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}.dashboard-create,.dashboard-lists{padding:22px}.workspace-actions>*{max-width:100%}}
-@media(max-width:720px){
-.topbar,footer{width:calc(100% - 24px);padding:15px 17px}.topbar{margin-top:12px;border-radius:15px}.brand{font-size:20px}img.brand-mark{width:32px;height:32px}.top-nav{gap:3px}.top-nav a,.top-nav button,.nav-account{padding:8px 9px;font-size:12px}
-main,.dashboard-main,.gift-main,.signup-main{width:100%;padding:27px 18px 18px}.hero{min-height:0;padding:29px 0 28px;margin-bottom:12px}.hero h1{max-width:100%;font-size:clamp(2.8rem,10vw,4.1rem);margin:17px 0 15px}.hero-copy{max-width:490px;font-size:14px}.hero-art.gift-art{position:relative;top:auto;right:auto;width:310px;height:250px;transform:scale(.82);transform-origin:top left;opacity:1;margin:6px 0 -38px auto}.hero-cta{margin-top:22px}
-.action-grid,.dashboard-grid{grid-template-columns:minmax(0,1fr);gap:15px}.action-card{padding:23px}.landing-choices .action-card>.button{margin-top:19px}.how-it-works{grid-template-columns:1fr;gap:18px;padding:35px 0}.how-it-works>div{padding:15px 0 0}.signup-card{padding:28px 23px;margin:8px auto 28px}
-.dashboard-welcome{padding:25px 23px;border-radius:20px}.dashboard-welcome h1{font-size:clamp(2.3rem,8vw,3.2rem)}.dashboard-mark{width:54px;height:54px;border-radius:17px;font-size:28px}.dashboard-create,.dashboard-lists{padding:23px}.dashboard-page .workspace,.gift-page .workspace{padding:21px 17px;margin-top:18px}.workspace-head{display:flex;flex-direction:column;gap:12px}.workspace-head .code-chip{align-self:flex-start}.workspace-actions{gap:8px}.workspace-actions>*{flex:1 1 auto}
-.wish-item{grid-template-columns:44px minmax(0,1fr);gap:11px;padding:13px}.item-placeholder{width:44px;height:44px}.wish-item>.small-button,.wish-item>.edit-item,.wish-item>.remove-item,.wish-item>.toggle-purchased,.wish-item>.reserve-toggle{grid-column:2;justify-self:start}.wish-item .item-price{grid-column:2;grid-row:auto;padding-top:0}.reservation-status{grid-column:1/-1}.gift-page .wish-item{grid-template-columns:44px minmax(0,1fr)}.gift-page .wish-item .reserve-toggle{grid-column:2}
-.gift-intro{text-align:left;margin-bottom:22px}.gift-intro .eyebrow{justify-content:flex-start}.gift-intro h1{font-size:clamp(2.45rem,9vw,3.5rem)}.gift-intro p{font-size:14px}.gift-search-card{padding:22px}.gift-search-form{grid-template-columns:minmax(0,1fr)}.gift-search-form label{grid-column:auto}.gift-search-form .button{width:100%;min-width:0}footer{gap:14px;flex-wrap:wrap;margin-top:15px}}
-@media(max-width:430px){.topbar{align-items:center;gap:8px}.brand{gap:7px;font-size:18px}img.brand-mark{width:29px;height:29px}.top-nav a,.top-nav button,.nav-account{padding:7px;font-size:11px}.theme-toggle{padding:7px 8px;font-size:11px}.hero-art.gift-art{margin-right:-28px;transform:scale(.75);margin-bottom:-55px}.dashboard-welcome{align-items:flex-start;padding:22px 18px}.dashboard-mark{width:43px;height:43px;border-radius:14px;font-size:23px}.dashboard-welcome p{font-size:13px}.section-heading{align-items:flex-start}.section-heading h2{font-size:22px}.owned-list{align-items:flex-start;flex-wrap:wrap}.owned-list .small-button{margin-left:60px}.signup-card{padding:25px 18px}.modal{padding:22px 17px}.form-row{grid-template-columns:1fr;gap:0}.list-summary{align-items:flex-start;flex-direction:column;gap:5px}.workspace-actions>*{flex:1 1 100%}}
+
+
+
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 
 
@@ -1004,7 +757,7 @@ main,.dashboard-main,.gift-main,.signup-main{width:100%;padding:27px 18px 18px}.
 .delete-owned-list{border-color:#e8caca!important;color:#a33b3b!important;background:transparent!important}
 .delete-owned-list:hover{background:#fff1f1!important;border-color:#dcaeae!important}
 .delete-owned-list:disabled{opacity:.6;cursor:wait}
-@media(max-width:500px){.owned-list-actions{width:100%;padding-left:58px}.owned-list-actions .small-button{margin:0}}
+
 
 /* Wishly polish pass: stronger hierarchy, more consistent cards, and responsive controls. */
 .dashboard-main{max-width:1160px}
@@ -1041,28 +794,8 @@ main,.dashboard-main,.gift-main,.signup-main{width:100%;padding:27px 18px 18px}.
 #item-form{padding:clamp(20px,4vw,30px)}
 input,select,textarea{min-height:44px}
 textarea{resize:vertical}
-@media(max-width:760px){
-  .dashboard-welcome{align-items:flex-start}
-  .dashboard-grid{grid-template-columns:minmax(0,1fr)}
-  .dashboard-create,.dashboard-lists{min-width:0}
-  .owned-list{align-items:flex-start;flex-wrap:wrap}
-  .owned-list-actions{width:100%;padding-left:58px;justify-content:flex-start}
-  .workspace-head{flex-direction:column}
-  .code-chip{max-width:100%;overflow-wrap:anywhere}
-  .list-tools{grid-template-columns:1fr}
-  .list-summary{grid-column:auto}
-}
-@media(max-width:480px){
-  .dashboard-main{padding-left:16px;padding-right:16px}
-  .dashboard-welcome h1{font-size:clamp(36px,10vw,48px);letter-spacing:-2px}
-  .owned-list{padding:14px}
-  .owned-list-actions{padding-left:0}
-  .workspace{padding:16px;border-radius:18px}
-  .workspace-actions .button,.workspace-actions .small-button{width:100%;justify-content:center}
-  .wish-item{display:grid;grid-template-columns:58px minmax(0,1fr);align-items:start}
-  .wish-item .item-placeholder{width:58px;height:58px}
-  .wish-item .item-price,.wish-item>.small-button{grid-column:2}
-}
+
+
 
 .gift-ideas{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--paper)}
 .gift-ideas p{font-size:12px;font-weight:700;margin-bottom:10px}
@@ -1111,8 +844,8 @@ body.dark .gift-idea-buttons button{background:#202126;color:#f4f4f6;border-colo
 .wish-item.is-dragging{opacity:.38;transform:scale(.99)}
 .wish-item.drop-before{box-shadow:inset 0 3px 0 var(--purple)}
 .wish-item.drop-after{box-shadow:inset 0 -3px 0 var(--purple)}
-@media(max-width:850px){.topbar{align-items:flex-start;padding:18px 20px;flex-wrap:wrap}.top-nav{gap:6px;justify-content:flex-start}.dashboard-main{padding:16px 20px 36px}.dashboard-grid{grid-template-columns:minmax(0,1fr)}.dashboard-welcome{grid-template-columns:minmax(0,1fr) auto}.owned-list{flex-wrap:wrap}.owned-list-actions{width:100%;justify-content:flex-start;padding-left:0}.workspace-actions>*{flex:0 1 auto}}
-@media(max-width:560px){.topbar{padding:15px 16px}.top-nav{width:100%;justify-content:space-between;gap:4px}.top-nav a,.top-nav button{padding:8px 9px;font-size:12px}.dashboard-main{padding:12px 14px 30px}.dashboard-welcome{grid-template-columns:minmax(0,1fr);padding:20px 18px 22px}.dashboard-mark{display:none}.dashboard-welcome h1{font-size:clamp(34px,9vw,46px);letter-spacing:-1.8px}.owned-list-actions{gap:6px}.workspace{padding:16px}.workspace-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.workspace-actions>*{width:100%;min-width:0}.list-tools{grid-template-columns:minmax(0,1fr)}.wish-item{grid-template-columns:52px minmax(0,1fr);gap:10px;padding:12px}.wish-item .item-placeholder{width:52px;height:52px}.wish-item .item-price,.wish-item .small-button{grid-column:2;justify-self:start}}
+
+
 @media(prefers-reduced-motion:reduce){.top-nav a,.top-nav button,.wish-item{transition:none!important}}
 
 /* Dashboard welcome alignment fix */
@@ -1161,31 +894,8 @@ body.dark-mode .sidebar-link:hover,body.dark-mode .sidebar-link.is-active{backgr
 body.dark-mode .sidebar-premium{background:#192641;border-color:#2a3b5d}
 body.dark-mode .sidebar-premium p,body.dark-mode .sidebar-signout{color:#b9c5e6}
 body.dark-mode .premium-coming-soon{background:#303b72;color:#d7d0ff}
-@media(max-width:900px){
-  body.dashboard-page{--sidebar-width:205px}
-  .wishly-sidebar{padding:22px 12px 14px}
-  .sidebar-brand{font-size:24px;padding-bottom:24px}
-  body.dashboard-page>.dashboard-main{padding:22px 20px 34px}
-  body.dashboard-page>.topbar{padding:16px 20px}
-}
-@media(max-width:680px){
-  body.dashboard-page{--sidebar-width:0px}
-  .wishly-sidebar{position:relative;inset:auto;width:auto;padding:12px 14px;border-right:0;border-bottom:1px solid var(--line)}
-  .sidebar-brand{padding:0 4px 12px;font-size:22px}
-  .sidebar-brand img{width:30px;height:30px}
-  .sidebar-nav{display:flex;flex-wrap:wrap;gap:6px;overflow:visible;padding-bottom:3px}
-  .sidebar-link{width:auto;min-width:0;min-height:40px;padding:9px 11px;font-size:12px;gap:7px;flex:1 1 145px}
-  .sidebar-symbol{width:22px;flex-basis:22px;font-size:18px}
-  .sidebar-icon{width:22px;height:22px;flex-basis:22px}
-  .sidebar-bottom{display:flex;flex-direction:column;gap:10px;margin-top:12px}
-  .sidebar-premium{margin:0;padding:12px 14px}
-  .sidebar-premium p{margin:5px 0 8px}
-  .sidebar-signout{width:100%;min-height:40px}
-  body.dashboard-page>.topbar{margin-left:0;min-height:54px;padding:10px 16px}
-  body.dashboard-page>.topbar .top-nav{gap:12px}
-  body.dashboard-page>.dashboard-main{margin:0;padding:20px 16px 30px}
-  body.dashboard-page .dashboard-welcome{padding:20px 18px}
-}
+
+
 
 
 /* Separate dashboard and My Lists views */
@@ -1199,7 +909,7 @@ body.dark-mode .premium-coming-soon{background:#303b72;color:#d7d0ff}
 /* Keep the Dashboard overview separate from My Lists. */
 .dashboard-grid.dashboard-overview-grid{grid-template-columns:minmax(0,760px)}
 .dashboard-grid.dashboard-overview-grid .dashboard-create{width:100%;max-width:760px}
-@media(max-width:850px){.dashboard-grid.dashboard-overview-grid{grid-template-columns:minmax(0,1fr)}}
+
 
 
 /* Wishly account sign-out confirmation */
@@ -1215,7 +925,7 @@ body.dark-mode .premium-coming-soon{background:#303b72;color:#d7d0ff}
 .signout-actions .button:disabled{opacity:.65;cursor:wait}
 body.dark-mode .signout-modal{background:#202126;color:#f4f4f6;border-color:#3d3e47}
 body.dark-mode .signout-mark{background:#302b4e;color:#b8dcff}
-@media(max-width:420px){.signout-content{padding:23px}.signout-actions{flex-direction:column-reverse;align-items:stretch}.signout-actions>*{width:100%!important}}
+
 
 
 /* Motion pass: subtle movement and depth across Wishly */
@@ -1476,69 +1186,10 @@ body.dark-mode .suggestions-empty{background:#192439;border-color:#35405a;color:
 .gift-page .workspace{width:100%}
 .gift-page .workspace-head{align-items:flex-start}
 .gift-page .workspace-actions .button{width:auto}
-@media(max-width:1000px){
-  .suggestions-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media(max-width:900px){
-  body.dashboard-page{--sidebar-width:205px}
-  .dashboard-grid{grid-template-columns:minmax(0,1fr)}
-  .dashboard-create,.dashboard-lists{width:100%}
-  .suggestions-controls{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .suggestions-controls label:last-child{grid-column:1/-1}
-}
-@media(max-width:680px){
-  .topbar{width:calc(100% - 28px);margin-top:12px;padding:13px 15px;min-height:62px;flex-wrap:wrap}
-  .top-nav{width:100%;justify-content:flex-start;gap:5px}
-  .top-nav a,.top-nav button{padding:8px 10px;font-size:12px}
-  main{padding:24px 18px 0}
-  .hero{min-height:320px;padding:24px 0 34px}
-  .hero h1{font-size:clamp(43px,11vw,56px);letter-spacing:-.06em}
-  .hero-copy{max-width:calc(100% - 12px);font-size:14px}
-  .hero-art.gift-art{right:-105px;top:100px;transform:scale(.74);opacity:.45}
-  .action-card{padding:22px}
-  .how-it-works{padding:32px 0 38px}
-  footer{width:calc(100% - 36px);padding:18px 0 24px;gap:14px;flex-wrap:wrap}
-  .signup-main{padding:18px 16px 38px}
-  .signup-card{padding:25px 21px}
-  .gift-main{padding:20px 18px 42px}
-  .gift-intro{text-align:left;padding:16px 0 23px}
-  .gift-intro .eyebrow{justify-content:flex-start}
-  .gift-intro h1{font-size:clamp(38px,10vw,48px)}
-  .gift-search-card{padding:21px}
-  .gift-search-form{grid-template-columns:minmax(0,1fr)}
-  .gift-search-form label{grid-column:auto}
-  .gift-search-form .button{width:100%}
-  body.dashboard-page{--sidebar-width:0px}
-  .wishly-sidebar{position:relative;inset:auto;width:100%;padding:13px 14px;border-right:0;border-bottom:1px solid var(--line)}
-  .sidebar-brand{padding:0 4px 12px;font-size:22px}
-  .sidebar-nav{display:flex;flex-wrap:wrap;gap:6px}
-  .sidebar-link{flex:1 1 145px;min-height:42px;padding:9px 10px;font-size:12px}
-  .sidebar-bottom{display:flex;flex-direction:column;gap:10px;margin-top:12px}
-  .sidebar-premium{margin:0;padding:12px 14px}
-  .sidebar-signout{min-height:40px}
-  body.dashboard-page>.topbar{margin:0;width:100%;padding:10px 14px;border-radius:0}
-  body.dashboard-page>.dashboard-main{margin:0;padding:20px 15px 32px}
-  body.dashboard-page .dashboard-welcome{padding:22px 19px;margin-bottom:16px}
-  .dashboard-create,.dashboard-lists{padding:20px}
-  .section-heading{justify-content:flex-start}
-  .suggestions-main{margin-left:0;padding:20px 15px 32px}
-  .suggestions-hero{padding:22px 19px}
-  .suggestions-controls{grid-template-columns:minmax(0,1fr)}
-  .suggestions-controls label:last-child{grid-column:auto}
-  .suggestions-grid{grid-template-columns:minmax(0,1fr)}
-  .workspace{padding:19px}
-}
-@media(max-width:420px){
-  .brand{font-size:19px}
-  .top-nav{gap:2px}
-  .top-nav a,.top-nav button{padding:8px;font-size:11px}
-  .hero-art.gift-art{right:-140px;opacity:.3}
-  .how-it-works{grid-template-columns:minmax(0,1fr)}
-  .how-it-works>div{display:grid;grid-template-columns:38px minmax(0,1fr);column-gap:8px}
-  .how-it-works .step-number{grid-row:span 2}
-  .form-row{grid-template-columns:minmax(0,1fr)}
-  .owned-list-actions{padding-left:0}
-}
+
+
+
+
 @media(prefers-reduced-motion:reduce){
   .action-card,.suggestion-card,.signup-card,.dashboard-welcome,.dashboard-create,.dashboard-lists,.workspace{animation:none!important}
 }
@@ -1576,14 +1227,8 @@ body.dark-mode .suggestions-empty{background:#192439;border-color:#35405a;color:
 .owned-list-info h3{margin:0 0 4px;overflow-wrap:anywhere}
 .owned-list-info p{margin:0;color:var(--muted);font-size:12px;overflow-wrap:anywhere}
 .owned-list-actions{display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap}
-@media(max-width:720px){
-  .owned-list{grid-template-columns:40px minmax(0,1fr);gap:11px}
-  .owned-list-icon{width:40px;height:40px}
-  .owned-list-actions{grid-column:2;justify-content:flex-start}
-}
-@media(max-width:420px){
-  .owned-list-actions .small-button{padding:7px 9px;font-size:11px}
-}
+
+
 
 
 /* Align saved wishlist rows to the same thumbnail, text, and action columns. */
@@ -1596,8 +1241,8 @@ body.dark-mode .suggestions-empty{background:#192439;border-color:#35405a;color:
 .owned-list-info p{margin:0;line-height:1.5;color:var(--muted);font-size:12px;overflow-wrap:anywhere}
 .owned-list-actions{grid-column:3;grid-row:1;display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:nowrap;min-width:0}
 .owned-list-actions .small-button{white-space:nowrap}
-@media(max-width:720px){.owned-list{grid-template-columns:40px minmax(0,1fr);gap:10px 12px;padding:14px}.owned-list-icon{width:40px;height:40px;grid-column:1;grid-row:1}.owned-list-info{grid-column:2;grid-row:1}.owned-list-actions{grid-column:2;grid-row:2;justify-content:flex-start;flex-wrap:wrap}}
-@media(max-width:420px){.owned-list{padding:12px;gap:10px}.owned-list-actions .small-button{padding:7px 9px;font-size:11px}}
+
+
 
 /* Use the My Lists artwork in the Overview hero tile. */
 .overview-list-mark img{display:block;width:52px;height:52px;object-fit:contain}
@@ -1627,67 +1272,14 @@ button,a,input,select,textarea{touch-action:manipulation}
 button,a,.small-button,.icon-button,.sidebar-link,.sidebar-signout{-webkit-tap-highlight-color:transparent}
 :where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:3px solid #8bbcf0;outline-offset:2px}
 img,svg,video,canvas{max-width:100%}
-@media(max-width:680px){
- body.dashboard-page>.topbar{display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:12px 14px;min-height:0}
- body.dashboard-page>.topbar .top-nav{width:100%;margin:0;display:flex;flex-wrap:wrap;gap:7px}
- body.dashboard-page>.topbar .top-nav>*{min-height:40px}
- .wishly-sidebar{padding:10px 12px 12px;gap:8px}
- .sidebar-brand{padding:0 3px 9px}
- .sidebar-nav{display:flex;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;gap:7px;padding:2px 1px 9px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
- .sidebar-link{flex:0 0 auto;width:auto;min-height:42px;min-width:0;padding:9px 11px;gap:7px;scroll-snap-align:start;white-space:nowrap}
- .sidebar-link span{white-space:nowrap}
- .sidebar-icon{width:19px;height:19px;flex-basis:19px}
- .sidebar-bottom{display:flex;flex-direction:row;align-items:stretch;gap:8px;margin-top:4px}
- .sidebar-premium{flex:1;min-width:0;padding:9px 11px;margin:0}
- .sidebar-premium p{font-size:11px;margin:3px 0 5px}
- .sidebar-signout{width:auto;flex:0 0 auto;align-self:stretch;padding:10px;border-top:0;border:1px solid var(--line);border-radius:10px;white-space:nowrap}
- body.dashboard-page>.dashboard-main{margin:0;padding:17px 14px 30px;width:100%;max-width:none}
- .dashboard-welcome{display:block;padding:20px 17px!important}
- .dashboard-welcome-copy{min-width:0;width:100%}
- .dashboard-grid{grid-template-columns:minmax(0,1fr);gap:14px}
- .dashboard-create,.dashboard-lists{min-width:0;padding:18px!important}
- .owned-list{min-width:0;gap:10px}
- .owned-list-info{overflow-wrap:anywhere}
- .owned-list-actions{padding-left:0;width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
- .owned-list-actions .small-button{min-width:0;width:100%;white-space:normal}
- .workspace,.dashboard-page .workspace,.gift-page .workspace{width:100%;min-width:0;padding:15px 12px;margin:14px 0 24px;border-radius:16px}
- .workspace-head{min-width:0}
- .workspace-head>*,.workspace-head .code-chip{max-width:100%;overflow-wrap:anywhere}
- .workspace-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
- .workspace-actions>*{width:100%;min-width:0;max-width:none;white-space:normal;justify-content:center;text-align:center}
- .list-tools{grid-template-columns:minmax(0,1fr)}
- .list-summary{min-width:0}
- .wish-item{min-width:0;grid-template-columns:42px minmax(0,1fr);gap:9px;padding:11px}
- .wish-item .item-info{min-width:0;overflow-wrap:anywhere}
- .wish-item .item-info h3,.wish-item .item-info p{overflow-wrap:anywhere}
- .wish-item .item-price{white-space:normal}
- .gift-search-card,.signup-card{max-width:100%;min-width:0}
- .gift-search-form,.account-form,.form-row{grid-template-columns:minmax(0,1fr)}
- .gift-search-form>*{min-width:0}
- .overview-main,.suggestions-main{width:100%;min-width:0;padding-left:14px;padding-right:14px}
- .overview-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
- .overview-stats article{padding:12px;gap:9px}
- .overview-stat-icon{width:34px;height:34px;flex-basis:34px}
- .overview-stats strong,.overview-stats article>*{min-width:0;overflow-wrap:anywhere}
- .suggestions-controls,.suggestions-grid{grid-template-columns:minmax(0,1fr)}
- .suggestions-tools{align-items:flex-start}
- input,select,textarea{font-size:16px}
- .button,.small-button,.icon-button,.sidebar-link,.sidebar-signout{min-height:40px}
-}
-@media(max-width:390px){
- .sidebar-bottom{flex-direction:column}
- .sidebar-signout{width:100%;justify-content:center}
- .sidebar-premium{width:100%}
- .workspace-actions,.owned-list-actions,.overview-stats{grid-template-columns:minmax(0,1fr)}
- .section-heading{flex-wrap:wrap}
- .top-nav{flex-wrap:wrap}
-}
+
+
 
 
 /* Mobile usability pass: compact navigation, safer widths, and touch-friendly controls. */
 html{overflow-x:hidden}body{overflow-x:hidden}button,a,input,select,textarea{touch-action:manipulation}button,a,.small-button,.icon-button,.sidebar-link,.sidebar-signout{-webkit-tap-highlight-color:transparent}:where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:3px solid #8bbcf0;outline-offset:2px}img,svg,video,canvas{max-width:100%}
-@media(max-width:680px){body.dashboard-page>.topbar{display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:12px 14px;min-height:0}body.dashboard-page>.topbar .top-nav{width:100%;margin:0;display:flex;flex-wrap:wrap;gap:7px}body.dashboard-page>.topbar .top-nav>*{min-height:40px}.wishly-sidebar{padding:10px 12px 12px;gap:8px}.sidebar-brand{padding:0 3px 9px}.sidebar-nav{display:flex;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;gap:7px;padding:2px 1px 9px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}.sidebar-link{flex:0 0 auto;width:auto;min-height:42px;min-width:0;padding:9px 11px;gap:7px;scroll-snap-align:start;white-space:nowrap}.sidebar-link span{white-space:nowrap}.sidebar-icon{width:19px;height:19px;flex-basis:19px}.sidebar-bottom{display:flex;flex-direction:row;align-items:stretch;gap:8px;margin-top:4px}.sidebar-premium{flex:1;min-width:0;padding:9px 11px;margin:0}.sidebar-premium p{font-size:11px;margin:3px 0 5px}.sidebar-signout{width:auto;flex:0 0 auto;align-self:stretch;padding:10px;border-top:0;border:1px solid var(--line);border-radius:10px;white-space:nowrap}body.dashboard-page>.dashboard-main{margin:0;padding:17px 14px 30px;width:100%;max-width:none}.dashboard-welcome{display:block;padding:20px 17px!important}.dashboard-welcome-copy{min-width:0;width:100%}.dashboard-grid{grid-template-columns:minmax(0,1fr);gap:14px}.dashboard-create,.dashboard-lists{min-width:0;padding:18px!important}.owned-list{min-width:0;gap:10px}.owned-list-info{overflow-wrap:anywhere}.owned-list-actions{padding-left:0;width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.owned-list-actions .small-button{min-width:0;width:100%;white-space:normal}.workspace,.dashboard-page .workspace,.gift-page .workspace{width:100%;min-width:0;padding:15px 12px;margin:14px 0 24px;border-radius:16px}.workspace-head{min-width:0}.workspace-head>*,.workspace-head .code-chip{max-width:100%;overflow-wrap:anywhere}.workspace-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.workspace-actions>*{width:100%;min-width:0;max-width:none;white-space:normal;justify-content:center;text-align:center}.list-tools{grid-template-columns:minmax(0,1fr)}.list-summary{min-width:0}.wish-item{min-width:0;grid-template-columns:42px minmax(0,1fr);gap:9px;padding:11px}.wish-item .item-info{min-width:0;overflow-wrap:anywhere}.wish-item .item-info h3,.wish-item .item-info p{overflow-wrap:anywhere}.wish-item .item-price{white-space:normal}.gift-search-card,.signup-card{max-width:100%;min-width:0}.gift-search-form,.account-form,.form-row{grid-template-columns:minmax(0,1fr)}.gift-search-form>*{min-width:0}.overview-main,.suggestions-main{width:100%;min-width:0;padding-left:14px;padding-right:14px}.overview-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.overview-stats article{padding:12px;gap:9px}.overview-stat-icon{width:34px;height:34px;flex-basis:34px}.overview-stats strong,.overview-stats article>*{min-width:0;overflow-wrap:anywhere}.suggestions-controls,.suggestions-grid{grid-template-columns:minmax(0,1fr)}.suggestions-tools{align-items:flex-start}input,select,textarea{font-size:16px}.button,.small-button,.icon-button,.sidebar-link,.sidebar-signout{min-height:40px}}
-@media(max-width:390px){.sidebar-bottom{flex-direction:column}.sidebar-signout{width:100%;justify-content:center}.sidebar-premium{width:100%}.workspace-actions,.owned-list-actions,.overview-stats{grid-template-columns:minmax(0,1fr)}.section-heading{flex-wrap:wrap}.top-nav{flex-wrap:wrap}}
+
+
 
 
 /* Gift-list readability fix: prevent wishlist text and controls from squeezing together. */
@@ -1714,16 +1306,7 @@ html{overflow-x:hidden}body{overflow-x:hidden}button,a,input,select,textarea{tou
 .gift-page #workspace .wish-item .reservation-status span { display:block; line-height:1.5; overflow-wrap:anywhere; }
 .gift-page #workspace .empty-state { line-height:1.7; white-space:normal; }
 .gift-page #workspace button { line-height:1.4; }
-@media (max-width:680px) {
-  .gift-page #workspace .wish-item { grid-template-columns:48px minmax(0,1fr); gap:10px; padding:12px; }
-  .gift-page #workspace .wish-item .item-placeholder { grid-column:1; grid-row:1; width:48px; height:48px; }
-  .gift-page #workspace .wish-item .item-info { grid-column:2; grid-row:1; }
-  .gift-page #workspace .wish-item .item-price { grid-column:2; grid-row:auto; white-space:normal; }
-  .gift-page #workspace .wish-item .reserve-toggle { grid-column:2; grid-row:auto; justify-self:start; }
-  .gift-page #workspace .wish-item .reservation-status { grid-column:1 / -1; }
-  .gift-page #workspace .workspace-head-actions { width:100%; justify-content:flex-start; }
-  .gift-page #workspace .workspace-head-actions .small-button { white-space:normal; }
-}
+
 
 
 /* Hidden Wishly logo Easter egg. */
@@ -2150,7 +1733,7 @@ html.wishly-winter body .suggestion-card button:active:not(:disabled) {
 /* Keep wishlist owner actions visible instead of overlapping in the card grid. */
 .dashboard-page #workspace .wish-item .item-actions{grid-column:3;grid-row:1 / span 2;display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:7px;min-width:76px}
 .dashboard-page #workspace .wish-item .item-actions .small-button{width:100%;min-width:76px;white-space:nowrap}
-@media(max-width:680px){.dashboard-page #workspace .wish-item .item-actions{grid-column:2;grid-row:auto;display:flex;flex-direction:row;flex-wrap:wrap;gap:7px;min-width:0}.dashboard-page #workspace .wish-item .item-actions .small-button{width:auto;min-width:82px;flex:0 1 auto}}
+
 
 
 /* Families and Messages: give forms, actions, and conversation controls room to breathe. */
@@ -2206,44 +1789,12 @@ body.dashboard-page .dashboard-main #message-list > * {
   max-width: 100%;
   overflow-wrap: anywhere;
 }
-@media (max-width: 850px) {
-  body.dashboard-page .dashboard-main .dashboard-grid {
-    grid-template-columns: minmax(0, 1fr) !important;
-    gap: 18px;
-  }
-  body.dashboard-page .dashboard-main .action-card {
-    padding: 22px;
-  }
-}
+
 
 
 /* Keep every dashboard tab visible on small screens instead of hiding them
    in a horizontally scrolling navigation strip. */
-@media (max-width: 680px) {
-  body.dashboard-page .wishly-sidebar {
-    position: relative;
-    width: 100%;
-    min-width: 0;
-  }
-  body.dashboard-page .sidebar-nav {
-    display: flex;
-    flex-wrap: wrap;
-    overflow: visible;
-    gap: 7px;
-    padding: 2px 0 6px;
-  }
-  body.dashboard-page .sidebar-link {
-    flex: 1 1 calc(50% - 7px);
-    width: auto;
-    min-width: 0;
-    justify-content: flex-start;
-    white-space: normal;
-  }
-  body.dashboard-page .sidebar-link span {
-    white-space: normal;
-    overflow-wrap: anywhere;
-  }
-}
+
 
 
 /* Shared account row: profile identity and settings sit side-by-side at the bottom of the sidebar. */
@@ -2261,7 +1812,7 @@ body.dashboard-page .dashboard-main #message-list > * {
 html body.dark-mode .wishly-profile-button{color:#f0f2fa}
 html body.dark-mode .wishly-profile-button:hover,html body.dark-mode .wishly-settings-button:hover{background:#202b43;border-color:#3c5a7b}
 html body.dark-mode .wishly-settings-button{background:#1c2332;border-color:#39465c;color:#c5cee1}
-@media(max-width:680px){.wishly-account-controls{margin:8px 0;padding-top:10px}.wishly-profile-name{max-width:calc(100vw - 150px)}}
+
 
 
 /* My Lists: keep the saved-list picker beside the selected wishlist. */
@@ -2283,11 +1834,7 @@ html body.dark-mode .wishly-settings-button{background:#1c2332;border-color:#394
   margin: 0;
   width: 100%;
 }
-@media (max-width: 760px) {
-  .dashboard-lists:has(.my-lists-sidebar) {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
+
 
 
 /* Prevent wishlist names and access codes from collapsing to one character per line. */
@@ -2321,11 +1868,7 @@ html body.dark-mode .wishly-settings-button{background:#1c2332;border-color:#394
   white-space: nowrap;
   flex: 0 0 auto;
 }
-@media (max-width: 900px) {
-  .dashboard-lists:has(.my-lists-sidebar) {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
+
 
 
 /* My Lists button spacing override */
@@ -2367,13 +1910,7 @@ html body.dark-mode .wishly-settings-button{background:#1c2332;border-color:#394
   line-height: 1.25;
   white-space: nowrap;
 }
-@media (max-width: 420px) {
-  .my-lists-sidebar .owned-list-actions .small-button {
-    min-width: 0;
-    padding: 8px 10px;
-    white-space: normal;
-  }
-}
+
 
 
 /* Open wishlist layout: keep titles, item names, and controls readable. */
@@ -2441,26 +1978,7 @@ html body.dark-mode .wishly-settings-button{background:#1c2332;border-color:#394
   padding: 8px 12px;
   white-space: nowrap;
 }
-@media (max-width: 680px) {
-  .dashboard-page #workspace .workspace-head > div:first-child {
-    flex-basis: 100%;
-    min-width: 0;
-  }
-  .dashboard-page #workspace .workspace-actions > button {
-    min-width: 0;
-    flex: 0 1 auto;
-  }
-  .dashboard-page #workspace .wish-item .item-actions {
-    grid-column: 2;
-    flex-direction: row;
-    flex-wrap: wrap;
-    min-width: 0;
-  }
-  .dashboard-page #workspace .wish-item .item-actions .small-button {
-    width: auto;
-    min-width: 82px;
-  }
-}
+
 
 
 /* Final dashboard width fix: the wishlist panel needs the full dashboard row
@@ -2499,8 +2017,4 @@ body.dashboard-page #workspace .wish-item .item-info h3 {
   word-break: normal !important;
   overflow-wrap: break-word !important;
 }
-@media (max-width: 900px) {
-  body.dashboard-page .dashboard-lists:has(> .my-lists-sidebar) {
-    grid-template-columns: minmax(0, 1fr) !important;
-  }
-}
+
