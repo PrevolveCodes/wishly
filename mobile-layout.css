@@ -250,3 +250,13 @@
   body.dashboard-page .mobile-sidebar-backdrop{z-index:1001!important}
   body.dashboard-page .mobile-sidebar-toggle{z-index:1004!important}
 }
+
+
+/* When the drawer is open, move the close control to its upper-right corner.
+   This leaves the Wishly logo visible and unobstructed at the upper-left. */
+@media(max-width:900px){
+  body.dashboard-page.mobile-sidebar-open .mobile-sidebar-toggle{
+    left:calc(min(292px,84vw) - 54px)!important;
+    top:12px!important;
+  }
+}
