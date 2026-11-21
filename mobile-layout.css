@@ -167,3 +167,58 @@
   body.dashboard-page .settings-status,
   body.dashboard-page .settings-actions{grid-column:1}
 }
+
+
+/* Overview page: separate the hero copy from its card edges and decorative mark. */
+@media(max-width:900px){
+  body.dashboard-page .overview-hero{
+    position:relative;
+    display:block!important;
+    min-height:0!important;
+    padding:24px 22px 25px!important;
+    margin:0 0 22px!important;
+    border-radius:22px;
+  }
+  body.dashboard-page .overview-hero .dashboard-welcome-copy{
+    width:100%!important;
+    max-width:100%!important;
+    padding:0!important;
+    margin:0!important;
+  }
+  body.dashboard-page .overview-hero .dashboard-welcome-copy h1{
+    max-width:100%!important;
+    margin:14px 0 12px!important;
+    padding:0!important;
+    font-size:clamp(32px,8vw,40px)!important;
+    line-height:1.12!important;
+    letter-spacing:-1.4px!important;
+    overflow-wrap:normal!important;
+  }
+  body.dashboard-page .overview-hero .dashboard-welcome-copy p{
+    max-width:100%!important;
+    margin:0!important;
+    font-size:14px;
+    line-height:1.65;
+  }
+  body.dashboard-page .overview-hero .dashboard-mark{
+    position:absolute!important;
+    top:16px;
+    right:16px;
+    margin:0!important;
+  }
+  body.dashboard-page .overview-stats{margin-bottom:32px!important}
+  body.dashboard-page .overview-section{margin-top:32px!important}
+  body.dashboard-page .overview-section-heading{margin-bottom:16px!important}
+  body.dashboard-page .overview-section-heading h2{line-height:1.3}
+  body.dashboard-page .overview-list-card{
+    grid-template-columns:48px minmax(0,1fr)!important;
+    gap:12px!important;
+    padding:17px!important;
+  }
+  body.dashboard-page .overview-list-card>.small-button{
+    grid-column:2!important;
+    justify-self:start!important;
+    margin-top:2px;
+    min-width:110px;
+  }
+}
