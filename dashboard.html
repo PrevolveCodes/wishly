@@ -13,7 +13,6 @@
   <link rel="stylesheet" href="mobile-dashboard.css?v=direct-load-3">
   <link rel="stylesheet" href="customization.css">
   <link rel="stylesheet" href="overview.css?v=countdown-2">
-  <link rel="stylesheet" href="achievements.css?v=achievements-2">
   <script>
     (function(){
       const tips = [
@@ -52,7 +51,6 @@
   <script type="module" src="dashboard.js?v=families-dms-1"></script>
   <script type="module" src="overview.js?v=bugfix-1"></script>
   <script type="module" src="families.js?v=spa-1"></script>
-  <script type="module" src="achievements.js?v=spa-1"></script>
   <script type="module" src="customization.js?v=bugfix-1"></script>
   <script defer src="dashboard-navigation.js?v=spa-7"></script>
   <style>.dashboard-embedded-view[hidden] { display: none !important; }</style>
@@ -124,7 +122,6 @@ html body.dark-mode .settings-form input:focus{border-color:#719fe1;box-shadow:0
       <a class="sidebar-link" href="dashboard.html" data-dashboard-view="make-list"><img class="sidebar-icon" src="make_list.png?v=sidebar-icons-fix-4" alt=""><span>Make a List</span></a>
       <a class="sidebar-link" href="dashboard.html" data-dashboard-view="lists"><img class="sidebar-icon" src="my_lists.png?v=sidebar-icons-fix-4" alt=""><span>My Lists</span></a>
       <a class="sidebar-link" href="dashboard.html" data-dashboard-view="families"><img class="sidebar-icon" src="families.png?v=families-sidebar-final-1" alt=""><span>Families</span></a>
-      <a class="sidebar-link" href="dashboard.html" data-dashboard-view="achievements"><span class="sidebar-icon" aria-hidden="true">🏆</span><span>Achievements</span></a>
       <a class="sidebar-link" href="dashboard.html" data-dashboard-view="suggestions"><img class="sidebar-icon" src="gift_suggestions.png?v=sidebar-icons-fix-4" alt=""><span>Gift Suggestions</span></a>
       <a class="sidebar-link" href="gift.html"><img class="sidebar-icon" src="view_list.png?v=sidebar-icons-fix-4" alt=""><span>View a Wishlist</span></a>
       <button class="sidebar-link sidebar-theme-toggle" id="sidebar-theme-toggle" type="button"><img class="sidebar-icon" src="darklight_mode.png?v=sidebar-icons-fix-5" alt=""><span>Toggle dark mode</span></button>
@@ -210,7 +207,6 @@ html body.dark-mode .settings-form input:focus{border-color:#719fe1;box-shadow:0
   <section id="families-view" class="dashboard-embedded-view families-main" hidden><section class="dashboard-welcome"><div class="dashboard-welcome-copy"><div class="eyebrow">SHARE WITH YOUR PEOPLE</div><h1>Families<span>.</span></h1><p>Create a family space, invite members by email, and share only the wishlists you choose.</p></div><div class="dashboard-mark" aria-hidden="true">♡</div></section>
 <section class="dashboard-grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));align-items:start"><article class="action-card"><div class="card-heading"><h2>Create a family</h2><p>Start a family space for the people you want to share with.</p></div><form id="create-family-form"><label for="family-name">Family name</label><input id="family-name" maxlength="60" placeholder="e.g. Smith Family" required><button class="button button-primary" type="submit">Create family →</button></form></article><article class="action-card"><div class="card-heading"><h2>Family invitations</h2><p>Accept invitations sent to your signed-in email address.</p></div><div id="pending-families">Loading invitations…</div></article></section>
 <section class="dashboard-lists" style="margin-top:28px"><div class="section-heading"><div><div class="eyebrow">YOUR GROUPS</div><h2>My families</h2></div></div><div id="family-list" class="owned-lists">Loading families…</div></section></section>
-<section id="achievements-view" class="dashboard-embedded-view achievements-main" hidden>
     <section class="dashboard-welcome">
       <div class="dashboard-welcome-copy"><div class="eyebrow">LITTLE WINS</div><h1>Achievements<span>.</span></h1><p>Keep building your wishlists and unlock little milestones along the way.</p></div>
       <div class="dashboard-mark" aria-hidden="true">★</div>
