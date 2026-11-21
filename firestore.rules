@@ -111,10 +111,19 @@ service cloud.firestore {
         allow delete: if isOwner(code);
       }
       match /reservations/{itemId} {
-        allow get, list: if hasGiftAccess(code) && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId));
-        allow create: if hasGiftAccess(code) && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId)) && request.resource.data.keys().hasOnly(['reserved','reservedBy','updatedAt']) && request.resource.data.reserved == true && request.resource.data.reservedBy == request.auth.uid;
-        allow update: if hasGiftAccess(code) && resource.data.reservedBy == request.auth.uid && request.resource.data.keys().hasOnly(['reserved','reservedBy','updatedAt']) && request.resource.data.reserved == true && request.resource.data.reservedBy == request.auth.uid;
-        allow delete: if isOwner(code) || (hasGiftAccess(code) && resource.data.reservedBy == request.auth.uid);
+        // Gift-givers can only read their own reservation. No one can list reservations.
+        allow get: if isGiftGiver(code) && resource.data.reservedBy == request.auth.uid
+          && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId));
+        allow list: if false;
+        // A reservation can only be created if the item has no reservation document.
+        allow create: if isGiftGiver(code)
+          && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId))
+          && !exists(/databases/$(database)/documents/wishlists/$(code)/reservations/$(itemId))
+          && request.resource.data.keys().hasOnly(['reserved','reservedBy','updatedAt'])
+          && request.resource.data.reserved == true
+          && request.resource.data.reservedBy == request.auth.uid;
+        allow update: if false;
+        allow delete: if isOwner(code) || (isGiftGiver(code) && resource.data.reservedBy == request.auth.uid);
       }
     }
     match /families/{familyId} {
