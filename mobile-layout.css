@@ -222,3 +222,31 @@
     min-width:110px;
   }
 }
+
+
+/* Keep the open navigation drawer fully opaque and above the page overlay. */
+@media(max-width:900px){
+  body.dashboard-page .wishly-sidebar{
+    position:fixed!important;
+    inset:0 auto 0 0!important;
+    height:100dvh!important;
+    background:#121c31!important;
+    background-color:#121c31!important;
+    opacity:1!important;
+    filter:none!important;
+    backdrop-filter:none!important;
+    isolation:isolate;
+    z-index:1003!important;
+    box-shadow:14px 0 36px rgba(0,0,0,.38)!important;
+  }
+  body.dashboard-page .wishly-sidebar::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    background:#121c31;
+    pointer-events:none;
+  }
+  body.dashboard-page .mobile-sidebar-backdrop{z-index:1001!important}
+  body.dashboard-page .mobile-sidebar-toggle{z-index:1004!important}
+}
