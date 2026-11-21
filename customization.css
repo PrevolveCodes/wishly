@@ -20,7 +20,7 @@
 .gift-access-divider{display:flex;align-items:center;gap:10px;margin:21px 0 13px;color:var(--muted,#777982);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
 .gift-access-divider:before,.gift-access-divider:after{content:"";height:1px;background:var(--line,#e8e6e0);flex:1}
 .gift-access-setup{width:100%;padding:11px 13px}
-@media(max-width:600px){.wishlist-custom-banner{display:block}.wishlist-cover{width:100%;height:150px}.customization-modal form{padding:22px}.gift-access-panel{padding:19px}}
+
 body.dark .customization-modal{background:#202126;color:#f4f4f6}
 body.dark .customization-modal input,body.dark .customization-modal textarea{background:#292a30;color:#f4f4f6;border-color:#3d3e47}
 body.dark .gift-access-panel{background:#202126;border-color:#3d3e47;color:#f4f4f6}
