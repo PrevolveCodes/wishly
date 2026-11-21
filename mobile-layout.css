@@ -1,6 +1,6 @@
 /* Mobile layout: Discord-style left navigation drawer */
 .mobile-sidebar-toggle,.mobile-sidebar-backdrop{display:none}
-@media(max-width:760px){
+@media(max-width:900px){
   body.dashboard-page{--sidebar-width:0px;overflow-x:hidden}
   body.dashboard-page>.topbar{margin:0!important;padding:14px 16px 14px 66px!important;min-height:64px!important;width:100%;max-width:none}
   body.dashboard-page>.topbar .brand{display:inline-flex}
@@ -11,15 +11,15 @@
   body.dashboard-page .wishly-sidebar{
     width:min(292px,84vw)!important;
     max-width:calc(100vw - 48px);
-    transform:translateX(-105%);
+    transform:translateX(-110%)!important;
     transition:transform .22s ease;
-    z-index:1002;
+    z-index:1002!important;
     box-shadow:12px 0 34px rgba(15,20,35,.18);
     padding:22px 15px 16px;
     overflow-y:auto;
     overscroll-behavior:contain;
   }
-  body.dashboard-page.mobile-sidebar-open .wishly-sidebar{transform:translateX(0)}
+  body.dashboard-page.mobile-sidebar-open .wishly-sidebar{transform:translateX(0)!important}
   .mobile-sidebar-toggle{
     display:grid;place-items:center;position:fixed;top:12px;left:12px;z-index:1004;
     width:42px;height:42px;border:1px solid var(--line,#e8e6e0);border-radius:12px;
@@ -77,7 +77,7 @@
   body.dashboard-page .action-card{min-width:0}
   body.dashboard-page .form-row{grid-template-columns:minmax(0,1fr)}
 }
-@media(max-width:420px){
+@media(max-width:480px){
   body.dashboard-page .suggestions-grid{grid-template-columns:minmax(0,1fr)!important}
   body.dashboard-page .overview-stats{grid-template-columns:minmax(0,1fr)}
   body.dashboard-page .dashboard-welcome{align-items:flex-start}
