@@ -85,3 +85,85 @@
 @media(prefers-reduced-motion:reduce){
   body.dashboard-page .wishly-sidebar,.mobile-sidebar-backdrop{transition:none}
 }
+
+/* Give the actual page content room to breathe on narrow screens. */
+@media(max-width:900px){
+  body.dashboard-page .dashboard-main,
+  body.dashboard-page .suggestions-main,
+  body.dashboard-page .families-main,
+  body.dashboard-page .family-share-main{
+    padding-left:20px!important;
+    padding-right:20px!important;
+  }
+  body.dashboard-page .dashboard-welcome{margin-bottom:22px!important}
+  body.dashboard-page .dashboard-grid{gap:22px!important}
+  body.dashboard-page .action-card,
+  body.dashboard-page .dashboard-create,
+  body.dashboard-page .dashboard-lists{
+    padding:22px!important;
+    border-radius:20px;
+  }
+  body.dashboard-page .card-heading{min-height:0;margin-bottom:12px}
+  body.dashboard-page .card-heading h2{font-size:21px;line-height:1.3}
+  body.dashboard-page .card-heading p{line-height:1.6;margin-bottom:18px}
+  body.dashboard-page .action-card form{gap:3px}
+  body.dashboard-page .action-card label{margin-top:17px}
+  body.dashboard-page .action-card input,
+  body.dashboard-page .action-card select,
+  body.dashboard-page .action-card textarea{min-height:46px;padding:12px 14px}
+  body.dashboard-page .workspace{padding:22px!important}
+  body.dashboard-page .workspace-actions{gap:10px!important}
+  body.dashboard-page .workspace-actions>*{
+    flex:1 1 145px!important;
+    min-width:135px!important;
+    width:auto!important;
+    min-height:42px;
+    white-space:normal;
+    line-height:1.35;
+  }
+  body.dashboard-page .wish-item{gap:12px;padding:16px!important}
+  body.dashboard-page .wish-item .item-info{flex:1 1 calc(100% - 66px);min-width:0}
+  body.dashboard-page .wish-item .item-info h3{font-size:15px;line-height:1.4;overflow-wrap:anywhere}
+  body.dashboard-page .wish-item .item-info p{font-size:13px;line-height:1.5}
+  body.dashboard-page .wish-item .item-actions{gap:9px!important}
+  body.dashboard-page .wish-item .item-actions>*{
+    flex:1 1 125px!important;
+    min-width:120px!important;
+    min-height:40px;
+  }
+  body.dashboard-page .owned-list{gap:12px;padding:16px!important}
+  body.dashboard-page .owned-list-info{min-width:0;flex:1 1 calc(100% - 66px)}
+  body.dashboard-page .owned-list-info h3{line-height:1.4;overflow-wrap:anywhere}
+  body.dashboard-page .overview-stats{gap:12px!important}
+  body.dashboard-page .overview-stats article{min-width:0;padding:16px!important}
+  body.dashboard-page .overview-section{margin-top:26px}
+  body.dashboard-page .overview-list-card,
+  body.dashboard-page .overview-upcoming-card{padding:16px!important;gap:12px!important}
+  body.dashboard-page .suggestions-hero{padding:22px!important}
+  body.dashboard-page .suggestions-controls{gap:16px!important}
+  body.dashboard-page .suggestions-grid{gap:14px!important}
+  body.dashboard-page .suggestion-card{padding:18px!important}
+  body.dashboard-page .suggestion-card h2{line-height:1.4;overflow-wrap:anywhere}
+  body.dashboard-page .settings-card{padding:22px!important}
+  body.dashboard-page .settings-form{row-gap:18px}
+  body.dashboard-page .settings-section-heading{align-items:flex-start}
+  body.dashboard-page .settings-signout{align-items:flex-start;flex-direction:column}
+  body.dashboard-page .small-button,
+  body.dashboard-page .icon-button{min-height:40px;padding:9px 13px;white-space:normal;line-height:1.35}
+}
+@media(max-width:560px){
+  body.dashboard-page .dashboard-main,
+  body.dashboard-page .suggestions-main,
+  body.dashboard-page .families-main,
+  body.dashboard-page .family-share-main{padding-left:16px!important;padding-right:16px!important}
+  body.dashboard-page .action-card,
+  body.dashboard-page .dashboard-create,
+  body.dashboard-page .dashboard-lists,
+  body.dashboard-page .workspace{padding:18px!important}
+  body.dashboard-page .overview-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  body.dashboard-page .overview-stats article{align-items:flex-start;flex-direction:column}
+  body.dashboard-page .settings-form{grid-template-columns:minmax(0,1fr)!important}
+  body.dashboard-page .settings-photo-field,
+  body.dashboard-page .settings-status,
+  body.dashboard-page .settings-actions{grid-column:1}
+}
