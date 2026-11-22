@@ -65,5 +65,6 @@
   });
 
   window.wishlyShowDashboardView = showView;
-  showView("overview");
+  const requestedView = new URLSearchParams(window.location.search).get("view");
+  showView(Object.prototype.hasOwnProperty.call(views, requestedView) ? requestedView : "overview");
 })();
