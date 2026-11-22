@@ -38,8 +38,8 @@
   document.head.appendChild(style);
 
   document.addEventListener("DOMContentLoaded", () => {
-    window.alert("Wishly only works on a computer. Please open it on a desktop or laptop.");
-    document.body.innerHTML = '<main class="wishly-desktop-message"><h1>Wishly only works on a computer.</h1><p>Please open Wishly on a desktop or laptop to use the website.</p></main>';
+    window.alert("Wishly is designed for computers. You can try enabling Desktop site or Request desktop website in your browser menu, but it may not work on every device. For the full experience, open Wishly on a desktop or laptop.");
+    document.body.innerHTML = '<main class="wishly-desktop-message"><h1>Wishly only works on a computer.</h1><p>You can try enabling <strong>Desktop site</strong> or <strong>Request desktop website</strong> in your browser menu. It may not work on every device. For the full experience, use a desktop or laptop.</p></main>';
     document.documentElement.classList.add("wishly-mobile-blocked-ready");
   }, { once: true });
 })();
