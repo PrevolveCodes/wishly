@@ -1,50 +1,240 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
-import { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
-const firebaseConfig = {apiKey:"AIzaSyANtZF9yXTg3bvUWMFAPRwyE798av2gzl0",authDomain:"wishly-fd9ff.firebaseapp.com",projectId:"wishly-fd9ff",storageBucket:"wishly-fd9ff.firebasestorage.app",messagingSenderId:"250113116782",appId:"1:250113116782:web:c84ed484cacb2b029df47f",measurementId:"G-EG1Z8P6MZW"};
-const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getFirestore(app);
-const $=s=>document.querySelector(s), form=$("#view-form"), workspace=$("#workspace"), notice=$("#notice");
-let activeCode="", activeList=null, activeItems=[], giftAccess=false, activeFamilyShare=null, activeGiftPin="";
-const initialSharedPin=new URLSearchParams(location.hash.slice(1)).get("pin")||"";
-const escapeHtml=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const safeUrl=v=>{try{const u=new URL(v);return ["https:","http:"].includes(u.protocol)?u.href:"";}catch{return "";}};
-function openWishlistPrintView(list, items) {
-  const printWindow = window.open("", "_blank");
-  if (!printWindow) { toast("Your browser blocked the print window. Allow pop-ups for Wishly, then try again."); return; }
-  const money = value => Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const priced = items.filter(item => item.price !== "" && item.price != null && Number.isFinite(Number(item.price)));
-  const total = priced.reduce((sum, item) => sum + Number(item.price), 0);
-  const rows = items.map((item, index) => {
-    const image = safeUrl(item.imageUrl), link = safeUrl(item.url);
-    const hasPrice = item.price !== "" && item.price != null && Number.isFinite(Number(item.price));
-    return '<article class="item"><span class="number">' + String(index + 1).padStart(2, "0") + '</span>' +
-      (image ? '<img class="item-image" src="' + escapeHtml(image) + '" alt="">' : '<span class="placeholder">♡</span>') +
-      '<div class="details"><div><span class="category">' + escapeHtml(item.category || "Other") + '</span> <span class="priority">' + escapeHtml(item.priority || "Would love") + '</span></div>' +
-      '<h2>' + escapeHtml(item.name || "Wishlist item") + '</h2>' +
-      (item.notes ? '<p>' + escapeHtml(item.notes) + '</p>' : '') +
-      (link ? '<p class="store"><a href="' + escapeHtml(link) + '">View product online</a></p>' : '') +
-      '</div>' + (hasPrice ? '<strong class="price">$' + money(item.price) + '</strong>' : '') + '</article>';
-  }).join("");
-  const title = escapeHtml(list.title || "Wishlist"), owner = escapeHtml(list.ownerName || ""), occasion = escapeHtml(list.occasion || "Other");
-  const page = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + title + ' — Wishly</title><style>' +
-    '*{box-sizing:border-box}body{margin:0;padding:30px;background:#f4f3f8;color:#282538;font:14px/1.5 Arial,sans-serif}.sheet{max-width:800px;margin:auto;padding:36px 40px;background:#fff;border:1px solid #e9e6f1;border-radius:12px}.brand{color:#6553c7;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px}.heading{border-bottom:2px solid #efecf7;padding-bottom:20px;margin-bottom:4px}h1{font-size:28px;line-height:1.2;margin:0 0 8px;overflow-wrap:anywhere}.subtitle{color:#706b80;margin:0}.summary{display:flex;gap:18px;flex-wrap:wrap;color:#706b80;font-size:12px;margin-top:16px}.summary strong{color:#302b49}.item{display:flex;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid #eeecf3;break-inside:avoid;page-break-inside:avoid}.number{width:22px;flex:0 0 22px;color:#9b96ad;font-size:10px}.item-image,.placeholder{width:70px;height:70px;flex:0 0 70px;object-fit:contain;border:1px solid #eeecf3;border-radius:8px}.placeholder{display:grid;place-items:center;color:#a39db5;font-size:26px}.details{flex:1;min-width:0}.category{background:#f0edff;color:#5846b7;border-radius:4px;padding:3px 7px;font-size:10px;font-weight:700}.priority{color:#817b92;font-size:10px}.item h2{font-size:15px;margin:6px 0 3px;overflow-wrap:anywhere}.item p{margin:3px 0;color:#686579;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere}.store a{color:#5947b7;text-decoration:none}.price{white-space:nowrap;font-size:14px}.footer{display:flex;justify-content:space-between;gap:12px;margin-top:24px;padding-top:14px;border-top:1px solid #eeecf3;color:#9690a5;font-size:10px}.footer strong{color:#6553c7}@page{size:auto;margin:12mm}@media print{body{padding:0;background:#fff}.sheet{max-width:none;padding:0;border:0;border-radius:0}.item{padding:12px 0}.item-image,.placeholder{width:64px;height:64px;flex-basis:64px}}@media screen and (max-width:560px){.sheet{padding:20px 14px}.item{gap:8px}.number{width:16px;flex-basis:16px}.item-image,.placeholder{width:52px;height:52px;flex-basis:52px}.price{font-size:12px}h1{font-size:24px}}' +
-    '</style></head><body><main class="sheet"><div class="brand">wishly.</div><header class="heading"><h1>' + title + '</h1><p class="subtitle">' + (owner ? 'For ' + owner + ' · ' : '') + occasion + '</p><div class="summary"><span><strong>' + items.length + '</strong> ' + (items.length === 1 ? 'item' : 'items') + '</span>' +
-    (priced.length ? '<span><strong>' + priced.length + '</strong> priced</span><span>Listed total <strong>$' + money(total) + '</strong></span>' : '') + '</div></header>' + (rows || '<p>This wishlist does not have any items yet.</p>') + '<footer class="footer"><span>Made with <strong>Wishly</strong></span><span>Wishlist copy</span></footer></main></body></html>';
-  printWindow.document.open(); printWindow.document.write(page); printWindow.document.close();
-  const images = Array.from(printWindow.document.images);
-  Promise.all(images.map(img => img.complete ? Promise.resolve() : new Promise(resolve => { img.onload = resolve; img.onerror = resolve; setTimeout(resolve, 2500); }))).then(() => setTimeout(() => { printWindow.focus(); printWindow.print(); }, 250));
+const firebaseConfig = {
+  apiKey: "AIzaSyANtZF9yXTg3bvUWMFAPRwyE798av2gzl0",
+  authDomain: "wishly-fd9ff.firebaseapp.com",
+  projectId: "wishly-fd9ff",
+  storageBucket: "wishly-fd9ff.firebasestorage.app",
+  messagingSenderId: "250113116782",
+  appId: "1:250113116782:web:c84ed484cacb2b029df47f",
+  measurementId: "G-EG1Z8P6MZW"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const $ = selector => document.querySelector(selector);
+const form = $("#view-form");
+const workspace = $("#workspace");
+const notice = $("#notice");
+
+let activeCode = "";
+let activeList = null;
+let activeItems = [];
+
+const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, char => ({
+  "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+}[char]));
+
+function safeUrl(value) {
+  try {
+    const url = new URL(value);
+    return ["https:", "http:"].includes(url.protocol) ? url.href : "";
+  } catch {
+    return "";
+  }
 }
-async function hashPin(code,pin){const d=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(`wishly-gift-access:${code}:${pin}`));return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,"0")).join("");}
-function toast(message){notice.textContent=message;notice.classList.remove("hidden");clearTimeout(toast.timer);toast.timer=setTimeout(()=>notice.classList.add("hidden"),4500);}
-function errorText(e){if(e?.code==="auth/operation-not-allowed")return "Anonymous sign-in is disabled. Enable it in Firebase Authentication settings.";if(e?.code==="permission-denied")return "That gift password is incorrect, or gift access has already been set up.";return e?.message||"Something went wrong. Please try again.";}
-// The gift PIN hash must stay unreadable to clients. Do not probe giftAccessConfig from the browser.
-async function accessPanel(){const email=(auth.currentUser?.email||"").toLowerCase();let familyOptions="";if(activeFamilyShare&&email){const status=activeFamilyShare.passwordStatus||"unclaimed";if(status==="unclaimed"||activeFamilyShare.delegatedToEmail===email){familyOptions='<div class="gift-access-divider"><span>Family password setup</span></div><p class="helper">You were invited to this wishlist. You can create its password or pass setup to another invited member.</p><button id="family-create-password" class="small-button" type="button">Create the wishlist password</button><button id="family-pass-password" class="small-button" type="button">Let someone else set it</button>';}else if(status==="delegated"){familyOptions='<p class="helper">Password setup was passed to '+escapeHtml(activeFamilyShare.delegatedToEmail||"another family member")+'. They can create it; enter the password above once they share it.</p>';}else{familyOptions='<p class="helper">The wishlist password has been created. Enter it above to continue.</p>';}}workspace.innerHTML=`<div class="workspace-head"><div><div class="eyebrow">PRIVATE GIFT ACCESS</div><h2>${escapeHtml(activeList.title)}</h2><p class="workspace-sub">For ${escapeHtml(activeList.ownerName)} · ${escapeHtml(activeList.occasion||"Other")}</p></div><div class="code-chip">${escapeHtml(activeCode)}</div></div><div class="gift-access-panel"><h3>Private gift access</h3><p>Enter the private gift password shared by the first gift-giver. The wishlist code alone does not unlock reservations.</p><form id="gift-access-form"><label for="gift-pin">Gift password</label><input id="gift-pin" name="pin" type="password" minlength="8" maxlength="32" autocomplete="current-password" placeholder="Enter the private gift password" required><button class="button button-primary" type="submit">Open gift view <span>→</span></button></form>${activeFamilyShare?"":'<div class="gift-access-divider"><span>First gift-giver?</span></div><button id="setup-gift-access" class="small-button gift-access-setup" type="button">Create the private gift password</button><p class="helper">Only the first gift-giver can create it. If a password already exists, this action will be rejected. Share the password with other gift-givers, not the wishlist owner.</p>'}${familyOptions}</div>`;workspace.classList.remove("hidden");workspace.scrollIntoView({behavior:"smooth",block:"start"});const pinInput=$("#gift-pin");if(pinInput&&initialSharedPin)pinInput.value=initialSharedPin;$("#gift-access-form").addEventListener("submit",e=>{e.preventDefault();const p=String(new FormData(e.currentTarget).get("pin")||"").trim();if(p.length<8){toast("Use a gift password that is at least 8 characters long.");return;}authenticate(p);});$("#setup-gift-access")?.addEventListener("click",setup);$("#family-create-password")?.addEventListener("click",setup);$("#family-pass-password")?.addEventListener("click",passPassword);}
-async function passPassword(){if(!activeFamilyShare||!auth.currentUser?.email)return;const choices=(activeFamilyShare.invitedEmails||[]).filter(e=>e!==auth.currentUser.email.toLowerCase());if(!choices.length){toast("No other invited family members are available yet. Ask the wishlist owner to invite someone first.");return;}const target=window.prompt("Enter the email of the invited family member who will create the password:\\n"+choices.join("\\n"),choices[0]);if(!target)return;const email=target.trim().toLowerCase();if(!choices.includes(email)){toast("Choose an email from the invited members.");return;}try{await updateDoc(doc(db,"wishlists",activeCode,"familyShares",activeFamilyShare.familyId),{passwordStatus:"delegated",delegatedToEmail:email});activeFamilyShare.passwordStatus="delegated";activeFamilyShare.delegatedToEmail=email;toast("Password setup passed to "+email+".");await accessPanel();}catch(e){toast(errorText(e));}}
-async function setup(){if(activeFamilyShare){const email=(auth.currentUser?.email||"").toLowerCase();if(activeFamilyShare.passwordStatus==="delegated"&&activeFamilyShare.delegatedToEmail!==email){toast("Another family member has been chosen to create the password.");return;}}const p=window.prompt("Create the private gift password. Use at least 8 characters. Do not share it with the wishlist owner.");if(p===null)return;const pin=p.trim();if(pin.length<8||pin.length>32){toast("The gift password must be 8–32 characters long.");return;}const confirm=window.prompt("Enter the gift password again to confirm it.");if(confirm===null)return;if(pin!==confirm.trim()){toast("The passwords do not match.");return;}try{await setDoc(doc(db,"wishlists",activeCode,"giftAccessConfig","main"),{pinHash:await hashPin(activeCode,pin),createdAt:serverTimestamp()});if(activeFamilyShare){await updateDoc(doc(db,"wishlists",activeCode,"familyShares",activeFamilyShare.familyId),{passwordStatus:"set",delegatedToEmail:auth.currentUser.email.toLowerCase()});activeFamilyShare.passwordStatus="set";}await authenticate(pin);}catch(e){toast(e?.code==="permission-denied"?"Could not create the password. It may already be set up, or the Firestore rules may need publishing. Try entering the existing password above.":errorText(e));await accessPanel();}}
-async function authenticate(pin){try{if(!auth.currentUser)await signInAnonymously(auth);await setDoc(doc(db,"wishlists",activeCode,"giftAccess",auth.currentUser.uid),{pinHash:await hashPin(activeCode,pin),active:true,createdAt:serverTimestamp()});giftAccess=true;activeGiftPin=pin;await renderList();}catch(e){giftAccess=false;toast(errorText(e));}}
-async function renderList(){if(!auth.currentUser)return;workspace.classList.remove("hidden");const snap=await getDocs(collection(db,"wishlists",activeCode,"items"));activeItems=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>{const ao=Number.isFinite(a.sortOrder)?a.sortOrder:(a.createdAt?.seconds||0),bo=Number.isFinite(b.sortOrder)?b.sortOrder:(b.createdAt?.seconds||0);return ao-bo;});workspace.innerHTML=`<div class="workspace-head"><div><div class="eyebrow">SHARED WISHLIST</div><h2>${escapeHtml(activeList.title)}</h2><p class="workspace-sub">For ${escapeHtml(activeList.ownerName)} · ${escapeHtml(activeList.occasion||"Other")}</p></div><div class="workspace-head-actions"><div class="code-chip">${escapeHtml(activeCode)}</div><button class="small-button" id="copy-gift-share-link" type="button">Copy share link</button><button class="small-button" id="print-wishlist" type="button">Print / Save PDF</button></div></div><p class="workspace-sub">This is a view-only wishlist. Reservations are turned off.</p><div class="list-tools"><label for="gift-item-search">Search items</label><input id="gift-item-search" type="search" placeholder="Search by name or category"><label for="gift-category-filter">Category</label><select id="gift-category-filter"><option value="">All categories</option>${[...new Set(activeItems.map(item=>String(item.category||"Other")))].sort((a,b)=>a.localeCompare(b)).map(category=>'<option value="' + escapeHtml(category) + '">' + escapeHtml(category) + '</option>').join("")}</select><label for="gift-item-sort">Sort</label><select id="gift-item-sort"><option value="custom">Wishlist order</option><option value="name">Name: A–Z</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="priority">Priority</option><option value="category">Category</option></select><div class="list-summary"><span id="gift-visible-count">${activeItems.length} items</span><span>Total listed price: <strong id="gift-price-total"></strong></span></div></div><div class="item-list">${activeItems.length?activeItems.map((item,index)=>{const url=safeUrl(item.url),price=item.price!==""&&item.price!=null&&Number.isFinite(Number(item.price));return `<article class="wish-item" data-search="${escapeHtml((item.name+" "+(item.category||"")).toLowerCase())}" data-name="${escapeHtml(item.name||"")}" data-category="${escapeHtml(item.category||"Other")}" data-priority="${escapeHtml(item.priority||"Would love")}" data-index="${index}" data-price="${Number(item.price)||0}" data-has-price="${price}"><div class="item-placeholder" aria-hidden="true">${safeUrl(item.imageUrl)?'<img class="item-image" src="'+escapeHtml(safeUrl(item.imageUrl))+'" alt="" loading="lazy">':"♡"}</div><div class="item-info"><span class="category-tag">${escapeHtml(item.category||"Other")}</span><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.priority||"Would love")}${item.notes?" · "+escapeHtml(item.notes):""}</p>${url?'<a class="item-link" href="'+escapeHtml(url)+'" target="_blank" rel="noopener noreferrer">View at store ↗</a>':""}</div>${price?'<div class="item-price">$'+Number(item.price).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})+"</div>":""}</article>`;}).join(""): '<div class="empty-state">This wishlist does not have any items yet.</div>'}</div>`;const search=$("#gift-item-search"), categoryFilter=$("#gift-category-filter"), sortSelect=$("#gift-item-sort");
-const filter=()=>{const term=(search?.value||"").trim().toLowerCase(),category=categoryFilter?.value||"";const cards=[...workspace.querySelectorAll(".wish-item")];const rank=value=>({"must have":0,"high":0,"would love":1,"medium":1,"nice to have":2,"low":2})[String(value||"").toLowerCase()]??3;cards.forEach(card=>{const matchesText=(card.dataset.search||"").includes(term),matchesCategory=!category||card.dataset.category===category;card.classList.toggle("filtered-out",!(matchesText&&matchesCategory));});const sort=sortSelect?.value||"custom";cards.sort((a,b)=>{if(sort==="name")return(a.dataset.name||"").localeCompare(b.dataset.name||"");if(sort==="price-low"||sort==="price-high"){const fallback=sort==="price-low"?Number.POSITIVE_INFINITY:Number.NEGATIVE_INFINITY,ap=a.dataset.hasPrice==="true"?Number(a.dataset.price):fallback,bp=b.dataset.hasPrice==="true"?Number(b.dataset.price):fallback;return(sort==="price-low"?ap-bp:bp-ap)||Number(a.dataset.index)-Number(b.dataset.index);}if(sort==="priority")return rank(a.dataset.priority)-rank(b.dataset.priority)||(a.dataset.name||"").localeCompare(b.dataset.name||"");if(sort==="category")return(a.dataset.category||"").localeCompare(b.dataset.category||"")||(a.dataset.name||"").localeCompare(b.dataset.name||"");return Number(a.dataset.index)-Number(b.dataset.index);});const list=workspace.querySelector(".item-list");cards.forEach(card=>list.appendChild(card));let shown=0,total=0;cards.forEach(card=>{if(!card.classList.contains("filtered-out")){shown++;if(card.dataset.hasPrice==="true")total+=Number(card.dataset.price)||0;}});$("#gift-visible-count").textContent=shown+(shown===1?" item":" items");$("#gift-price-total").textContent=total.toLocaleString(undefined,{style:"currency",currency:"USD"});};
-search?.addEventListener("input",filter);categoryFilter?.addEventListener("change",filter);sortSelect?.addEventListener("change",filter);filter();workspace.scrollIntoView({behavior:"smooth",block:"start"});$("#print-wishlist")?.addEventListener("click",()=>openWishlistPrintView(activeList,activeItems));$("#copy-gift-share-link")?.addEventListener("click",async()=>{const shareUrl=new URL("gift.html",location.href);shareUrl.searchParams.set("code",activeCode);try{await navigator.clipboard.writeText(shareUrl.href);toast("Share link copied. Anyone with the link can open the gift view.");}catch{window.prompt("Copy this private gift link:",shareUrl.href);}});form.addEventListener("submit",async e=>{e.preventDefault();e.stopImmediatePropagation();const code=String(new FormData(form).get("code")||"").trim().toUpperCase().replace(/\s/g,"");if(!/^[A-HJ-NP-Z2-9]{10}$/.test(code)){toast("Enter the 10-character wishlist code.");return;}const button=form.querySelector('button[type="submit"]');button.disabled=true;try{if(!auth.currentUser)await signInAnonymously(auth);const snap=await getDoc(doc(db,"wishlists",code));if(!snap.exists()){toast("Wishlist not found. Check the code and try again.");return;}activeCode=code;activeList={code,...snap.data()};if(activeList.ownerUid===auth.currentUser.uid){toast("You cannot open your own wishlist as a gift-giver. Use a separate browser session.");return;}history.replaceState(history.state,"",`gift.html?code=${encodeURIComponent(code)}`);giftAccess=true;activeGiftPin="";await renderList();}catch(e){toast(errorText(e));}finally{button.disabled=false;}},true);
 
-const initialCode=new URLSearchParams(location.search).get("code");if(initialCode){const codeInput=$("#list-code");codeInput.value=initialCode.toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g,"").slice(0,10);if(codeInput.value.length===10){let stop=()=>{};let fired=false;stop=onAuthStateChanged(auth,()=>{if(fired)return;fired=true;stop();form.requestSubmit();});}}
+function toast(message) {
+  notice.textContent = message;
+  notice.classList.remove("hidden");
+}
+
+function showError(error) {
+  console.error("Wishly wishlist viewer:", error);
+  if (error?.code === "permission-denied") {
+    toast("Wishly could not read this wishlist. Check that your published Firestore rules allow viewing wishlist items.");
+  } else if (error?.code === "unavailable") {
+    toast("Wishly could not connect to Firebase. Check your internet connection and try again.");
+  } else {
+    toast(error?.message || "Something went wrong while loading this wishlist. Please try again.");
+  }
+}
+
+async function loadWishlist(rawCode) {
+  const code = String(rawCode || "").trim().toUpperCase().replace(/\s/g, "");
+  if (!/^[A-HJ-NP-Z2-9]{10}$/.test(code)) {
+    toast("Enter the 10-character wishlist code.");
+    return;
+  }
+
+  const button = form.querySelector('button[type="submit"]');
+  button.disabled = true;
+  button.textContent = "Loading wishlist…";
+  workspace.classList.add("hidden");
+  notice.classList.add("hidden");
+
+  try {
+    const listSnapshot = await getDoc(doc(db, "wishlists", code));
+    if (!listSnapshot.exists()) {
+      toast("Wishlist not found. Check the code and try again.");
+      return;
+    }
+
+    const itemSnapshot = await getDocs(collection(db, "wishlists", code, "items"));
+    activeCode = code;
+    activeList = { code, ...listSnapshot.data() };
+    activeItems = itemSnapshot.docs.map(itemDoc => ({
+      id: itemDoc.id,
+      ...itemDoc.data()
+    })).sort((a, b) => {
+      const orderA = Number.isFinite(a.sortOrder) ? a.sortOrder : (a.createdAt?.seconds || 0);
+      const orderB = Number.isFinite(b.sortOrder) ? b.sortOrder : (b.createdAt?.seconds || 0);
+      return orderA - orderB;
+    });
+
+    history.replaceState(history.state, "", `gift.html?code=${encodeURIComponent(code)}`);
+    renderWishlist();
+  } catch (error) {
+    showError(error);
+  } finally {
+    button.disabled = false;
+    button.innerHTML = 'Find wishlist <span>→</span>';
+  }
+}
+
+function renderWishlist() {
+  workspace.innerHTML = `
+    <div class="workspace-head">
+      <div>
+        <div class="eyebrow">SHARED WISHLIST</div>
+        <h2>${escapeHtml(activeList.title || "Wishlist")}</h2>
+        <p class="workspace-sub">For ${escapeHtml(activeList.ownerName || "Someone")} · ${escapeHtml(activeList.occasion || "Other")}</p>
+      </div>
+      <div class="workspace-head-actions">
+        <div class="code-chip">${escapeHtml(activeCode)}</div>
+        <button class="small-button" id="copy-gift-share-link" type="button">Copy share link</button>
+        <button class="small-button" id="print-wishlist" type="button">Print / Save PDF</button>
+      </div>
+    </div>
+    <p class="workspace-sub">This is a view-only wishlist. Reservations are turned off.</p>
+    <div class="list-tools">
+      <label for="gift-item-search">Search items</label>
+      <input id="gift-item-search" type="search" placeholder="Search by name or category">
+      <label for="gift-category-filter">Category</label>
+      <select id="gift-category-filter">
+        <option value="">All categories</option>
+        ${[...new Set(activeItems.map(item => String(item.category || "Other")))].sort((a, b) => a.localeCompare(b)).map(category => `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`).join("")}
+      </select>
+      <label for="gift-item-sort">Sort</label>
+      <select id="gift-item-sort">
+        <option value="custom">Wishlist order</option>
+        <option value="name">Name: A–Z</option>
+        <option value="price-low">Price: low to high</option>
+        <option value="price-high">Price: high to low</option>
+        <option value="priority">Priority</option>
+        <option value="category">Category</option>
+      </select>
+      <div class="list-summary">
+        <span id="gift-visible-count">${activeItems.length} items</span>
+        <span>Total listed price: <strong id="gift-price-total"></strong></span>
+      </div>
+    </div>
+    <div class="item-list">
+      ${activeItems.length ? activeItems.map((item, index) => {
+        const image = safeUrl(item.imageUrl);
+        const link = safeUrl(item.url);
+        const hasPrice = item.price !== "" && item.price != null && Number.isFinite(Number(item.price));
+        return `
+          <article class="wish-item"
+            data-search="${escapeHtml((String(item.name || "") + " " + String(item.category || "")).toLowerCase())}"
+            data-name="${escapeHtml(item.name || "")}"
+            data-category="${escapeHtml(item.category || "Other")}"
+            data-priority="${escapeHtml(item.priority || "Would love")}"
+            data-index="${index}"
+            data-price="${Number(item.price) || 0}"
+            data-has-price="${hasPrice}">
+            <div class="item-placeholder" aria-hidden="true">
+              ${image ? `<img class="item-image" src="${escapeHtml(image)}" alt="" loading="lazy">` : "♡"}
+            </div>
+            <div class="item-info">
+              <span class="category-tag">${escapeHtml(item.category || "Other")}</span>
+              <h3>${escapeHtml(item.name || "Wishlist item")}</h3>
+              <p>${escapeHtml(item.priority || "Would love")}${item.notes ? " · " + escapeHtml(item.notes) : ""}</p>
+              ${link ? `<a class="item-link" href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">View at store ↗</a>` : ""}
+            </div>
+            ${hasPrice ? `<div class="item-price">$ ${Number(item.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>` : ""}
+          </article>`;
+      }).join("") : '<div class="empty-state">This wishlist does not have any items yet.</div>'}
+    </div>`;
+
+  workspace.classList.remove("hidden");
+
+  const search = $("#gift-item-search");
+  const categoryFilter = $("#gift-category-filter");
+  const sortSelect = $("#gift-item-sort");
+
+  function filterAndSort() {
+    const term = (search.value || "").trim().toLowerCase();
+    const category = categoryFilter.value;
+    const cards = [...workspace.querySelectorAll(".wish-item")];
+
+    cards.forEach(card => {
+      const matchesText = (card.dataset.search || "").includes(term);
+      const matchesCategory = !category || card.dataset.category === category;
+      card.classList.toggle("filtered-out", !(matchesText && matchesCategory));
+    });
+
+    const priorityRank = value => ({
+      "must have": 0, high: 0, "would love": 1, medium: 1, "nice to have": 2, low: 2
+    })[String(value || "").toLowerCase()] ?? 3;
+
+    cards.sort((a, b) => {
+      const sort = sortSelect.value;
+      if (sort === "name") return a.dataset.name.localeCompare(b.dataset.name);
+      if (sort === "price-low" || sort === "price-high") {
+        const missing = sort === "price-low" ? Infinity : -Infinity;
+        const priceA = a.dataset.hasPrice === "true" ? Number(a.dataset.price) : missing;
+        const priceB = b.dataset.hasPrice === "true" ? Number(b.dataset.price) : missing;
+        return (sort === "price-low" ? priceA - priceB : priceB - priceA) || Number(a.dataset.index) - Number(b.dataset.index);
+      }
+      if (sort === "priority") return priorityRank(a.dataset.priority) - priorityRank(b.dataset.priority) || a.dataset.name.localeCompare(b.dataset.name);
+      if (sort === "category") return a.dataset.category.localeCompare(b.dataset.category) || a.dataset.name.localeCompare(b.dataset.name);
+      return Number(a.dataset.index) - Number(b.dataset.index);
+    });
+
+    const list = workspace.querySelector(".item-list");
+    cards.forEach(card => list.appendChild(card));
+
+    let visible = 0;
+    let total = 0;
+    cards.forEach(card => {
+      if (!card.classList.contains("filtered-out")) {
+        visible++;
+        if (card.dataset.hasPrice === "true") total += Number(card.dataset.price) || 0;
+      }
+    });
+    $("#gift-visible-count").textContent = visible + (visible === 1 ? " item" : " items");
+    $("#gift-price-total").textContent = total.toLocaleString(undefined, { style: "currency", currency: "USD" });
+  }
+
+  search.addEventListener("input", filterAndSort);
+  categoryFilter.addEventListener("change", filterAndSort);
+  sortSelect.addEventListener("change", filterAndSort);
+  filterAndSort();
+
+  $("#copy-gift-share-link").addEventListener("click", async () => {
+    const shareUrl = new URL("gift.html", location.href);
+    shareUrl.searchParams.set("code", activeCode);
+    try {
+      await navigator.clipboard.writeText(shareUrl.href);
+      toast("Share link copied.");
+    } catch {
+      window.prompt("Copy this wishlist link:", shareUrl.href);
+    }
+  });
+
+  $("#print-wishlist").addEventListener("click", () => window.print());
+  workspace.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+form.addEventListener("submit", event => {
+  event.preventDefault();
+  loadWishlist(new FormData(form).get("code"));
+});
+
+const codeFromUrl = new URLSearchParams(location.search).get("code");
+if (codeFromUrl) {
+  $("#list-code").value = codeFromUrl.toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, "").slice(0, 10);
+  if ($("#list-code").value.length === 10) loadWishlist($("#list-code").value);
+}
