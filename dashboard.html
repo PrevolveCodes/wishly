@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#f7f6f2">
   <meta name="description" content="Manage your Wishly lists and gift ideas.">
   <title>Wishly Dashboard</title>
-  <link rel="stylesheet" href="styles.css?v=open-button-2">
+  <link rel="stylesheet" href="styles.css?v=dashboard-space-1">
   <link rel="stylesheet" href="dashboard-loading.css?v=loading-1">
 
   <link rel="stylesheet" href="customization.css">
@@ -50,7 +50,7 @@
   <script type="module" src="overview.js?v=countdown-grid-2"></script>
   <script type="module" src="families.js?v=family-links-2"></script>
   <script type="module" src="customization.js?v=list-controls-2"></script>
-  <script defer src="dashboard-navigation.js?v=history-1"></script>
+  <script defer src="dashboard-navigation.js?v=draft-preview-1"></script>
   <style>#dashboard-grid > [hidden], .dashboard-embedded-view[hidden] { display: none !important; }</style>
   <script type="module" src="suggestions.js?v=discovery-1"></script>
   <style>
@@ -161,6 +161,12 @@ html body.dark-mode .settings-form input:focus{border-color:#719fe1;box-shadow:0
           <label for="event-date">Event date (optional)</label><input id="event-date" name="eventDate" type="date"><small class="form-hint">Add the date to see a countdown on your Overview.</small>
           <button class="button button-primary" type="submit">Create wishlist <span>→</span></button>
         </form>
+        <aside class="draft-preview" aria-label="Wishlist preview">
+          <div class="eyebrow">Wishlist preview</div>
+          <h2 id="draft-title">Your wishlist</h2>
+          <p id="draft-owner" hidden></p>
+          <p id="draft-occasion">Christmas</p>
+        </aside>
       </article>
       <section class="dashboard-lists">
         <div class="my-lists-sidebar">

@@ -17,6 +17,25 @@
     settings: document.getElementById("settings-view")
   };
 
+  const draft = document.getElementById("create-form");
+  function updatePreview() {
+    const fields = draft.elements;
+    document.getElementById("draft-title").textContent = fields.title.value.trim() || "Your wishlist";
+    const owner = fields.ownerName.value.trim();
+    const byline = document.getElementById("draft-owner");
+    byline.hidden = !owner;
+    byline.textContent = owner ? "For " + owner : "";
+    const date = fields.eventDate.valueAsDate;
+    const occasion = fields.occasion.value;
+    document.getElementById("draft-occasion").textContent = date
+      ? occasion + " · " + date.toLocaleDateString(undefined, { dateStyle: "long", timeZone: "UTC" })
+      : occasion;
+  }
+  draft.addEventListener("input", updatePreview);
+  draft.addEventListener("reset", () => queueMicrotask(updatePreview));
+  window.addEventListener("pageshow", updatePreview);
+  updatePreview();
+
   function showView(name) {
     if (!Object.hasOwn(views, name) || !views[name]) name = "overview";
 
