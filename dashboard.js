@@ -193,9 +193,14 @@ async function loadOwnedLists(user = auth.currentUser) {
       });
     });
     ownedLists.querySelectorAll(".open-owned-list").forEach(button => {
-      button.addEventListener("click", async () => {
+      button.addEventListener("click", () => {
         const list = lists.find(item => item.code === button.dataset.code);
-        if (list) await openWorkspace(list, "owner");
+        if (!list) return;
+        openWorkspace(list, "owner");
+        if (window.matchMedia("(max-width: 900px)").matches) {
+          workspace.focus({ preventScroll: true });
+          workspace.scrollIntoView({ block: "start", behavior: "instant" });
+        }
       });
     });
     ownedLists.querySelectorAll(".delete-owned-list").forEach(button => {

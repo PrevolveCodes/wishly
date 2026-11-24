@@ -244,3 +244,35 @@
   .profile-details { grid-template-columns: minmax(0, 1fr); }
   input:not([type=checkbox]), select, textarea { font-size: 16px; }
 }
+
+@media (max-width: 900px) {
+  body.dashboard-page .dashboard-lists:has(> .my-lists-sidebar) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .dashboard-page #workspace {
+    scroll-margin-top: 72px;
+  }
+
+  .dashboard-page #workspace .workspace-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dashboard-page #workspace .code-chip { justify-self: start; }
+}
+
+@media (max-width: 560px) {
+  .dashboard-page #workspace .list-tools { grid-template-columns: minmax(0, 1fr); }
+  .dashboard-page #workspace .qr-panel { flex-wrap: wrap; }
+  .dashboard-page #workspace .wish-item {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .dashboard-page #workspace .wish-item .item-price { grid-column: 2; }
+  .dashboard-page #workspace .wish-item .item-actions {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
