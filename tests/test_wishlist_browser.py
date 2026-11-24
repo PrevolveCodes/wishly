@@ -73,14 +73,37 @@ class WishlistBrowserTests(unittest.TestCase):
         cls.addClassCleanup(cls.browser.close)
 
     def setUp(self):
-        self.page = self.browser.new_page(reduced_motion="reduce", viewport={"width": 390, "height": 840})
-        self.addCleanup(self.page.close)
+        context = self.browser.new_context(reduced_motion="reduce", viewport={"width": 390, "height": 840})
+        self.addCleanup(context.close)
+        self.page = context.new_page()
         self.page.route("**/*", serve_fixture)
 
     def test_create_view_hides_saved_lists(self):
         self.page.goto(ORIGIN + "/dashboard.html?view=make-list")
         expect(self.page.locator("#make-a-list")).to_be_visible()
         expect(self.page.locator("#dashboard-grid > .dashboard-lists")).to_be_hidden()
+
+    def test_return_to_light_mode_across_pages_and_tabs(self):
+        page = self.page
+        page.goto(ORIGIN + "/gift.html")
+        page.locator("#theme-toggle").click()
+        page.goto(ORIGIN + "/dashboard.html?view=lists")
+        page.locator(".mobile-sidebar-toggle").click()
+        switch = page.locator("#sidebar-theme-toggle")
+        expect(switch).to_have_attribute("aria-pressed", "true")
+
+        other = page.context.new_page()
+        self.addCleanup(other.close)
+        other.route("**/*", serve_fixture)
+        other.goto(ORIGIN + "/gift.html")
+        switch.click()
+        expect(switch).to_have_attribute("aria-pressed", "false")
+        self.assertFalse(page.locator(".dark-mode").count())
+        expect(other.locator("#theme-toggle")).to_have_attribute("aria-pressed", "false")
+        page.reload()
+        expect(page.locator("html")).to_have_attribute("data-theme", "light")
+        page.go_back()
+        expect(page.locator("#theme-toggle")).to_have_attribute("aria-pressed", "false")
 
     def test_priority_order_for_owner_and_viewer(self):
         for path, control in [

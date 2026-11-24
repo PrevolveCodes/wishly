@@ -143,13 +143,6 @@ onAuthStateChanged(auth, async user => {
   }
 });
 
-const sidebarThemeToggle = document.querySelector("#sidebar-theme-toggle");
-if (sidebarThemeToggle) sidebarThemeToggle.addEventListener("click", () => {
-  const existingToggle = document.querySelector("[data-theme-toggle], #theme-toggle, .theme-toggle");
-  if (existingToggle) existingToggle.click();
-  else document.documentElement.classList.toggle("dark-mode");
-});
-
 async function loadOwnedLists(user = auth.currentUser) {
   if (!user || user.isAnonymous) return;
   ownedLists.innerHTML = '<div class="empty-state">Loading your wishlists…</div>';

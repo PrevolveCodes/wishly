@@ -19,6 +19,7 @@
     const dark = theme === "dark";
     document.body.classList.toggle("dark-mode", dark);
     document.documentElement.dataset.theme = dark ? "dark" : "light";
+    document.documentElement.style.colorScheme = dark ? "dark" : "light";
     const topButton = document.getElementById("theme-toggle");
     if (topButton) {
       topButton.textContent = dark ? "☀ Light mode" : "☾ Dark mode";
@@ -50,6 +51,13 @@
 
   cleanPageBackground();
   applyTheme(readTheme());
+
+  window.addEventListener("storage", event => {
+    if (event.key === KEY || event.key === null) applyTheme(readTheme());
+  });
+  window.addEventListener("pageshow", event => {
+    if (event.persisted) applyTheme(readTheme());
+  });
 
   const setup = () => {
     const nav = document.querySelector(".top-nav");
