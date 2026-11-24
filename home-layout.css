@@ -1,0 +1,57 @@
+/* Keep the gift illustration in its own column so it never covers the copy. */
+.home-page .hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(16px, 4vw, 48px);
+  min-height: 0;
+}
+
+.home-page .hero-art.gift-art {
+  position: relative;
+  inset: auto;
+  transform: none;
+}
+
+.home-page .landing-choices .card-heading,
+.home-page .card-heading p {
+  min-height: 0;
+}
+
+.home-page .landing-choices .button {
+  margin-top: auto;
+}
+
+@media (min-width: 681px) and (max-width: 880px) {
+  .home-page .hero-art.gift-art { zoom: .72; }
+}
+
+@media (max-width: 680px) {
+  .home-page main { padding: 12px 18px 0; }
+  .home-page .topbar {
+    width: calc(100% - 28px);
+    margin-top: 12px;
+    padding: 10px 14px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .home-page .top-nav { flex-wrap: wrap; justify-content: flex-start; gap: 4px; }
+  .home-page .top-nav > * { min-height: 44px; }
+  .home-page .hero { display: block; margin: 0; padding: 28px 0; }
+  .home-page .hero h1 { font-size: clamp(42px, 9vw, 56px); }
+  .home-page .hero-art.gift-art { display: none; }
+  .home-page .landing-choices,
+  .home-page .how-it-works { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .home-page .action-card { padding: 22px; }
+  .home-page .how-it-works { padding: 32px 0 0; }
+  .home-page footer { flex-wrap: wrap; gap: 10px; }
+}
+
+@media (max-width: 460px) {
+  .home-page .top-nav {
+    width: 100%;
+    justify-content: space-between;
+    border-top: 1px solid var(--line);
+    padding-top: 8px;
+  }
+}
