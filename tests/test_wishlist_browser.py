@@ -4,6 +4,7 @@ Set CHROMIUM_PATH to use a system Chromium. All requests stay inside the test.
 """
 
 import os
+import re
 import unittest
 from pathlib import Path
 from urllib.parse import urlparse
@@ -152,6 +153,28 @@ class WishlistBrowserTests(unittest.TestCase):
         expect(status).to_contain_text("B@example.test")
         self.page.evaluate("async () => { releaseA(); await new Promise(r => setTimeout(r, 0)); }")
         expect(status).to_contain_text("B@example.test")
+
+    def test_wishlist_preview_contrast_in_dark_mode(self):
+        def luminance(css_color):
+            channels = [int(value) / 255 for value in re.fullmatch(
+                r"rgb\((\d+), (\d+), (\d+)\)", css_color
+            ).groups()]
+            linear = [v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4 for v in channels]
+            return sum(v * weight for v, weight in zip(linear, (0.2126, 0.7152, 0.0722)))
+
+        page = self.page
+        page.goto(ORIGIN + "/dashboard.html?view=make-list")
+        page.locator("#owner-name").fill("Test owner")
+        page.locator(".mobile-sidebar-toggle").click()
+        page.locator("#sidebar-theme-toggle").click()
+        page.locator(".mobile-sidebar-toggle").click()
+        preview = page.locator(".draft-preview")
+        background = luminance(preview.evaluate("e => getComputedStyle(e).backgroundColor"))
+        for field in (".eyebrow", "#draft-title", "#draft-owner", "#draft-occasion"):
+            with self.subTest(field=field):
+                text = luminance(preview.locator(field).evaluate("e => getComputedStyle(e).color"))
+                ratio = (max(text, background) + 0.05) / (min(text, background) + 0.05)
+                self.assertGreaterEqual(ratio, 4.5)
 
     def test_priority_order_for_owner_and_viewer(self):
         for path, control in [
