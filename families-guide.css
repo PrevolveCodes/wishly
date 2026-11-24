@@ -49,3 +49,21 @@
 .family-share-link-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
 .family-share-link-row a{color:var(--purple)}
 .family-guide [hidden],.family-share-guide [hidden]{display:none!important}
+
+@media (min-width: 1150px) {
+  .family-guide {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    align-items: start;
+    column-gap: 20px;
+  }
+  .family-guide > :is(.family-heading, .family-steps, .family-faq) { grid-column: 1 / -1; }
+  .family-guide > .family-setup-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 680px) {
+  .family-guide :is(.family-steps, .family-setup-grid, .family-member-groups) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .family-steps > div + div { border-left: 0; border-top: 1px solid var(--line); }
+  .family-guide :is(.family-heading, .family-section-title, .family-invitation) { flex-wrap: wrap; }
+}
