@@ -1,3 +1,4 @@
+import { priorityRank } from "./wishlist-priority.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import {
   getAuth, onAuthStateChanged
@@ -32,6 +33,7 @@ const itemForm = $("#item-form");
 let activeListId = null;
 let activeMode = "owner";
 let activeItemDocs = [];
+let workspaceRequest = 0;
 let activeList = null;
 let noticeTimer;
 let showArchivedLists = false;
@@ -133,7 +135,12 @@ onAuthStateChanged(auth, async user => {
   const submit = createForm.querySelector('button[type="submit"]');
   submit.disabled = false;
   submit.textContent = "Create wishlist →";
-  await loadOwnedLists(user);
+  const lists = await loadOwnedLists(user);
+  const params = new URLSearchParams(location.search);
+  const requested = lists?.find(list => list.code === params.get("code"));
+  if (params.get("view") === "lists" && requested && !activeListId) {
+    openSelectedList(requested);
+  }
 });
 
 const sidebarThemeToggle = document.querySelector("#sidebar-theme-toggle");
@@ -166,7 +173,7 @@ async function loadOwnedLists(user = auth.currentUser) {
       <span class="owned-list-icon">${list.coverImageUrl && /^https?:\/\//i.test(list.coverImageUrl) ? `<img class="owned-list-thumbnail" src="${escapeHtml(list.coverImageUrl)}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='♡'">` : '<span aria-hidden="true">♡</span>'}</span>
       <div class="owned-list-info"><h3>${escapeHtml(list.title)}</h3><p>${escapeHtml(list.occasion || "Other")} · Code ${escapeHtml(list.code)}</p></div>
       <div class="owned-list-actions"><button class="small-button open-owned-list" data-code="${escapeHtml(list.code)}" type="button">Open list →</button><button class="small-button customize-owned-list" data-code="${escapeHtml(list.code)}" type="button">Customize</button><button class="small-button delete-owned-list" data-code="${escapeHtml(list.code)}" type="button">Delete</button></div>
-    </article>`).join("") : '<div class="empty-state">You haven’t made a wishlist yet. Create your first one here.</div>';
+    </article>`).join("") : '<div class="empty-state">' + (showArchivedLists ? 'No archived wishlists.' : 'No active wishlists. Create one or check your archive.') + '</div>';
     ownedLists.querySelectorAll(".owned-list").forEach((card, index) => {
       const list = lists[index];
       if (!list) return;
@@ -196,11 +203,12 @@ async function loadOwnedLists(user = auth.currentUser) {
       button.addEventListener("click", () => {
         const list = lists.find(item => item.code === button.dataset.code);
         if (!list) return;
-        openWorkspace(list, "owner");
-        if (window.matchMedia("(max-width: 900px)").matches) {
-          workspace.focus({ preventScroll: true });
-          workspace.scrollIntoView({ block: "start", behavior: "instant" });
+        const url = new URL(location.href);
+        if (url.searchParams.has("code")) {
+          url.searchParams.set("code", list.code);
+          history.replaceState(history.state, "", url);
         }
+        openSelectedList(list);
       });
     });
     ownedLists.querySelectorAll(".delete-owned-list").forEach(button => {
@@ -224,6 +232,7 @@ async function loadOwnedLists(user = auth.currentUser) {
           await deleteDoc(doc(db, "wishlists", list.code, "giftAccessConfig", "main")).catch(() => {});
           await deleteDoc(doc(db, "wishlists", list.code));
           if (activeListId === list.code) {
+            workspaceRequest++;
             activeListId = null;
             activeList = null;
             activeItemDocs = [];
@@ -240,6 +249,7 @@ async function loadOwnedLists(user = auth.currentUser) {
         }
       });
     });
+    return lists;
   } catch (error) {
     ownedLists.innerHTML = '<div class="empty-state">Could not load your wishlists. Check your connection and Firestore rules, then refresh.</div>';
     listCount.textContent = "Unable to load";
@@ -286,7 +296,16 @@ async function loadPurchases(code, items, isGift) {
   return Object.fromEntries(pairs);
 }
 
+function openSelectedList(list) {
+  openWorkspace(list, "owner");
+  if (window.matchMedia("(max-width: 900px)").matches) {
+    workspace.focus({ preventScroll: true });
+    workspace.scrollIntoView({ block: "start", behavior: "instant" });
+  }
+}
+
 async function openWorkspace(list, mode) {
+  const request = ++workspaceRequest;
   activeListId = list.code;
   activeMode = mode;
   activeList = list;
@@ -295,8 +314,10 @@ async function openWorkspace(list, mode) {
   workspace.classList.remove("hidden");
   try {
     const items = await loadItems(list.code);
-    activeItemDocs = items;
+    if (request !== workspaceRequest) return;
     const purchases = await loadPurchases(list.code, items, !owner);
+    if (request !== workspaceRequest) return;
+    activeItemDocs = items;
     workspace.innerHTML = `
       <div class="workspace-head">
         <div><div class="eyebrow">${owner ? "YOUR WISHLIST" : "A WISHLIST FOR SOMEONE"}</div><h2>${escapeHtml(list.title)}</h2><p class="workspace-sub">${escapeHtml(list.ownerName || "")} · ${escapeHtml(list.occasion || "Other")}</p></div>
@@ -342,7 +363,6 @@ async function openWorkspace(list, mode) {
       const term = (searchInput?.value || "").trim().toLowerCase();
       const category = categoryFilter?.value || "";
       const cards = [...workspace.querySelectorAll(".wish-item")];
-      const priorityRank = value => ({ "must have": 0, "high": 0, "would love": 1, "medium": 1, "nice to have": 2, "low": 2 })[String(value || "").toLowerCase()] ?? 3;
       cards.forEach(card => {
         const matchesText = (card.dataset.search || "").includes(term);
         const matchesCategory = !category || card.dataset.category === category;
@@ -440,6 +460,7 @@ async function openWorkspace(list, mode) {
       } catch (error) { toast(friendlyError(error)); }
     }));
   } catch (error) {
+    if (request !== workspaceRequest) return;
     workspace.innerHTML = '<div class="empty-state">Could not open this wishlist. Check the Firestore rules and refresh.</div>';
     toast(friendlyError(error));
     console.error("Wishly: failed to open wishlist", error);
