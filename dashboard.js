@@ -299,6 +299,7 @@ function openSelectedList(list) {
 
 async function openWorkspace(list, mode) {
   const request = ++workspaceRequest;
+  const changedList = activeListId !== list.code;
   activeListId = list.code;
   activeMode = mode;
   activeList = list;
@@ -313,7 +314,7 @@ async function openWorkspace(list, mode) {
     if (request !== workspaceRequest) return;
     activeItemDocs = items;
     workspace.innerHTML = `
-      <div class="workspace-head">
+      <div class="workspace-head"${changedList ? " data-enter" : ""}>
         <div><div class="eyebrow">${owner ? "YOUR WISHLIST" : "A WISHLIST FOR SOMEONE"}</div><h2>${escapeHtml(list.title)}</h2><p class="workspace-sub">${escapeHtml(list.ownerName || "")} · ${escapeHtml(list.occasion || "Other")}</p></div>
         <div class="code-chip" title="Wishlist code">${escapeHtml(list.code)} ${owner ? '<button class="small-button" id="copy-code" type="button">Copy</button>' : ""}</div>
       </div>
