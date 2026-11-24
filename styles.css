@@ -1783,7 +1783,7 @@ body button:disabled { cursor: not-allowed; opacity: .6; }
   font-weight: 600;
 }
 .list-option-buttons { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px 0; }
-body .owned-list-info .open-owned-list {
+body .owned-list-info .list-title-button {
   display: block;
   max-width: 100%;
   padding: 0;
@@ -1795,15 +1795,15 @@ body .owned-list-info .open-owned-list {
   overflow-wrap: anywhere;
   cursor: pointer;
 }
-body .open-owned-list:hover { text-decoration: underline; }
-.my-lists-sidebar .owned-list-actions { grid-column: 2; }
+body .list-title-button:hover { text-decoration: underline; }
+.my-lists-sidebar .owned-list-actions { grid-column: 1 / -1; }
 .my-lists-sidebar .owned-list { row-gap: 2px; }
-.my-lists-sidebar .list-options { width: 100%; }
+.my-lists-sidebar .list-options[open] { width: 100%; }
 body.dashboard-page #workspace .workspace-actions { align-items: baseline; }
 .workspace-actions .list-options[open] { flex-basis: 100%; }
 
 @media (pointer: coarse) {
-  .list-options summary, body .owned-list-info .open-owned-list { min-height: 44px; }
+  .list-options summary, body .owned-list-info .list-title-button { min-height: 44px; }
 }
 #make-a-list .card-heading { min-height: 0; }
 #make-a-list h1 { margin: 0 0 12px; font-size: clamp(24px, 4vw, 34px); letter-spacing: -.04em; }

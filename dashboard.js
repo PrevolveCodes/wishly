@@ -171,8 +171,8 @@ async function loadOwnedLists(user = auth.currentUser) {
     }
     ownedLists.innerHTML = lists.length ? lists.map(list => `<article class="owned-list">
       <span class="owned-list-icon">${list.coverImageUrl && /^https?:\/\//i.test(list.coverImageUrl) ? `<img class="owned-list-thumbnail" src="${escapeHtml(list.coverImageUrl)}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='♡'">` : '<span aria-hidden="true">♡</span>'}</span>
-      <div class="owned-list-info"><h3><button class="open-owned-list" data-code="${escapeHtml(list.code)}" type="button">${escapeHtml(list.title)}</button></h3><p>${escapeHtml(list.occasion || "Other")} · Code ${escapeHtml(list.code)}</p></div>
-      <div class="owned-list-actions"><details class="list-options"><summary>Manage list</summary><div class="list-option-buttons"><button class="small-button customize-owned-list" data-code="${escapeHtml(list.code)}" type="button">Customize</button><button class="small-button delete-owned-list" data-code="${escapeHtml(list.code)}" type="button">Delete</button></div></details></div>
+      <div class="owned-list-info"><h3><button class="list-title-button" data-code="${escapeHtml(list.code)}" type="button">${escapeHtml(list.title)}</button></h3><p>${escapeHtml(list.occasion || "Other")} · Code ${escapeHtml(list.code)}</p></div>
+      <div class="owned-list-actions"><button class="small-button open-owned-list" data-code="${escapeHtml(list.code)}" type="button">Open list <span aria-hidden="true">→</span></button><details class="list-options"><summary>Manage list</summary><div class="list-option-buttons"><button class="small-button customize-owned-list" data-code="${escapeHtml(list.code)}" type="button">Customize</button><button class="small-button delete-owned-list" data-code="${escapeHtml(list.code)}" type="button">Delete</button></div></details></div>
     </article>`).join("") : '<div class="empty-state">' + (showArchivedLists ? 'No archived wishlists.' : 'No active wishlists. Create one or check your archive.') + '</div>';
     ownedLists.querySelectorAll(".owned-list").forEach((card, index) => {
       const list = lists[index];
@@ -199,7 +199,7 @@ async function loadOwnedLists(user = auth.currentUser) {
         else toast("Wishlist customization is still loading. Please try again.");
       });
     });
-    ownedLists.querySelectorAll(".open-owned-list").forEach(button => {
+    ownedLists.querySelectorAll(".open-owned-list, .list-title-button").forEach(button => {
       const list = lists.find(item => item.code === button.dataset.code);
       button.addEventListener("click", () => {
         if (!list) return;
