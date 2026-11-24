@@ -43,9 +43,9 @@
       }
     });
   </script>
-<link rel="stylesheet" href="mobile-layout.css?v=responsive-2">
+  <link rel="stylesheet" href="home-layout.css?v=1">
 </head>
-<body>
+<body class="home-page">
   <header class="topbar">
     <a class="brand" href="./" aria-label="Wishly home"><img class="brand-mark" src="icon.png" alt=""><span>wishly<span class="brand-dot">.</span></span></a>
     <nav class="top-nav" aria-label="Main navigation"><a href="#about">About</a><a href="signup.html" class="nav-account">Sign up</a></nav>
@@ -53,9 +53,12 @@
 
   <main>
     <section class="hero">
-      <div class="eyebrow"><span class="eyebrow-dot"></span> WISH SOMETHING GOOD</div>
-      <h1>Make a list.<br><span>Share a wish.</span></h1>
-      <p class="hero-copy">Keep your gift ideas in one place. Give your family a code, and let them handle the surprises.</p><a class="button button-primary hero-cta" href="signup.html">Get started <span>→</span></a>
+      <div class="hero-intro">
+        <div class="eyebrow"><span class="eyebrow-dot"></span> WISH SOMETHING GOOD</div>
+        <h1>Make a list.<br><span>Share a wish.</span></h1>
+        <p class="hero-copy">Keep your gift ideas in one place. Give your family a code, and let them handle the surprises.</p>
+        <a class="button button-primary hero-cta" href="signup.html">Get started <span>→</span></a>
+      </div>
       <div class="hero-art gift-art" aria-hidden="true">
         <div class="gift-box gift-box-back">
           <div class="gift-lid"></div><div class="gift-ribbon ribbon-vertical"></div><div class="gift-ribbon ribbon-horizontal"></div>
@@ -79,13 +82,12 @@
         <div class="card-icon peach"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg></div>
         <div class="card-heading"><h2>I’m getting a gift</h2><p>Parents, family, and friends can open a wishlist with the code they were given.</p></div>
         <a class="button button-secondary" href="gift.html">View a wishlist <span>→</span></a>
-        <div class="privacy-note"><span class="lock-icon">⌑</span><span>Mark purchases privately so the wishlist owner won’t see the surprise.</span></div>
       </article>
     </section>
     <section id="about" class="how-it-works">
       <div><span class="step-number">01</span><h3>Make your list</h3><p>Add the things you’re hoping for.</p></div>
       <div><span class="step-number">02</span><h3>Share your code</h3><p>Give it to a parent or someone you trust.</p></div>
-      <div><span class="step-number">03</span><h3>Keep the surprise</h3><p>Gift-givers can track purchases privately.</p></div>
+      <div><span class="step-number">03</span><h3>Find a gift</h3><p>Open the shared list to see what they’re hoping for.</p></div>
     </section>
     <p id="notice" class="notice hidden" role="status"></p>
   </main>
