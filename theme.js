@@ -15,18 +15,6 @@
     document.head.appendChild(style);
   };
 
-  // Load the mobile dashboard layout independently from dashboard-loading.css.
-  // This avoids the old stylesheet query string keeping an older cached copy.
-  const loadMobileDashboardStyles = () => {
-    if (!document.body.classList.contains("dashboard-page")) return;
-    if (document.getElementById("wishly-mobile-dashboard-css")) return;
-    const link = document.createElement("link");
-    link.id = "wishly-mobile-dashboard-css";
-    link.rel = "stylesheet";
-    link.href = "mobile-dashboard.css?v=2";
-    document.head.appendChild(link);
-  };
-
   const applyTheme = theme => {
     const dark = theme === "dark";
     document.body.classList.toggle("dark-mode", dark);
@@ -64,7 +52,6 @@
   applyTheme(readTheme());
 
   const setup = () => {
-    loadMobileDashboardStyles();
     const nav = document.querySelector(".top-nav");
     if (nav && !document.getElementById("theme-toggle")) {
       const button = document.createElement("button");

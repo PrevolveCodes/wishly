@@ -16,10 +16,9 @@
     suggestions: document.getElementById("suggestions-view"),
     settings: document.getElementById("settings-view")
   };
-  const links = [...document.querySelectorAll("a[data-dashboard-view]")];
 
   function showView(name) {
-    if (!views[name]) name = "overview";
+    if (!Object.hasOwn(views, name) || !views[name]) name = "overview";
 
     if (overview) overview.hidden = name !== "overview";
     if (welcome) welcome.hidden = name !== "make-list";
@@ -34,9 +33,10 @@
 
     if (workspace) workspace.classList.toggle("hidden", name !== "lists" || !workspace.innerHTML.trim());
 
-    links.forEach(link => {
+    document.querySelectorAll("a[data-dashboard-view]").forEach(link => {
       const target = link.dataset.dashboardView;
       link.classList.toggle("active", target === name);
+      link.classList.toggle("is-active", target === name);
       if (target) {
         if (target === name) link.setAttribute("aria-current", "page");
         else link.removeAttribute("aria-current");
@@ -57,14 +57,26 @@
 
   document.addEventListener("click", event => {
     const link = event.target.closest("a[data-dashboard-view]");
-    if (!link) return;
+    if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     const target = link.dataset.dashboardView;
     if (!target || !views[target]) return;
     event.preventDefault();
-    showView(target);
+    navigate(target);
   });
 
-  window.wishlyShowDashboardView = showView;
-  const requestedView = new URLSearchParams(window.location.search).get("view");
-  showView(Object.prototype.hasOwnProperty.call(views, requestedView) ? requestedView : "overview");
+  function navigate(name) {
+    if (main.dataset.currentView === name) return;
+    const url = new URL(location.href);
+    url.searchParams.set("view", name);
+    history.pushState(null, "", url);
+    showView(name);
+  }
+
+  function readLocation() {
+    showView(new URLSearchParams(location.search).get("view"));
+  }
+
+  window.wishlyShowDashboardView = navigate;
+  window.addEventListener("popstate", readLocation);
+  readLocation();
 })();
