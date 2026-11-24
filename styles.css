@@ -1819,6 +1819,9 @@ body.dashboard-page #workspace .workspace-actions { align-items: baseline; }
   background: var(--lavender);
   overflow-wrap: anywhere;
 }
+.draft-preview .eyebrow { color: #1858a8; }
+body.dark-mode .draft-preview { background: #202c40; }
+body.dark-mode .draft-preview .eyebrow { color: #a8cfff !important; }
 .draft-preview h2 { margin: 16px 0 8px; font-size: clamp(22px, 3vw, 32px); line-height: 1.2; }
 .draft-preview p { margin: 4px 0 0; color: var(--ink); }
 @media (min-width: 901px) {
@@ -1845,4 +1848,39 @@ body.dashboard-page #workspace .workspace-actions { align-items: baseline; }
   }
   #settings-view .settings-heading { grid-column: 1 / -1; }
   #settings-view .settings-signout { flex-wrap: wrap; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Animate the active view once, without stacking entrances on its cards. */
+  #dashboard-main,
+  #dashboard-main :is(.action-card, .suggestion-card, .dashboard-welcome, .dashboard-lists, .workspace) {
+    animation: none;
+  }
+
+  #dashboard-main[data-current-view] > :is(#overview-view, .dashboard-embedded-view):not([hidden]),
+  #dashboard-main[data-current-view] #dashboard-grid > :not([hidden]) {
+    animation: dashboard-view-enter 210ms cubic-bezier(.2,.75,.25,1);
+  }
+
+  #workspace .workspace-head[data-enter] {
+    animation: wishlist-heading-enter 240ms ease-out;
+  }
+
+  #dashboard-main details[open] > :is(.list-option-buttons, .idea-filter-fields),
+  #item-dialog[open], #add-to-list-dialog[open], #customize-dialog[open] {
+    animation: dashboard-control-enter 150ms ease-out;
+  }
+}
+
+@keyframes dashboard-view-enter {
+  from { opacity: .65; translate: 10px 0; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes wishlist-heading-enter {
+  from { opacity: .55; translate: 0 8px; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes dashboard-control-enter {
+  from { opacity: .75; translate: 0 -4px; }
+  to { opacity: 1; translate: 0 0; }
 }
