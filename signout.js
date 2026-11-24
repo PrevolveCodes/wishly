@@ -24,7 +24,7 @@ onAuthStateChanged(auth, async user => {
   controls.innerHTML = '<div class="wishly-profile-button"><img class="wishly-profile-avatar" alt=""><span class="wishly-profile-copy"><strong class="wishly-profile-name">Your profile</strong></span></div><a class="wishly-settings-button" href="settings.html" aria-label="Settings" title="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="m19.4 15 .1.1a1.7 1.7 0 0 1-2.4 2.4l-.1-.1a1.7 1.7 0 0 0-2.9 1.2v.2a1.7 1.7 0 0 1-3.4 0v-.2a1.7 1.7 0 0 0-2.9-1.2l-.1.1a1.7 1.7 0 0 1-2.4-2.4l.1-.1a1.7 1.7 0 0 0-1.2-2.9H4a1.7 1.7 0 0 1 0-3.4h.2a1.7 1.7 0 0 0 1.2-2.9l-.1-.1a1.7 1.7 0 0 1 2.4-2.4l.1.1a1.7 1.7 0 0 0 2.9-1.2V2a1.7 1.7 0 0 1 3.4 0v.2a1.7 1.7 0 0 0 2.9 1.2l.1-.1a1.7 1.7 0 0 1 2.4 2.4l-.1.1a1.7 1.7 0 0 0 1.2 2.9h.2a1.7 1.7 0 0 1 0 3.4h-.2a1.7 1.7 0 0 0-1.2 2.9Z"/></svg></a>';
   const settingsButton = controls.querySelector(".wishly-settings-button");
   if (settingsButton) {
-    settingsButton.href = "dashboard.html";
+    settingsButton.href = "dashboard.html?view=settings";
     settingsButton.dataset.dashboardView = "settings";
     settingsButton.setAttribute("aria-label", "Settings");
     settingsButton.title = "Settings";

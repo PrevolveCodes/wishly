@@ -13,8 +13,8 @@
   <script src="theme.js" defer></script>
   <script type="module" src="signout.js"></script>
   <script type="module" src="overview.js?v=bugfix-1"></script>
-
-  <script src="desktop-only.js?v=1"></script>
+  <link rel="stylesheet" href="mobile-layout.css?v=responsive-2">
+  <script src="mobile-sidebar.js?v=responsive-2" defer></script>
 </head>
 <body class="dashboard-page overview-page">
   <aside class="wishly-sidebar" aria-label="Wishly sidebar">
@@ -24,14 +24,12 @@
       <a class="sidebar-link" href="dashboard.html?view=make-list"><img class="sidebar-icon" src="make_list.png?v=sidebar-icons-fix-4" alt=""><span>Make a List</span></a>
       <a class="sidebar-link" href="dashboard.html?view=lists"><img class="sidebar-icon" src="my_lists.png?v=sidebar-icons-fix-4" alt=""><span>My Lists</span></a>
       <a class="sidebar-link" href="families.html"><img class="sidebar-icon" src="families.png?v=families-sidebar-final-1" alt=""><span>Families</span></a>
-      <a class="sidebar-link" href="messages.html"><span class="sidebar-icon" aria-hidden="true">✉</span><span>Messages</span></a>
       <a class="sidebar-link" href="suggestions.html"><img class="sidebar-icon" src="gift_suggestions.png?v=sidebar-icons-fix-4" alt=""><span>Gift Suggestions</span></a>
       <a class="sidebar-link" href="gift.html"><img class="sidebar-icon" src="view_list.png?v=sidebar-icons-fix-4" alt=""><span>View a Wishlist</span></a>
       <button class="sidebar-link sidebar-theme-toggle" id="sidebar-theme-toggle" type="button"><img class="sidebar-icon" src="darklight_mode.png?v=sidebar-icons-fix-5" alt=""><span>Toggle dark mode</span></button>
     </nav>
     <div class="sidebar-bottom">
       <div class="sidebar-premium"><strong>Wishly Premium</strong><p>More ways to make your wishlists your own.</p><span class="premium-coming-soon">Coming later</span></div>
-      
     </div>
   </aside>
   <main class="dashboard-main overview-main">
