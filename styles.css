@@ -1346,231 +1346,12 @@ html{overflow-x:hidden}body{overflow-x:hidden}button,a,input,select,textarea{tou
 }
 
 
-/* Shared dimensional button style: match the Wishly Fortune Teller button across the site. */
-html body :is(button,.button,.small-button,.icon-button,input[type="submit"],input[type="button"],.nav-account,.theme-toggle,.sidebar-theme-toggle,.sidebar-signout,.google-button,.reserve-toggle,.edit-item,.remove-item,.toggle-purchased,.gift-idea-buttons button,.suggestion-card button,[role="button"]) {
-  border: 1px solid #216fca;
-  border-radius: 12px;
-  background: linear-gradient(135deg,#4d9be8,#216fca);
-  color: #fff;
-  box-shadow: inset 0 1px 0 #ffffff55, 0 3px 0 #164b91, 0 7px 14px #216fca26;
-  transition: transform .16s, box-shadow .16s, filter .16s;
-}
-html body :is(button,.button,.small-button,.icon-button,input[type="submit"],input[type="button"],.nav-account,.theme-toggle,.sidebar-theme-toggle,.sidebar-signout,.google-button,.reserve-toggle,.edit-item,.remove-item,.toggle-purchased,.gift-idea-buttons button,.suggestion-card button,[role="button"]):hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: inset 0 1px 0 #ffffff55, 0 4px 0 #164b91, 0 10px 18px #216fca32;
-  filter: brightness(1.035);
-}
-html body :is(button,.button,.small-button,.icon-button,input[type="submit"],input[type="button"],.nav-account,.theme-toggle,.sidebar-theme-toggle,.sidebar-signout,.google-button,.reserve-toggle,.edit-item,.remove-item,.toggle-purchased,.gift-idea-buttons button,.suggestion-card button,[role="button"]):active:not(:disabled) {
-  transform: translateY(2px);
-  box-shadow: inset 0 1px 0 #ffffff35, 0 1px 0 #164b91;
-}
-html body :is(button,.button,.small-button,.icon-button,input[type="submit"],input[type="button"],.nav-account,.theme-toggle,.sidebar-theme-toggle,.sidebar-signout,.google-button,.reserve-toggle,.edit-item,.remove-item,.toggle-purchased,.gift-idea-buttons button,.suggestion-card button,[role="button"]):focus-visible {
-  outline: 3px solid #b8dcff;
-  outline-offset: 3px;
-}
-html body :is(button,.button,.small-button,.icon-button,input[type="submit"],input[type="button"],.nav-account,.theme-toggle,.sidebar-theme-toggle,.sidebar-signout,.google-button,.reserve-toggle,.edit-item,.remove-item,.toggle-purchased,.gift-idea-buttons button,.suggestion-card button,[role="button"]):disabled {
-  cursor: not-allowed;
-  opacity: .55;
-  transform: none;
-  box-shadow: none;
-}
-html body.dark-mode :is(button,.button,.small-button,.icon-button,input[type="submit"],input[type="button"],.nav-account,.theme-toggle,.sidebar-theme-toggle,.sidebar-signout,.google-button,.reserve-toggle,.edit-item,.remove-item,.toggle-purchased,.gift-idea-buttons button,.suggestion-card button,[role="button"]) {
-  border-color: #3b83d5;
-  background: linear-gradient(135deg,#4d92dd,#1858a8);
-  color: #fff;
-  box-shadow: inset 0 1px 0 #ffffff35, 0 3px 0 #352b85, 0 7px 14px #00000030;
-}
-html body.dark-mode :is(button,.button,.small-button,.icon-button,input[type="submit"],input[type="button"],.nav-account,.theme-toggle,.sidebar-theme-toggle,.sidebar-signout,.google-button,.reserve-toggle,.edit-item,.remove-item,.toggle-purchased,.gift-idea-buttons button,.suggestion-card button,[role="button"]):hover:not(:disabled) {
-  box-shadow: inset 0 1px 0 #ffffff45, 0 4px 0 #352b85, 0 10px 18px #00000045;
-}
-@media (prefers-reduced-motion: reduce) {
-  html body :is(button,.button,.small-button,.icon-button,input[type="submit"],input[type="button"],.nav-account,.theme-toggle,.sidebar-theme-toggle,.sidebar-signout,.google-button,.reserve-toggle,.edit-item,.remove-item,.toggle-purchased,.gift-idea-buttons button,.suggestion-card button,[role="button"]) {
-    transition: none;
-  }
-}
-
-
-/* Final consistency pass: override component-specific rules so every actual button
-   and button-like control uses the same Fortune Teller treatment. */
-html body button,
-html body input[type="button"],
-html body input[type="submit"],
-html body input[type="reset"],
-html body [role="button"],
-html body a.button,
-html body a.small-button,
-html body a.icon-button,
-html body a.nav-account,
-html body a.sidebar-link,
-html body a.sidebar-signout,
-html body a.theme-toggle,
-html body a.sidebar-theme-toggle,
-html body .button,
-html body .small-button,
-html body .icon-button,
-html body .nav-account,
-html body .theme-toggle,
-html body .sidebar-theme-toggle,
-html body .sidebar-signout,
-html body .reserve-toggle,
-html body .edit-item,
-html body .remove-item,
-html body .toggle-purchased,
-html body .gift-idea-buttons button,
-html body .suggestion-card button {
-  border: 1px solid #216fca !important;
-  border-radius: 12px !important;
-  background: linear-gradient(135deg,#4d9be8,#216fca) !important;
-  color: #fff !important;
-  box-shadow: inset 0 1px 0 #ffffff55, 0 3px 0 #164b91, 0 7px 14px #216fca26 !important;
-  transition: transform .16s, box-shadow .16s, filter .16s !important;
-}
-html body button:hover:not(:disabled),
-html body input[type="button"]:hover:not(:disabled),
-html body input[type="submit"]:hover:not(:disabled),
-html body input[type="reset"]:hover:not(:disabled),
-html body [role="button"]:hover:not(:disabled),
-html body a.button:hover,
-html body a.small-button:hover,
-html body a.icon-button:hover,
-html body a.nav-account:hover,
-html body a.sidebar-link:hover,
-html body a.sidebar-signout:hover,
-html body .button:hover:not(:disabled),
-html body .small-button:hover:not(:disabled),
-html body .icon-button:hover:not(:disabled) {
-  transform: translateY(-2px) !important;
-  box-shadow: inset 0 1px 0 #ffffff55, 0 4px 0 #164b91, 0 10px 18px #216fca32 !important;
-  filter: brightness(1.035) !important;
-}
-html body button:active:not(:disabled),
-html body input[type="button"]:active:not(:disabled),
-html body input[type="submit"]:active:not(:disabled),
-html body input[type="reset"]:active:not(:disabled),
-html body [role="button"]:active:not(:disabled),
-html body a.button:active,
-html body a.small-button:active,
-html body a.icon-button:active,
-html body .button:active:not(:disabled),
-html body .small-button:active:not(:disabled),
-html body .icon-button:active:not(:disabled) {
-  transform: translateY(2px) !important;
-  box-shadow: inset 0 1px 0 #ffffff35, 0 1px 0 #164b91 !important;
-}
-html body.dark-mode button,
-html body.dark-mode input[type="button"],
-html body.dark-mode input[type="submit"],
-html body.dark-mode input[type="reset"],
-html body.dark-mode [role="button"],
-html body.dark-mode a.button,
-html body.dark-mode a.small-button,
-html body.dark-mode a.icon-button,
-html body.dark-mode a.nav-account,
-html body.dark-mode a.sidebar-link,
-html body.dark-mode a.sidebar-signout,
-html body.dark-mode a.theme-toggle,
-html body.dark-mode a.sidebar-theme-toggle,
-html body.dark-mode .button,
-html body.dark-mode .small-button,
-html body.dark-mode .icon-button,
-html body.dark-mode .nav-account,
-html body.dark-mode .theme-toggle,
-html body.dark-mode .sidebar-theme-toggle,
-html body.dark-mode .sidebar-signout,
-html body.dark-mode .reserve-toggle,
-html body.dark-mode .edit-item,
-html body.dark-mode .remove-item,
-html body.dark-mode .toggle-purchased {
-  border-color: #3b83d5 !important;
-  background: linear-gradient(135deg,#4d92dd,#1858a8) !important;
-  color: #fff !important;
-  box-shadow: inset 0 1px 0 #ffffff35, 0 3px 0 #352b85, 0 7px 14px #00000030 !important;
-}
-html body button:disabled,
-html body input:disabled,
-html body [role="button"][aria-disabled="true"] {
-  cursor: not-allowed !important;
-  opacity: .55 !important;
-  transform: none !important;
-  box-shadow: none !important;
-}
-
-
-/* Restore the sidebar to its original flat navigation styling; keep the new
-   raised style on buttons elsewhere in the app. */
-html body .wishly-sidebar .sidebar-link {
-  border: 0 !important;
-  border-radius: 12px !important;
-  background: transparent !important;
-  color: var(--muted) !important;
-  box-shadow: none !important;
-  transform: none;
-  filter: none !important;
-}
-html body .wishly-sidebar .sidebar-link:hover {
-  background: var(--soft, #eaf4ff) !important;
-  color: var(--ink) !important;
-  box-shadow: none !important;
-  transform: translateX(3px) !important;
-  filter: none !important;
-}
-html body .wishly-sidebar .sidebar-link.is-active {
-  box-shadow: inset 3px 0 0 var(--purple) !important;
-}
-html body .wishly-sidebar .sidebar-signout {
-  border: 0 !important;
-  border-top: 1px solid var(--line) !important;
-  border-radius: 10px !important;
-  background: transparent !important;
-  color: var(--muted) !important;
-  box-shadow: none !important;
-  transform: none;
-  filter: none !important;
-}
-html body .wishly-sidebar .sidebar-signout:hover {
-  background: transparent !important;
-  color: var(--ink) !important;
-  box-shadow: none !important;
-  transform: none !important;
-  filter: none !important;
-}
-html body.dark-mode .wishly-sidebar .sidebar-link {
-  background: transparent !important;
-  color: #b9c5e6 !important;
-  box-shadow: none !important;
-}
-html body.dark-mode .wishly-sidebar .sidebar-link:hover {
-  background: #202b43 !important;
-  color: #e8e9f5 !important;
-}
-html body.dark-mode .wishly-sidebar .sidebar-signout {
-  background: transparent !important;
-  color: #b9c5e6 !important;
-  box-shadow: none !important;
-}
-
-
 /* Default accent: blue, with a seasonal holiday theme applied only in winter. */
 :root {
   --purple: #2476d2;
   --purple-dark: #1858a8;
   --lavender: #eaf4ff;
 }
-html body :is(button,.button,.small-button,.icon-button,input[type="submit"],input[type="button"],input[type="reset"],[role="button"],a.button,a.small-button,a.icon-button,.nav-account,.reserve-toggle,.edit-item,.remove-item,.toggle-purchased,.gift-idea-buttons button,.suggestion-card button) {
-  border-color: #216fca !important;
-  background: linear-gradient(135deg,#4d9be8,#216fca) !important;
-  color: #fff !important;
-  box-shadow: inset 0 1px 0 #ffffff55, 0 3px 0 #164b91, 0 7px 14px #216fca26 !important;
-}
-html body :is(button,.button,.small-button,.icon-button,input[type="submit"],input[type="button"],input[type="reset"],[role="button"],a.button,a.small-button,a.icon-button,.nav-account,.reserve-toggle,.edit-item,.remove-item,.toggle-purchased,.gift-idea-buttons button,.suggestion-card button):hover:not(:disabled) {
-  box-shadow: inset 0 1px 0 #ffffff55, 0 4px 0 #164b91, 0 10px 18px #216fca32 !important;
-}
-html body.dark-mode :is(button,.button,.small-button,.icon-button,input[type="submit"],input[type="button"],input[type="reset"],[role="button"],a.button,a.small-button,a.icon-button,.nav-account,.reserve-toggle,.edit-item,.remove-item,.toggle-purchased,.gift-idea-buttons button,.suggestion-card button) {
-  border-color: #4d92dd !important;
-  background: linear-gradient(135deg,#4d92dd,#1858a8) !important;
-  color: #fff !important;
-}
-
 /* Winter holiday theme: December 1 through January 2. Outside this window,
    the site stays in its normal blue theme and no snow is shown. */
 html.wishly-winter {
@@ -1595,12 +1376,6 @@ html.wishly-winter .step-number,
 html.wishly-winter h1 span,
 html.wishly-winter .item-link {
   color: #bd3038 !important;
-}
-html.wishly-winter :is(button,.button,.small-button,.icon-button,input[type="submit"],input[type="button"],input[type="reset"],[role="button"],a.button,a.small-button,a.icon-button,.nav-account,.reserve-toggle,.edit-item,.remove-item,.toggle-purchased,.gift-idea-buttons button,.suggestion-card button) {
-  border-color: #237a4b !important;
-  background: linear-gradient(135deg,#31965f,#237a4b) !important;
-  color: #fff !important;
-  box-shadow: inset 0 1px 0 #ffffff55, 0 3px 0 #155532, 0 7px 14px #237a4b26 !important;
 }
 html.wishly-winter body :is(.wishly-sidebar .sidebar-link,.wishly-sidebar .sidebar-signout) {
   background: transparent !important;
@@ -1681,53 +1456,6 @@ html body.dark-mode .wishly-sidebar .sidebar-link { color: #b9c5e6 !important; }
 html body.dark-mode .wishly-sidebar .sidebar-link:hover { background: #203c5a !important; }
 html.wishly-winter body .wishly-sidebar .sidebar-link.is-active { box-shadow: inset 3px 0 0 #bd3038 !important; }
 html.wishly-winter body.dark-mode .wishly-sidebar .sidebar-link { color: #b9c5e6 !important; }
-
-
-/* Restore the press-down movement on click after the shared theme overrides. */
-html body button:active:not(:disabled),
-html body input[type="button"]:active:not(:disabled),
-html body input[type="submit"]:active:not(:disabled),
-html body input[type="reset"]:active:not(:disabled),
-html body [role="button"]:active:not([aria-disabled="true"]),
-html body a.button:active,
-html body a.small-button:active,
-html body a.icon-button:active,
-html body .button:active:not(:disabled),
-html body .small-button:active:not(:disabled),
-html body .icon-button:active:not(:disabled),
-html body .nav-account:active,
-html body .reserve-toggle:active,
-html body .edit-item:active,
-html body .remove-item:active,
-html body .toggle-purchased:active,
-html body .gift-idea-buttons button:active:not(:disabled),
-html body .suggestion-card button:active:not(:disabled) {
-  transform: translateY(2px) !important;
-  box-shadow: inset 0 1px 0 #ffffff35, 0 1px 0 #164b91 !important;
-  filter: brightness(.98) !important;
-}
-html.wishly-winter body button:active:not(:disabled),
-html.wishly-winter body input[type="button"]:active:not(:disabled),
-html.wishly-winter body input[type="submit"]:active:not(:disabled),
-html.wishly-winter body input[type="reset"]:active:not(:disabled),
-html.wishly-winter body [role="button"]:active:not([aria-disabled="true"]),
-html.wishly-winter body a.button:active,
-html.wishly-winter body a.small-button:active,
-html.wishly-winter body a.icon-button:active,
-html.wishly-winter body .button:active:not(:disabled),
-html.wishly-winter body .small-button:active:not(:disabled),
-html.wishly-winter body .icon-button:active:not(:disabled),
-html.wishly-winter body .nav-account:active,
-html.wishly-winter body .reserve-toggle:active,
-html.wishly-winter body .edit-item:active,
-html.wishly-winter body .remove-item:active,
-html.wishly-winter body .toggle-purchased:active,
-html.wishly-winter body .gift-idea-buttons button:active:not(:disabled),
-html.wishly-winter body .suggestion-card button:active:not(:disabled) {
-  transform: translateY(2px) !important;
-  box-shadow: inset 0 1px 0 #ffffff35, 0 1px 0 #155532 !important;
-  filter: brightness(.98) !important;
-}
 
 
 /* Keep wishlist owner actions visible instead of overlapping in the card grid. */
@@ -2018,3 +1746,65 @@ body.dashboard-page #workspace .wish-item .item-info h3 {
   overflow-wrap: break-word !important;
 }
 
+
+/* Primary actions use the accent. Management controls sit quietly beside them. */
+body .button-primary, body .top-nav .nav-account {
+  background: var(--purple-dark);
+  color: white;
+  border: 1px solid transparent;
+  box-shadow: none;
+  text-decoration: none;
+}
+body .small-button, body .theme-toggle, body .icon-button {
+  background: var(--white);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  box-shadow: none;
+}
+body :is(.button, .small-button, .theme-toggle, .icon-button) {
+  border-radius: 9px;
+}
+body :is(.button, .small-button, .theme-toggle, .icon-button):hover {
+  transform: none;
+  filter: brightness(.96);
+}
+body :is(a, button, summary):focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 3px;
+}
+body button:disabled { cursor: not-allowed; opacity: .6; }
+
+.list-options summary {
+  width: fit-content;
+  padding: 9px 4px;
+  cursor: pointer;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+.list-option-buttons { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px 0; }
+body .owned-list-info .open-owned-list {
+  display: block;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-align: start;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+body .open-owned-list:hover { text-decoration: underline; }
+.my-lists-sidebar .owned-list-actions { grid-column: 2; }
+.my-lists-sidebar .owned-list { row-gap: 2px; }
+.my-lists-sidebar .list-options { width: 100%; }
+body.dashboard-page #workspace .workspace-actions { align-items: baseline; }
+.workspace-actions .list-options[open] { flex-basis: 100%; }
+
+@media (pointer: coarse) {
+  .list-options summary, body .owned-list-info .open-owned-list { min-height: 44px; }
+}
+#make-a-list .card-heading { min-height: 0; }
+#make-a-list h1 { margin: 0 0 12px; font-size: clamp(24px, 4vw, 34px); letter-spacing: -.04em; }
+#dashboard-grid:has(> #make-a-list:not([hidden])) { grid-template-columns: minmax(0, 620px); }

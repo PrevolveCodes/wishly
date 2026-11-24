@@ -51,37 +51,6 @@ async function getList(code) {
   return snap.exists() ? { code, ...snap.data() } : null;
 }
 
-function dashboardMode() {
-  const workspace = $("#workspace");
-  if (!workspace) return;
-  const observer = new MutationObserver(async () => {
-    const chip = workspace.querySelector(".code-chip");
-    const actions = workspace.querySelector(".workspace-actions");
-    if (!chip || !actions) return;
-    const code = (chip.textContent || "").replace(/Copy/g, "").trim();
-    if (!/^[A-HJ-NP-Z2-9]{10}$/.test(code)) return;
-    if (workspace.dataset.customizationCode === code && actions.querySelector("#customize-list")) return;
-
-    workspace.dataset.customizationCode = code;
-    actions.querySelector("#customize-list")?.remove();
-    workspace.querySelector(".wishlist-custom-banner")?.remove();
-    workspace.classList.remove("has-list-customization");
-
-    window.wishlyOpenCustomize = code => openEditor(code, true);
-
-    try {
-      const list = await getList(code);
-      const currentCode = (workspace.querySelector(".code-chip")?.textContent || "").replace(/Copy/g, "").trim();
-      if (list && currentCode === code && workspace.dataset.customizationCode === code) {
-        applyCustomization(workspace, list);
-      }
-    } catch (error) {
-      console.error("Wishly: could not load wishlist customization", error);
-    }
-  });
-  observer.observe(workspace, {childList:true, subtree:true});
-}
-
 function ensureDialog() {
   let dialog = $("#customize-dialog");
   if (dialog) return dialog;
@@ -120,7 +89,8 @@ async function openEditor(code, owner) {
     try {
       await updateDoc(doc(db, "wishlists", code), data);
       dialog.close();
-      applyCustomization($("#workspace"), {...list, ...data});
+      const workspace = $("#workspace");
+      if (workspace?.dataset.listCode === code) applyCustomization(workspace, {...list, ...data});
       showToast("Wishlist customization saved.");
     } catch (error) {
       console.error("Wishly: customization save failed", error);
@@ -165,5 +135,25 @@ async function giftMode() {
   observer.observe(workspace, {childList:true, subtree:true});
 }
 
-if (document.body.classList.contains("dashboard-page")) dashboardMode();
-else giftMode();
+if (document.body.classList.contains("dashboard-page")) {
+  const workspace = $("#workspace");
+  let lastHeader;
+  const updateBanner = async () => {
+    const header = workspace.querySelector(".workspace-head");
+    if (!header || lastHeader === header) return;
+    lastHeader = header;
+    try {
+      const list = await getList(workspace.dataset.listCode);
+      if (list && workspace.contains(header)) applyCustomization(workspace, list);
+    } catch (error) {
+      console.warn("Could not load wishlist customization", error);
+    }
+  };
+  if (workspace) {
+    new MutationObserver(updateBanner).observe(workspace, { childList: true });
+    updateBanner();
+  }
+  window.wishlyOpenCustomize = code => openEditor(code, true);
+} else {
+  giftMode();
+}

@@ -48,3 +48,25 @@ body.dark-mode .overview-countdowns-section .overview-upcoming-card {
   border-color: #383b63;
 }
 
+
+#overview-view { padding: 0; }
+.overview-heading h1 {
+  margin: 0 0 20px;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.15;
+  letter-spacing: -.045em;
+}
+body.dashboard-page .overview-stats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  padding: 14px 0;
+  border-block: 1px solid var(--line);
+}
+body.dashboard-page .overview-stats article {
+  padding: 4px clamp(6px, 2vw, 20px);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+body.dashboard-page .overview-stats article + article { border-left: 1px solid var(--line); }

@@ -171,13 +171,13 @@ async function loadOwnedLists(user = auth.currentUser) {
     }
     ownedLists.innerHTML = lists.length ? lists.map(list => `<article class="owned-list">
       <span class="owned-list-icon">${list.coverImageUrl && /^https?:\/\//i.test(list.coverImageUrl) ? `<img class="owned-list-thumbnail" src="${escapeHtml(list.coverImageUrl)}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='♡'">` : '<span aria-hidden="true">♡</span>'}</span>
-      <div class="owned-list-info"><h3>${escapeHtml(list.title)}</h3><p>${escapeHtml(list.occasion || "Other")} · Code ${escapeHtml(list.code)}</p></div>
-      <div class="owned-list-actions"><button class="small-button open-owned-list" data-code="${escapeHtml(list.code)}" type="button">Open list →</button><button class="small-button customize-owned-list" data-code="${escapeHtml(list.code)}" type="button">Customize</button><button class="small-button delete-owned-list" data-code="${escapeHtml(list.code)}" type="button">Delete</button></div>
+      <div class="owned-list-info"><h3><button class="open-owned-list" data-code="${escapeHtml(list.code)}" type="button">${escapeHtml(list.title)}</button></h3><p>${escapeHtml(list.occasion || "Other")} · Code ${escapeHtml(list.code)}</p></div>
+      <div class="owned-list-actions"><details class="list-options"><summary>Manage list</summary><div class="list-option-buttons"><button class="small-button customize-owned-list" data-code="${escapeHtml(list.code)}" type="button">Customize</button><button class="small-button delete-owned-list" data-code="${escapeHtml(list.code)}" type="button">Delete</button></div></details></div>
     </article>`).join("") : '<div class="empty-state">' + (showArchivedLists ? 'No archived wishlists.' : 'No active wishlists. Create one or check your archive.') + '</div>';
     ownedLists.querySelectorAll(".owned-list").forEach((card, index) => {
       const list = lists[index];
       if (!list) return;
-      const actions = card.querySelector(".owned-list-actions");
+      const actions = card.querySelector(".list-option-buttons");
       if (!actions) return;
       const archiveButton = document.createElement("button");
       archiveButton.className = "small-button archive-owned-list";
@@ -200,8 +200,8 @@ async function loadOwnedLists(user = auth.currentUser) {
       });
     });
     ownedLists.querySelectorAll(".open-owned-list").forEach(button => {
+      const list = lists.find(item => item.code === button.dataset.code);
       button.addEventListener("click", () => {
-        const list = lists.find(item => item.code === button.dataset.code);
         if (!list) return;
         const url = new URL(location.href);
         if (url.searchParams.has("code")) {
@@ -309,6 +309,7 @@ async function openWorkspace(list, mode) {
   activeListId = list.code;
   activeMode = mode;
   activeList = list;
+  workspace.dataset.listCode = list.code;
   const owner = mode === "owner";
   workspace.innerHTML = '<div class="empty-state">Loading items…</div>';
   workspace.classList.remove("hidden");
@@ -323,7 +324,7 @@ async function openWorkspace(list, mode) {
         <div><div class="eyebrow">${owner ? "YOUR WISHLIST" : "A WISHLIST FOR SOMEONE"}</div><h2>${escapeHtml(list.title)}</h2><p class="workspace-sub">${escapeHtml(list.ownerName || "")} · ${escapeHtml(list.occasion || "Other")}</p></div>
         <div class="code-chip" title="Wishlist code">${escapeHtml(list.code)} ${owner ? '<button class="small-button" id="copy-code" type="button">Copy</button>' : ""}</div>
       </div>
-      ${owner ? '<p class="workspace-sub">Keep this code safe and share it with your gift-givers. Add your first item below.</p><div class="workspace-actions"><button class="button button-primary" id="add-item" type="button" style="width:auto;margin:0;gap:22px">Add an item <span>+</span></button><button class="small-button" id="copy-share" type="button">Copy sharing message</button><button class="small-button" id="share-family" type="button">Share with family</button><button class="small-button" id="show-qr" type="button">Show QR code</button><button class="small-button" id="reveal-purchases-prank" type="button">Reveal what’s being bought</button></div><div id="qr-panel" class="qr-panel hidden"><div id="qr-code"></div><div><strong>Scan to open this wishlist</strong><p class="workspace-sub">Anyone with the link and code can view this list.</p><button class="small-button" id="download-qr" type="button">Download QR</button><button class="small-button" id="hide-qr" type="button">Close</button></div></div>' : '<p class="workspace-sub">Here are the gift ideas. Mark an item purchased to help other gift-givers avoid duplicates.</p>'}
+      ${owner ? '<div class="workspace-actions"><button class="button button-primary" id="add-item" type="button" style="width:auto;margin:0;gap:22px">Add an item <span>+</span></button><details class="list-options"><summary>Sharing options</summary><div class="list-option-buttons"><button class="small-button" id="copy-share" type="button">Copy sharing message</button><button class="small-button" id="share-family" type="button">Share with family</button><button class="small-button" id="show-qr" type="button">Show QR code</button><button class="small-button" id="reveal-purchases-prank" type="button">Reveal what’s being bought</button></div></details></div><div id="qr-panel" class="qr-panel hidden"><div id="qr-code"></div><div><strong>Scan to open this wishlist</strong><p class="workspace-sub">Anyone with the link and code can view this list.</p><button class="small-button" id="download-qr" type="button">Download QR</button><button class="small-button" id="hide-qr" type="button">Close</button></div></div>' : '<p class="workspace-sub">Here are the gift ideas. Mark an item purchased to help other gift-givers avoid duplicates.</p>'}
       <div class="list-tools"><label for="item-search">Search items</label><input id="item-search" type="search" placeholder="Search by name or category"><label for="item-category-filter">Category</label><select id="item-category-filter"><option value="">All categories</option>${[...new Set(items.map(item => String(item.category || "Other")))].sort((a,b)=>a.localeCompare(b)).map(category => '<option value="' + escapeHtml(category) + '">' + escapeHtml(category) + '</option>').join("")}</select><label for="item-sort">Sort</label><select id="item-sort"><option value="custom">Custom order</option><option value="name">Name: A–Z</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="priority">Priority</option><option value="category">Category</option></select><div class="list-summary"><span id="visible-count">${items.length} items</span><span>Total listed price: <strong id="price-total"></strong></span></div></div><div class="item-list">${items.length ? items.map((item, index) => {
         const purchased = Boolean(purchases[item.id]);
         const url = safeUrl(item.url);

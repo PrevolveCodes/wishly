@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#f7f6f2">
   <meta name="description" content="Wishly makes it easy to make a wishlist and share it with family.">
   <title>Wishly — Make a list. Share a wish.</title>
-  <link rel="stylesheet" href="styles.css?v=blue-winter-1">
+  <link rel="stylesheet" href="styles.css?v=flat-controls-1">
   <script src="theme.js" defer></script>
   <script src="home.js?v=fun-features-4" defer></script>
   <script type="module">
@@ -37,13 +37,15 @@
       if (user && !user.isAnonymous) {
         accountLink.textContent = "Dashboard";
         accountLink.href = "dashboard.html";
+        document.getElementById("home-create").href = "dashboard.html?view=make-list";
       } else {
         accountLink.textContent = "Sign up";
         accountLink.href = "signup.html";
+        document.getElementById("home-create").href = "signup.html";
       }
     });
   </script>
-  <link rel="stylesheet" href="home-layout.css?v=1">
+  <link rel="stylesheet" href="home-layout.css?v=2">
 </head>
 <body class="home-page">
   <header class="topbar">
@@ -54,10 +56,12 @@
   <main>
     <section class="hero">
       <div class="hero-intro">
-        <div class="eyebrow"><span class="eyebrow-dot"></span> WISH SOMETHING GOOD</div>
         <h1>Make a list.<br><span>Share a wish.</span></h1>
         <p class="hero-copy">Keep your gift ideas in one place. Give your family a code, and let them handle the surprises.</p>
-        <a class="button button-primary hero-cta" href="signup.html">Get started <span>→</span></a>
+        <div class="home-actions">
+          <a class="button button-primary" id="home-create" href="signup.html">Create a wishlist</a>
+          <a class="small-button" href="gift.html">Open with a code</a>
+        </div>
       </div>
       <div class="hero-art gift-art" aria-hidden="true">
         <div class="gift-box gift-box-back">
@@ -72,18 +76,6 @@
       </div>
     </section>
 
-    <section class="action-grid landing-choices" aria-label="Choose how to use Wishly">
-      <article class="action-card create-card">
-        <div class="card-icon lavender"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
-        <div class="card-heading"><h2>Make a wishlist</h2><p>Create your own list, add gift ideas, and share it with family.</p></div>
-        <a class="button button-primary" href="signup.html">Create your wishlist <span>→</span></a>
-      </article>
-      <article class="action-card view-card">
-        <div class="card-icon peach"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg></div>
-        <div class="card-heading"><h2>I’m getting a gift</h2><p>Parents, family, and friends can open a wishlist with the code they were given.</p></div>
-        <a class="button button-secondary" href="gift.html">View a wishlist <span>→</span></a>
-      </article>
-    </section>
     <section id="about" class="how-it-works">
       <div><span class="step-number">01</span><h3>Make your list</h3><p>Add the things you’re hoping for.</p></div>
       <div><span class="step-number">02</span><h3>Share your code</h3><p>Give it to a parent or someone you trust.</p></div>

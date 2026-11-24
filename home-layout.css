@@ -13,13 +13,21 @@
   transform: none;
 }
 
-.home-page .landing-choices .card-heading,
-.home-page .card-heading p {
-  min-height: 0;
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 22px 0 0;
 }
-
-.home-page .landing-choices .button {
-  margin-top: auto;
+.home-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-height: 44px;
+  margin: 0;
+  padding: 10px 16px;
+  text-decoration: none;
 }
 
 @media (min-width: 681px) and (max-width: 880px) {
@@ -40,9 +48,7 @@
   .home-page .hero { display: block; margin: 0; padding: 28px 0; }
   .home-page .hero h1 { font-size: clamp(42px, 9vw, 56px); }
   .home-page .hero-art.gift-art { display: none; }
-  .home-page .landing-choices,
   .home-page .how-it-works { grid-template-columns: minmax(0, 1fr); gap: 14px; }
-  .home-page .action-card { padding: 22px; }
   .home-page .how-it-works { padding: 32px 0 0; }
   .home-page footer { flex-wrap: wrap; gap: 10px; }
 }
