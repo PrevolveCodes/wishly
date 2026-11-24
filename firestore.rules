@@ -126,6 +126,32 @@ service cloud.firestore {
         allow delete: if isOwner(code) || (isGiftGiver(code) && resource.data.reservedBy == request.auth.uid);
       }
     }
+    // Only the addressed account can read its inbox; only a wishlist owner
+    // can send a notification for a recorded family share.
+    match /notificationInboxes/{email}/shares/{notificationId} {
+      function recipient() {
+        return fullAccount() && request.auth.token.email != null && request.auth.token.email.lower() == email;
+      }
+      function validShareNotification() {
+        let data = request.resource.data;
+        let wishlist = get(/databases/$(database)/documents/wishlists/$(data.code)).data;
+        let share = get(/databases/$(database)/documents/wishlists/$(data.code)/familyShares/$(data.familyId)).data;
+        return fullAccount()
+          && data.keys().hasOnly(['code','familyId','title','ownerName','read','createdAt'])
+          && data.keys().hasAll(['code','familyId','title','ownerName','read','createdAt'])
+          && data.code is string && data.familyId is string
+          && notificationId == data.code + '_' + data.familyId
+          && wishlist.ownerUid == request.auth.uid
+          && share.invitedEmails.hasAny([email])
+          && data.title == wishlist.title && data.ownerName == wishlist.ownerName
+          && data.read == false && data.createdAt == request.time;
+      }
+      allow get, list: if recipient();
+      allow create: if validShareNotification();
+      allow update: if (recipient() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read']) && request.resource.data.read == true)
+        || validShareNotification();
+      allow delete: if recipient();
+    }
     match /families/{familyId} {
       allow get, list: if fullAccount() && (resource.data.ownerUid == request.auth.uid || resource.data.memberUids.hasAny([request.auth.uid]) || (request.auth.token.email != null && resource.data.pendingEmails.hasAny([request.auth.token.email.lower()])));
       allow create: if fullAccount() && request.resource.data.ownerUid == request.auth.uid && request.resource.data.memberUids is list && request.resource.data.memberUids.size() == 1 && request.resource.data.memberUids.hasOnly([request.auth.uid]) && request.resource.data.memberEmails is list && request.resource.data.pendingEmails is list && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 60 && request.resource.data.keys().hasOnly(['name','ownerUid','memberUids','memberEmails','pendingEmails','createdAt']);

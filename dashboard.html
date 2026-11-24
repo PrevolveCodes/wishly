@@ -12,7 +12,8 @@
   <link rel="stylesheet" href="dashboard-loading.css?v=loading-1">
 
   <link rel="stylesheet" href="customization.css">
-  <link rel="stylesheet" href="overview.css?v=countdown-grid-2">
+  <link rel="stylesheet" href="families-guide.css?v=family-columns-2">
+  <link rel="stylesheet" href="overview.css?v=overview-columns-3">
   <script>
     (function(){
       const tips = [
@@ -43,12 +44,12 @@
     })();
   </script>
   <script src="theme.js?v=sync-2" defer></script>
-  <script type="module" src="signout.js"></script>
+  <script type="module" src="signout.js?v=notifications-1"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script defer src="celebration.js?v=fun-features-1"></script>
   <script type="module" src="dashboard.js?v=theme-handler-6"></script>
   <script type="module" src="overview.js?v=countdown-grid-2"></script>
-  <script type="module" src="families.js?v=family-links-2"></script>
+  <script type="module" src="families.js?v=family-guide-1"></script>
   <script type="module" src="customization.js?v=list-controls-2"></script>
   <script defer src="dashboard-navigation.js?v=draft-preview-1"></script>
   <style>#dashboard-grid > [hidden], .dashboard-embedded-view[hidden] { display: none !important; }</style>
@@ -138,6 +139,7 @@ html body.dark-mode .settings-form input:focus{border-color:#719fe1;box-shadow:0
       <article><div><strong id="overview-upcoming-count">—</strong><span>Upcoming</span></div></article>
     </section>
 
+    <div class="overview-columns">
     <section class="overview-section">
       <div class="overview-section-heading"><div><h2>Your recent wishlists</h2></div></div>
       <div id="overview-recent-lists" class="overview-recent-lists"><div class="overview-loading">Loading your wishlists…</div></div>
@@ -149,6 +151,7 @@ html body.dark-mode .settings-form input:focus{border-color:#719fe1;box-shadow:0
         <div class="overview-loading">Loading your countdowns…</div>
       </div>
     </section>
+    </div>
 
   </div>
     <section class="dashboard-grid" id="dashboard-grid">
@@ -176,9 +179,23 @@ html body.dark-mode .settings-form input:focus{border-color:#719fe1;box-shadow:0
         <section id="workspace" tabindex="-1" aria-label="Selected wishlist" class="workspace hidden" aria-live="polite"></section>
       </section>
     </section>
-  <section id="families-view" class="dashboard-embedded-view families-main" hidden><section class="dashboard-welcome"><div class="dashboard-welcome-copy"><div class="eyebrow">SHARE WITH YOUR PEOPLE</div><h1>Families<span>.</span></h1><p>Create a family space, invite members by email, and share only the wishlists you choose.</p></div><div class="dashboard-mark" aria-hidden="true">♡</div></section>
-<section class="dashboard-grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));align-items:start"><article class="action-card"><div class="card-heading"><h2>Create a family</h2><p>Start a family space for the people you want to share with.</p></div><form id="create-family-form"><label for="family-name">Family name</label><input id="family-name" maxlength="60" placeholder="e.g. Smith Family" required><button class="button button-primary" type="submit">Create family →</button></form></article><article class="action-card"><div class="card-heading"><h2>Family invitations</h2><p>Accept invitations sent to your signed-in email address.</p></div><div id="pending-families">Loading invitations…</div></article></section>
-<section class="dashboard-lists" style="margin-top:28px"><div class="section-heading"><div><div class="eyebrow">YOUR GROUPS</div><h2>My families</h2></div></div><div id="family-list" class="owned-lists">Loading families…</div></section></section><section id="suggestions-view" class="dashboard-embedded-view suggestions-main" hidden>
+  <section id="families-view" class="dashboard-embedded-view families-main" hidden><div class="family-guide">
+  <header class="family-heading"><div><h1>Families<span>.</span></h1><p>Keep your family together in Wishly and make it easier to share wishlists.</p></div><a class="small-button" href="#create-family-form">Create a family</a></header>
+  <section class="family-steps" aria-label="How families work">
+    <div><span class="family-step-number">1</span><strong>Create or join</strong><p>Make a family, or accept an invitation below.</p></div>
+    <div><span class="family-step-number">2</span><strong>Invite your family</strong><p>Use the email address they use to sign in to Wishly.</p></div>
+    <div><span class="family-step-number">3</span><strong>Share a wishlist</strong><p>Open a list in My Lists, choose Share with family, then send its link.</p></div>
+  </section>
+  <section class="family-section" aria-labelledby="my-families-title">
+    <div class="family-section-title"><div><h2 id="my-families-title">My families</h2><p>See who has joined and invite more people.</p></div><a class="small-button" href="dashboard.html?view=lists">Go to My Lists →</a></div>
+    <div id="family-list" class="family-list" aria-live="polite"><p class="family-muted">Loading families…</p></div>
+  </section>
+  <div class="family-setup-grid">
+    <section class="family-panel"><h2>Create a family</h2><p>Give your group a name. You can invite people after creating it.</p><form id="create-family-form"><label for="family-name">Family name</label><input id="family-name" maxlength="60" placeholder="e.g. Smith Family" required><button class="button button-primary" type="submit">Create family</button></form></section>
+    <section class="family-panel"><div class="family-section-title"><h2>Invitations</h2><span id="family-invitation-count" class="family-count" hidden></span></div><p>Someone invited you? Sign in with the email they used and accept the invitation here.</p><div id="pending-families" aria-live="polite"><p class="family-muted">Loading invitations…</p></div><button id="refresh-families" class="small-button" type="button">Refresh invitations</button></section>
+  </div>
+  <details class="family-faq"><summary>What can family members see?</summary><p>Joining a family does not automatically share your wishlists. You decide which lists to share. Anyone with a wishlist link or code can view that list, even without a Wishly account. Family invitations appear in Wishly; no email is sent automatically.</p></details>
+</div></section><section id="suggestions-view" class="dashboard-embedded-view suggestions-main" hidden>
     <header class="ideas-heading">
       <h1>Gift suggestions</h1>
       <button id="favorites-filter" class="small-button" type="button" aria-pressed="false">♡ Saved ideas</button>
@@ -200,7 +217,7 @@ html body.dark-mode .settings-form input:focus{border-color:#719fe1;box-shadow:0
     </header>
     <section class="settings-card" aria-labelledby="settings-profile-title">
       <div class="settings-section-heading">
-        <span class="settings-section-icon" aria-hidden="true">◎</span>
+        <span class="settings-section-icon" aria-hidden="true"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="m19.4 15 .1.1a1.7 1.7 0 0 1-2.4 2.4l-.1-.1a1.7 1.7 0 0 0-2.9 1.2v.2a1.7 1.7 0 0 1-3.4 0v-.2a1.7 1.7 0 0 0-2.9-1.2l-.1.1a1.7 1.7 0 0 1-2.4-2.4l.1-.1a1.7 1.7 0 0 0-1.2-2.9H4a1.7 1.7 0 0 1 0-3.4h.2a1.7 1.7 0 0 0 1.2-2.9l-.1-.1a1.7 1.7 0 0 1 2.4-2.4l.1.1a1.7 1.7 0 0 0 2.9-1.2V2a1.7 1.7 0 0 1 3.4 0v.2a1.7 1.7 0 0 0 2.9 1.2l.1-.1a1.7 1.7 0 0 1 2.4 2.4l-.1.1a1.7 1.7 0 0 0 1.2 2.9h.2a1.7 1.7 0 0 1 0 3.4h-.2a1.7 1.7 0 0 0-1.2 2.9Z"/></svg></span>
         <div><h2 id="settings-profile-title">Your profile</h2><p>Your email stays private.</p></div>
       </div>
       <form id="settings-form" class="settings-form">

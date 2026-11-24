@@ -85,3 +85,13 @@ body.dashboard-page .overview-stats article {
   box-shadow: none;
 }
 body.dashboard-page .overview-stats article + article { border-left: 1px solid var(--line); }
+
+@media (min-width: 1150px) {
+  .overview-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(18px, 2vw, 32px);
+  }
+  .overview-columns > section { margin-top: 0; }
+}

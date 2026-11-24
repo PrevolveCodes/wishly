@@ -1,3 +1,4 @@
+import { mountNotifications } from "./notifications.js?v=1";
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
@@ -15,7 +16,9 @@ const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+let disposeNotifications = null;
 onAuthStateChanged(auth, async user => {
+  if (!user || user.isAnonymous) { disposeNotifications?.(); disposeNotifications = null; document.getElementById("wishly-account-controls")?.remove(); return; }
   const sidebarBottom = document.querySelector(".sidebar-bottom");
   if (!sidebarBottom || document.getElementById("wishly-account-controls") || !user || user.isAnonymous) return;
   const controls = document.createElement("div");
@@ -31,6 +34,7 @@ onAuthStateChanged(auth, async user => {
   }
   const premium = sidebarBottom.querySelector(".sidebar-premium");
   if (premium) sidebarBottom.insertBefore(controls, premium); else sidebarBottom.prepend(controls);
+  disposeNotifications = mountNotifications(db, user, controls, settingsButton);
   try {
     const snap = await getDoc(doc(db, "users", user.uid));
     const profile = snap.exists() ? snap.data() : {};
