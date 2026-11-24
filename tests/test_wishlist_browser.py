@@ -105,6 +105,54 @@ class WishlistBrowserTests(unittest.TestCase):
         page.go_back()
         expect(page.locator("#theme-toggle")).to_have_attribute("aria-pressed", "false")
 
+    def enable_family_fixtures(self):
+        from unittest.mock import patch
+        modules = dict(FIREBASE_MODULES)
+        modules["firebase-app.js"] += "export const getApps=()=>[], getApp=()=>({});"
+        modules["firebase-auth.js"] += "export const signOut=async()=>{};"
+        modules["firebase-firestore.js"] = """
+            export const getFirestore = () => ({}), collection = (_, ...p) => p, doc = collection;
+            export const query = ref => ref, where = () => null;
+            export const updateDoc = async () => {}, setDoc = async () => {}, serverTimestamp = () => 0;
+            export function onSnapshot(path, callback) {
+                const docs = path[0] === "families" ? [{data: () => ({name: "Family A"})}] : [];
+                callback({docs});
+                return () => {};
+            }
+            export async function getDocs() {
+                return {docs: ["A","B"].map(id => ({id, data: () => ({name: id, memberEmails: []})}))};
+            }
+            export async function getDoc(path) {
+                if (path[2] === "familyShares") {
+                    if (path[3] === "A") await new Promise(resolve => { window.releaseA = resolve; });
+                    return {exists: () => true, data: () => ({invitedEmails: [path[3]+"@example.test"]})};
+                }
+                return {exists: () => true, data: () => ({ownerUid: "owner", title: "Birthday"})};
+            }
+        """
+        overrides = patch.dict(FIREBASE_MODULES, modules)
+        overrides.start()
+        self.addCleanup(overrides.stop)
+        self.page.goto(ORIGIN + "/family-share.html?code=ABCD234567")
+
+    def test_mobile_invitation_inside_drawer(self):
+        self.enable_family_fixtures()
+        self.page.locator(".mobile-sidebar-toggle").click()
+        self.page.locator(".wishly-notification-button").click()
+        self.page.get_by_role("link", name="View invitation").click()
+        expect(self.page).to_have_url(ORIGIN + "/dashboard.html?view=families")
+
+    def test_sharing_status_keeps_latest_family(self):
+        self.enable_family_fixtures()
+        picker = self.page.locator("#family-select")
+        picker.select_option("A")
+        self.page.wait_for_function("typeof releaseA === 'function'")
+        picker.select_option("B")
+        status = self.page.locator("#share-status")
+        expect(status).to_contain_text("B@example.test")
+        self.page.evaluate("async () => { releaseA(); await new Promise(r => setTimeout(r, 0)); }")
+        expect(status).to_contain_text("B@example.test")
+
     def test_priority_order_for_owner_and_viewer(self):
         for path, control in [
             ("dashboard.html?view=lists&code=ABCD234567", "#item-sort"),

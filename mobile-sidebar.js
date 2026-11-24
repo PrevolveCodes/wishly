@@ -47,7 +47,7 @@
     if (event.target.closest("a, .sidebar-signout")) close();
   });
   document.addEventListener("keydown", event => {
-    if (event.key === "Escape" && !document.querySelector("dialog[open]")) close();
+    if (event.key === "Escape" && !document.querySelector('dialog[open], .wishly-notification-button[aria-expanded="true"]')) close();
   });
   mobile.addEventListener("change", () => update(false));
   update(false);
