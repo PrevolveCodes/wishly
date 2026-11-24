@@ -56,12 +56,7 @@ function updateMode() {
 }
 onAuthStateChanged(auth, user => {
   if (user && !user.isAnonymous) {
-    status.textContent = "Signed in as " + (user.email || "your Google account") + ".";
-    submit.textContent = "Account signed in";
-    submit.disabled = true;
-    toggle.classList.add("hidden");
-    googleButton.classList.add("hidden");
-    form.querySelectorAll("label,input").forEach(el => el.classList.add("hidden"));
+    window.location.replace("dashboard.html");
   }
 });
 toggle.addEventListener("click", () => { mode = mode === "signup" ? "signin" : "signup"; updateMode(); });

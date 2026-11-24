@@ -1,3 +1,4 @@
+import { priorityRank } from "./wishlist-priority.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
@@ -175,9 +176,6 @@ function renderWishlist() {
       card.classList.toggle("filtered-out", !(matchesText && matchesCategory));
     });
 
-    const priorityRank = value => ({
-      "must have": 0, high: 0, "would love": 1, medium: 1, "nice to have": 2, low: 2
-    })[String(value || "").toLowerCase()] ?? 3;
 
     cards.sort((a, b) => {
       const sort = sortSelect.value;
