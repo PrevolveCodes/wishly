@@ -8,12 +8,12 @@
   <meta name="theme-color" content="#f7f6f2">
   <meta name="description" content="Wishly overview.">
   <title>Overview — Wishly</title>
-  <link rel="stylesheet" href="styles.css?v=profile-controls-3">
-  <link rel="stylesheet" href="overview.css?v=countdown-2">
+  <link rel="stylesheet" href="styles.css?v=flat-controls-1">
+  <link rel="stylesheet" href="overview.css?v=compact-1">
   <script src="theme.js" defer></script>
   <script type="module" src="signout.js"></script>
   <script type="module" src="overview.js?v=bugfix-1"></script>
-  <link rel="stylesheet" href="mobile-layout.css?v=responsive-2">
+  <link rel="stylesheet" href="mobile-layout.css?v=compact-1">
   <script src="mobile-sidebar.js?v=responsive-2" defer></script>
 </head>
 <body class="dashboard-page overview-page">
@@ -29,28 +29,22 @@
       <button class="sidebar-link sidebar-theme-toggle" id="sidebar-theme-toggle" type="button"><img class="sidebar-icon" src="darklight_mode.png?v=sidebar-icons-fix-5" alt=""><span>Toggle dark mode</span></button>
     </nav>
     <div class="sidebar-bottom">
-      <div class="sidebar-premium"><strong>Wishly Premium</strong><p>More ways to make your wishlists your own.</p><span class="premium-coming-soon">Coming later</span></div>
     </div>
   </aside>
   <main class="dashboard-main overview-main">
-    <section class="dashboard-welcome overview-hero">
-      <div class="dashboard-welcome-copy" style="display:block;width:100%;min-width:0;text-align:left;margin:0;padding:0">
-        <div class="eyebrow">OVERVIEW</div>
-        <h1 id="overview-greeting">Welcome back.</h1>
-        <p>Everything about your Wishly lists, in one place.</p>
-      </div>
-      <div class="dashboard-mark" aria-hidden="true">♡</div>
-    </section>
+    <header class="overview-heading">
+      <h1 id="overview-greeting">Welcome back.</h1>
+    </header>
 
     <section class="overview-stats" aria-label="Wishlist statistics">
-      <article><span class="overview-stat-icon"><img src="my_lists.png?v=sidebar-icons-fix-4" alt=""></span><div><strong id="overview-list-count">—</strong><span>Wishlists</span></div></article>
-      <article><span class="overview-stat-icon"><img src="make_list.png?v=sidebar-icons-fix-4" alt=""></span><div><strong id="overview-item-count">—</strong><span>Total items</span></div></article>
-      <article><span class="overview-stat-icon"><img src="view_list.png?v=sidebar-icons-fix-4" alt=""></span><div><strong id="overview-view-count">—</strong><span>List views</span></div></article>
-      <article><span class="overview-stat-icon"><img src="Upcoming.png?v=upcoming-icon-2" alt=""></span><div><strong id="overview-upcoming-count">—</strong><span>Upcoming</span></div></article>
+      <article><div><strong id="overview-list-count">—</strong><span>Wishlists</span></div></article>
+      <article><div><strong id="overview-item-count">—</strong><span>Total items</span></div></article>
+      <article><div><strong id="overview-view-count">—</strong><span>List views</span></div></article>
+      <article><div><strong id="overview-upcoming-count">—</strong><span>Upcoming</span></div></article>
     </section>
 
     <section class="overview-section">
-      <div class="overview-section-heading"><div><div class="eyebrow">RECENT</div><h2>Your recent wishlists</h2></div><span>Latest first</span></div>
+      <div class="overview-section-heading"><div><h2>Your recent wishlists</h2></div></div>
       <div id="overview-recent-lists" class="overview-recent-lists"><div class="overview-loading">Loading your wishlists…</div></div>
     </section>
 
@@ -61,16 +55,6 @@
       </div>
     </section>
 
-    <section class="overview-section activity-section">
-      <div class="overview-section-heading"><div><div class="eyebrow">YOUR WISHLY</div><h2>Getting started</h2></div></div>
-      <div class="overview-steps">
-        <div><b>01</b><strong>Create</strong><p>Make a wishlist for a birthday, Christmas, or anything else.</p></div>
-        <div><b>02</b><strong>Add items</strong><p>Add the things you actually want, with links and notes when useful.</p></div>
-        <div><b>03</b><strong>Share</strong><p>Give your gift-givers your wishlist code so they can view it.</p></div>
-      </div>
-    </section>
-
-    <section class="overview-tip"><div class="overview-tip-mark">i</div><div><div class="eyebrow">WISHLY TIP</div><p id="overview-tip-text">Add store links to make it easier for gift-givers to find the exact item.</p></div></section>
   </main>
   <dialog id="signout-dialog" class="modal signout-modal" aria-labelledby="signout-title">
     <div class="signout-content"><div class="signout-mark" aria-hidden="true">↪</div><div class="eyebrow">ACCOUNT</div><h2 id="signout-title">Sign out of Wishly?</h2><p>You’ll need to sign in again to manage your wishlists.</p><div class="signout-actions"><button type="button" class="small-button" id="signout-cancel">Stay signed in</button><button type="button" class="button button-primary" id="signout-confirm">Sign out</button></div></div>

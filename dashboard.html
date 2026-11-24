@@ -8,11 +8,11 @@
   <meta name="theme-color" content="#f7f6f2">
   <meta name="description" content="Manage your Wishly lists and gift ideas.">
   <title>Wishly Dashboard</title>
-  <link rel="stylesheet" href="styles.css?v=workspace-width-fix-2">
+  <link rel="stylesheet" href="styles.css?v=flat-controls-1">
   <link rel="stylesheet" href="dashboard-loading.css?v=loading-1">
 
   <link rel="stylesheet" href="customization.css">
-  <link rel="stylesheet" href="overview.css?v=countdown-2">
+  <link rel="stylesheet" href="overview.css?v=compact-1">
   <script>
     (function(){
       const tips = [
@@ -46,10 +46,10 @@
   <script type="module" src="signout.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script defer src="celebration.js?v=fun-features-1"></script>
-  <script type="module" src="dashboard.js?v=list-selection-3"></script>
+  <script type="module" src="dashboard.js?v=list-controls-4"></script>
   <script type="module" src="overview.js?v=bugfix-1"></script>
   <script type="module" src="families.js?v=family-links-2"></script>
-  <script type="module" src="customization.js?v=bugfix-1"></script>
+  <script type="module" src="customization.js?v=list-controls-2"></script>
   <script defer src="dashboard-navigation.js?v=history-1"></script>
   <style>#dashboard-grid > [hidden], .dashboard-embedded-view[hidden] { display: none !important; }</style>
   <style>
@@ -102,7 +102,7 @@ html body.dark-mode .settings-form input:focus{border-color:#719fe1;box-shadow:0
 .dashboard-embedded-view[hidden] { display: none !important; }
 </style>
   <script type="module" src="settings.js?v=spa-2"></script>
-  <link rel="stylesheet" href="mobile-layout.css?v=lists-3">
+  <link rel="stylesheet" href="mobile-layout.css?v=compact-1">
   <script src="mobile-sidebar.js?v=responsive-2" defer></script>
 </head>
 <body class="dashboard-page">
@@ -127,34 +127,24 @@ html body.dark-mode .settings-form input:focus{border-color:#719fe1;box-shadow:0
       <button class="sidebar-link sidebar-theme-toggle" id="sidebar-theme-toggle" type="button"><img class="sidebar-icon" src="darklight_mode.png?v=sidebar-icons-fix-5" alt=""><span>Toggle dark mode</span></button>
     </nav>
     <div class="sidebar-bottom">
-      <div class="sidebar-premium">
-        <strong>Wishly Premium</strong>
-        <p>More ways to make your wishlists your own.</p>
-        <span class="premium-coming-soon">Coming later</span>
-      </div>
       
     </div>
   </aside>
   <main class="dashboard-main" id="dashboard-main">
     <div id="overview-view" class="overview-main" hidden>
-    <section class="dashboard-welcome overview-hero">
-      <div class="dashboard-welcome-copy" style="display:block;width:100%;min-width:0;text-align:left;margin:0;padding:0">
-        <div class="eyebrow">OVERVIEW</div>
-        <h1 id="overview-greeting">Welcome back.</h1>
-        <p>Everything about your Wishly lists, in one place.</p>
-      </div>
-      <div class="dashboard-mark" aria-hidden="true">♡</div>
-    </section>
+    <header class="overview-heading">
+      <h1 id="overview-greeting">Welcome back.</h1>
+    </header>
 
     <section class="overview-stats" aria-label="Wishlist statistics">
-      <article><span class="overview-stat-icon"><img src="my_lists.png?v=sidebar-icons-fix-4" alt=""></span><div><strong id="overview-list-count">—</strong><span>Wishlists</span></div></article>
-      <article><span class="overview-stat-icon"><img src="make_list.png?v=sidebar-icons-fix-4" alt=""></span><div><strong id="overview-item-count">—</strong><span>Total items</span></div></article>
-      <article><span class="overview-stat-icon"><img src="view_list.png?v=sidebar-icons-fix-4" alt=""></span><div><strong id="overview-view-count">—</strong><span>List views</span></div></article>
-      <article><span class="overview-stat-icon"><img src="Upcoming.png?v=upcoming-icon-2" alt=""></span><div><strong id="overview-upcoming-count">—</strong><span>Upcoming</span></div></article>
+      <article><div><strong id="overview-list-count">—</strong><span>Wishlists</span></div></article>
+      <article><div><strong id="overview-item-count">—</strong><span>Total items</span></div></article>
+      <article><div><strong id="overview-view-count">—</strong><span>List views</span></div></article>
+      <article><div><strong id="overview-upcoming-count">—</strong><span>Upcoming</span></div></article>
     </section>
 
     <section class="overview-section">
-      <div class="overview-section-heading"><div><div class="eyebrow">RECENT</div><h2>Your recent wishlists</h2></div><span>Latest first</span></div>
+      <div class="overview-section-heading"><div><h2>Your recent wishlists</h2></div></div>
       <div id="overview-recent-lists" class="overview-recent-lists"><div class="overview-loading">Loading your wishlists…</div></div>
     </section>
 
@@ -165,29 +155,10 @@ html body.dark-mode .settings-form input:focus{border-color:#719fe1;box-shadow:0
       </div>
     </section>
 
-    <section class="overview-section activity-section">
-      <div class="overview-section-heading"><div><div class="eyebrow">YOUR WISHLY</div><h2>Getting started</h2></div></div>
-      <div class="overview-steps">
-        <div><b>01</b><strong>Create</strong><p>Make a wishlist for a birthday, Christmas, or anything else.</p></div>
-        <div><b>02</b><strong>Add items</strong><p>Add the things you actually want, with links and notes when useful.</p></div>
-        <div><b>03</b><strong>Share</strong><p>Give your gift-givers your wishlist code so they can view it.</p></div>
-      </div>
-    </section>
-
-    <section class="overview-tip"><div class="overview-tip-mark">i</div><div><div class="eyebrow">WISHLY TIP</div><p id="overview-tip-text">Add store links to make it easier for gift-givers to find the exact item.</p></div></section>
   </div>
-    <section class="dashboard-welcome" id="dashboard-welcome">
-      <div class="dashboard-welcome-copy" style="display:block;width:100%;min-width:0;text-align:left;margin:0;padding:0">
-        <div class="eyebrow" style="display:block;width:auto;text-align:left;margin:0 0 2px">WISHLIST MANAGEMENT</div>
-        <h1 style="display:block;width:100%;text-align:left;margin:12px 0">Make a list<span>.</span></h1>
-        <p style="display:block;width:100%;max-width:560px;text-align:left;margin:0">Create and manage your Wishly lists from here.</p>
-      </div>
-      <div class="dashboard-mark" aria-hidden="true">♡</div>
-    </section>
     <section class="dashboard-grid" id="dashboard-grid">
       <article class="action-card create-card dashboard-create" id="make-a-list">
-        <div class="card-icon lavender"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
-        <div class="card-heading"><h2>Create a wishlist</h2><p>Give your list a name, then start adding ideas.</p></div>
+        <div class="card-heading"><h1>Make a wishlist</h1></div>
         <form id="create-form">
           <label for="owner-name">Your name</label><input id="owner-name" name="ownerName" maxlength="40" placeholder="e.g. Alex" required>
           <label for="list-title">Wishlist name</label><input id="list-title" name="title" maxlength="60" placeholder="e.g. Birthday Wishlist" required>
@@ -198,7 +169,7 @@ html body.dark-mode .settings-form input:focus{border-color:#719fe1;box-shadow:0
       </article>
       <section class="dashboard-lists">
         <div class="my-lists-sidebar">
-          <div class="section-heading"><div><div class="eyebrow">SAVED IN YOUR ACCOUNT</div><h2>Your wishlists</h2></div><span id="list-count" class="list-count">Loading…</span><button id="toggle-archived" class="small-button" type="button">Show archived</button></div>
+          <div class="section-heading"><div><h2>Your wishlists</h2></div><span id="list-count" class="list-count">Loading…</span><button id="toggle-archived" class="small-button" type="button">Show archived</button></div>
           <div id="owned-lists" class="owned-lists"><div class="empty-state">Loading your wishlists…</div></div>
         </div>
         <section id="workspace" tabindex="-1" aria-label="Selected wishlist" class="workspace hidden" aria-live="polite"></section>
