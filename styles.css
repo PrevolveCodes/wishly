@@ -1819,6 +1819,9 @@ body.dashboard-page #workspace .workspace-actions { align-items: baseline; }
   background: var(--lavender);
   overflow-wrap: anywhere;
 }
+.draft-preview .eyebrow { color: #1858a8; }
+body.dark-mode .draft-preview { background: #202c40; }
+body.dark-mode .draft-preview .eyebrow { color: #a8cfff !important; }
 .draft-preview h2 { margin: 16px 0 8px; font-size: clamp(22px, 3vw, 32px); line-height: 1.2; }
 .draft-preview p { margin: 4px 0 0; color: var(--ink); }
 @media (min-width: 901px) {
