@@ -63,13 +63,19 @@ function renderUpcoming(lists) {
     return;
   }
 
-  box.innerHTML = upcoming.map((list, index) => {
+  box.innerHTML = upcoming.map(list => {
     const eventDate = new Date(`${list.eventDate}T00:00:00`);
     const dateLabel = eventDate.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
     return `<article class="overview-upcoming-card">
       <div class="upcoming-icon" aria-hidden="true">⌛</div>
-      <div class="upcoming-copy"><h2>${escapeHtml(list.title || "Wishlist")}</h2><p>${escapeHtml(list.occasion || "Other")} · ${escapeHtml(dateLabel)}</p><div class="upcoming-countdown" data-countdown-date="${escapeHtml(list.eventDate)}" role="timer" aria-live="off">Calculating countdown…</div></div>
-      <a class="small-button" href="dashboard.html?view=lists&code=${encodeURIComponent(list.code)}">View →</a>
+      <div class="upcoming-copy">
+        <h2>${escapeHtml(list.title || "Wishlist")}</h2>
+        <p>${escapeHtml(list.occasion || "Other")} · ${escapeHtml(dateLabel)}</p>
+        <div class="upcoming-actions">
+          <span class="upcoming-countdown" data-countdown-date="${escapeHtml(list.eventDate)}" role="timer" aria-live="off">Calculating countdown…</span>
+          <a class="small-button" href="dashboard.html?view=lists&code=${encodeURIComponent(list.code)}" aria-label="View ${escapeHtml(list.title || "wishlist")}">View →</a>
+        </div>
+      </div>
     </article>`;
   }).join("");
 

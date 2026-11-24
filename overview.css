@@ -17,9 +17,9 @@ body.dark-mode .overview-stats article,body.dark-mode .overview-list-card,body.d
 
 
 /* Show every upcoming event as its own countdown card. */
-.overview-countdowns-section .overview-upcoming {
+#overview-upcoming {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
   gap: 12px;
   margin-top: 0;
   padding: 0;
@@ -30,19 +30,34 @@ body.dark-mode .overview-stats article,body.dark-mode .overview-list-card,body.d
 }
 .overview-countdowns-section .overview-upcoming-card {
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 14px;
+  grid-template-columns: 36px minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
   min-width: 0;
-  padding: 19px;
+  padding: 16px;
   border: 1px solid #ddd7fa;
-  border-radius: 18px;
+  border-radius: 14px;
   background: linear-gradient(115deg, #f3f0ff, #fbfaff);
   box-shadow: 0 10px 24px #5142c20d;
 }
 .overview-upcoming-card .upcoming-copy { min-width: 0; }
 .overview-upcoming-card .upcoming-copy h2 { overflow-wrap: anywhere; }
-.overview-upcoming-card .upcoming-countdown { font-variant-numeric: tabular-nums; }
+.overview-upcoming-card .upcoming-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  font-size: 19px;
+}
+.upcoming-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  margin-top: 10px;
+}
+.overview-upcoming .upcoming-actions .upcoming-countdown { margin: 0; }
+.upcoming-actions .small-button { display: inline-flex; align-items: center; }
+
 body.dark-mode .overview-countdowns-section .overview-upcoming-card {
   background: linear-gradient(115deg, #252747, #1b263c);
   border-color: #383b63;
