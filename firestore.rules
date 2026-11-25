@@ -17,6 +17,35 @@ service cloud.firestore {
         && exists(/databases/$(database)/documents/wishlists/$(code)/giftAccess/$(request.auth.uid))
         && get(/databases/$(database)/documents/wishlists/$(code)/giftAccess/$(request.auth.uid)).data.active == true;
     }
+    function verifiedGiftEmail() {
+      return fullAccount() && request.auth.token.email_verified == true
+        && validGiftEmail(request.auth.token.email.lower());
+    }
+    function validGiftEmail(email) {
+      return email is string && email.size() <= 254
+        && email.matches('^[^\\s/@]+@[^\\s/@]+\\.[^\\s/@]+$')
+        && email == email.lower();
+    }
+    function giftPlanScope(code, ownerUid) {
+      return get(/databases/$(database)/documents/wishlists/$(code)).data.ownerUid == ownerUid;
+    }
+    function giftParticipant(code, ownerUid) {
+      return verifiedGiftEmail() && request.auth.uid != ownerUid && giftPlanScope(code, ownerUid);
+    }
+    function giftPlan(code, ownerUid) {
+      return get(/databases/$(database)/documents/wishlists/$(code)/giftPlans/$(ownerUid));
+    }
+    function giftOrganizer(code, ownerUid) {
+      return giftParticipant(code, ownerUid)
+        && giftPlan(code, ownerUid).data.organizerUid == request.auth.uid
+        && giftPlan(code, ownerUid).data.organizerEmail == request.auth.token.email.lower();
+    }
+    function approvedGiftGiver(code, ownerUid) {
+      return giftParticipant(code, ownerUid) && (
+        giftOrganizer(code, ownerUid)
+        || exists(/databases/$(database)/documents/wishlists/$(code)/giftPlans/$(ownerUid)/guests/$(request.auth.token.email.lower()))
+      );
+    }
     function familyMember(familyId) {
       return fullAccount() && exists(/databases/$(database)/documents/families/$(familyId))
         && get(/databases/$(database)/documents/families/$(familyId)).data.memberUids.hasAny([request.auth.uid]);
@@ -111,19 +140,43 @@ service cloud.firestore {
         allow delete: if isOwner(code);
       }
       match /reservations/{itemId} {
-        // Gift-givers can only read their own reservation. No one can list reservations.
-        allow get: if isGiftGiver(code) && resource.data.reservedBy == request.auth.uid
-          && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId));
-        allow list: if false;
-        // A reservation can only be created if the item has no reservation document.
-        allow create: if isGiftGiver(code)
-          && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId))
-          && !exists(/databases/$(database)/documents/wishlists/$(code)/reservations/$(itemId))
-          && request.resource.data.keys().hasOnly(['reserved','reservedBy','updatedAt'])
-          && request.resource.data.reserved == true
-          && request.resource.data.reservedBy == request.auth.uid;
-        allow update: if false;
-        allow delete: if isOwner(code) || (isGiftGiver(code) && resource.data.reservedBy == request.auth.uid);
+        // The old anonymous reservation flow is retired. Existing list deletion can still clean it up.
+        allow delete: if isOwner(code);
+      }
+      match /giftPlans/{ownerUid} {
+        allow get: if (isOwner(code) && request.auth.uid == ownerUid)
+          || (giftParticipant(code, ownerUid) && resource.data.organizerEmail == request.auth.token.email.lower());
+        allow create: if isOwner(code) && request.auth.uid == ownerUid
+          && request.resource.data.keys().hasOnly(['organizerEmail','organizerUid','invitedAt'])
+          && validGiftEmail(request.resource.data.organizerEmail)
+          && request.resource.data.organizerEmail != request.auth.token.email.lower()
+          && request.resource.data.organizerUid == ""
+          && request.resource.data.invitedAt == request.time;
+        allow update: if giftParticipant(code, ownerUid)
+          && resource.data.organizerEmail == request.auth.token.email.lower()
+          && resource.data.organizerUid == ""
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['organizerUid','acceptedAt'])
+          && request.resource.data.organizerUid == request.auth.uid
+          && request.resource.data.acceptedAt == request.time;
+        allow delete: if isOwner(code) && request.auth.uid == ownerUid && resource.data.organizerUid == "";
+
+        match /guests/{email} {
+          allow get: if giftOrganizer(code, ownerUid)
+            || (giftParticipant(code, ownerUid) && email == request.auth.token.email.lower());
+          allow list: if giftOrganizer(code, ownerUid);
+          allow create: if giftOrganizer(code, ownerUid) && validGiftEmail(email)
+            && request.resource.data.keys().hasOnly(['invitedAt'])
+            && request.resource.data.invitedAt == request.time;
+        }
+        match /claims/{itemId} {
+          allow get, list: if approvedGiftGiver(code, ownerUid);
+          allow create: if approvedGiftGiver(code, ownerUid)
+            && exists(/databases/$(database)/documents/wishlists/$(code)/items/$(itemId))
+            && request.resource.data.keys().hasOnly(['reservedBy','reservedAt'])
+            && request.resource.data.reservedBy == request.auth.uid
+            && request.resource.data.reservedAt == request.time;
+          allow delete: if approvedGiftGiver(code, ownerUid) && resource.data.reservedBy == request.auth.uid;
+        }
       }
     }
     // Only the addressed account can read its inbox; only a wishlist owner

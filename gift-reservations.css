@@ -1,0 +1,145 @@
+.gift-reservation-panel {
+  margin: 16px 0 22px;
+  padding: clamp(14px, 3vw, 22px);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--white);
+  scroll-margin-top: 20px;
+}
+
+.gift-reservation-panel[hidden],
+.gift-reservation-item[hidden],
+.gift-reservation-item button[hidden],
+.gift-reservation-feedback:empty {
+  display: none;
+}
+
+.gift-reservation-panel h3,
+.gift-reservation-actions p {
+  margin: 0;
+}
+
+.gift-reservation-actions,
+.gift-reservation-item,
+.gift-invite-form > div,
+.gift-invite-list li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.gift-reservation-actions {
+  margin-top: 8px;
+}
+
+.gift-reservation-actions p,
+.gift-invite-form,
+.gift-invite-list {
+  flex-basis: 100%;
+}
+
+.gift-invite-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.gift-invite-form input {
+  flex: 1 1 220px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--ink);
+  background: var(--white);
+  font: inherit;
+}
+
+.gift-invite-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gift-invite-list li span {
+  overflow-wrap: anywhere;
+}
+
+.gift-reservation-feedback {
+  margin: 12px 0 0;
+  color: var(--muted);
+}
+
+.gift-reservation-item {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.gift-reservation-item span {
+  padding: 4px 9px;
+  border-radius: 999px;
+  color: var(--purple-dark);
+  background: var(--lavender);
+}
+
+body.dark-mode .gift-reservation-item span {
+  color: #c4dcff;
+  background: #22324d;
+}
+
+.gift-reservation-panel :is(a, button, input):focus-visible,
+.gift-reservation-item button:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 2px;
+}
+
+.gift-guide-intro {
+  margin-bottom: 20px;
+}
+
+.gift-guide-intro h1 {
+  font: 800 clamp(2rem, 6vw, 3.25rem) / 1.08 Manrope, sans-serif;
+  margin: 12px 0;
+}
+
+.gift-guide-intro p {
+  max-width: 58ch;
+  margin: 0;
+}
+
+.gift-guide-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: 14px;
+  padding: 0;
+  margin: 24px 0;
+  list-style: none;
+}
+
+.gift-guide-steps li {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--white);
+}
+
+.gift-guide-steps h2 {
+  margin: 0 0 8px;
+  font: 800 1.1rem/1.3 Manrope, sans-serif;
+}
+
+.gift-guide-steps p {
+  margin: 0;
+}
+
+@media print {
+  .gift-reservation-panel,
+  .gift-reservation-item {
+    display: none !important;
+  }
+}
