@@ -1,5 +1,7 @@
 import { priorityRank } from "./wishlist-priority.js";
+import { watchGiftReservations } from "./gift-reservations.js?v=invite-reservations-1";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -14,6 +16,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const reservations = watchGiftReservations(db, getAuth(app));
 const $ = selector => document.querySelector(selector);
 const form = $("#view-form");
 const workspace = $("#workspace");
@@ -62,6 +65,7 @@ async function loadWishlist(rawCode) {
   const button = form.querySelector('button[type="submit"]');
   button.disabled = true;
   button.textContent = "Loading wishlist…";
+  reservations.clear();
   workspace.classList.add("hidden");
   notice.classList.add("hidden");
 
@@ -74,7 +78,7 @@ async function loadWishlist(rawCode) {
 
     const itemSnapshot = await getDocs(collection(db, "wishlists", code, "items"));
     activeCode = code;
-    activeList = { code, ...listSnapshot.data() };
+    activeList = { ...listSnapshot.data(), code };
     activeItems = itemSnapshot.docs.map(itemDoc => ({
       id: itemDoc.id,
       ...itemDoc.data()
@@ -84,7 +88,8 @@ async function loadWishlist(rawCode) {
       return orderA - orderB;
     });
 
-    history.replaceState(history.state, "", `gift.html?code=${encodeURIComponent(code)}`);
+    const anchor = location.hash === "#gift-reservation-controls" ? location.hash : "";
+    history.replaceState(history.state, "", `gift.html?code=${encodeURIComponent(code)}${anchor}`);
     renderWishlist();
   } catch (error) {
     showError(error);
@@ -108,7 +113,7 @@ function renderWishlist() {
         <button class="small-button" id="print-wishlist" type="button">Print / Save PDF</button>
       </div>
     </div>
-    <p class="workspace-sub">This is a view-only wishlist. Reservations are turned off.</p>
+    <section class="gift-reservation-panel" id="gift-reservation-controls" aria-label="Gift reservations" hidden></section>
     <div class="list-tools">
       <label for="gift-item-search">Search items</label>
       <input id="gift-item-search" type="search" placeholder="Search by name or category">
@@ -153,6 +158,10 @@ function renderWishlist() {
               <h3>${escapeHtml(item.name || "Wishlist item")}</h3>
               <p>${escapeHtml(item.priority || "Would love")}${item.notes ? " · " + escapeHtml(item.notes) : ""}</p>
               ${link ? `<a class="item-link" href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">View at store ↗</a>` : ""}
+              <div class="gift-reservation-item" data-reservation-item="${escapeHtml(item.id)}" hidden>
+                <span data-reservation-status></span>
+                <button class="small-button" type="button">Reserve gift</button>
+              </div>
             </div>
             ${hasPrice ? `<div class="item-price">$ ${Number(item.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>` : ""}
           </article>`;
@@ -160,6 +169,7 @@ function renderWishlist() {
     </div>`;
 
   workspace.classList.remove("hidden");
+  reservations.show(activeList, workspace);
 
   const search = $("#gift-item-search");
   const categoryFilter = $("#gift-category-filter");
@@ -223,7 +233,8 @@ function renderWishlist() {
   });
 
   $("#print-wishlist").addEventListener("click", () => window.print());
-  workspace.scrollIntoView({ behavior: "smooth", block: "start" });
+  const scrollTarget = location.hash === "#gift-reservation-controls" ? $("#gift-reservation-controls") : workspace;
+  scrollTarget.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 form.addEventListener("submit", event => {

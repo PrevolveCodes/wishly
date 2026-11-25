@@ -17,9 +17,13 @@ ORIGIN = "http://localhost"
 FIREBASE_MODULES = {
     "firebase-app.js": "export const initializeApp = () => ({});",
     "firebase-auth.js": """
-        const user = { uid: "owner", email: "owner@example.test" };
+        const user = window.giftTestUser === undefined
+            ? { uid: "owner", email: "owner@example.test" } : window.giftTestUser;
         export const getAuth = () => ({ currentUser: user });
         export const onAuthStateChanged = (_, callback) => queueMicrotask(() => callback(user));
+        export const reload = async () => {};
+        export const sendEmailVerification = async () => {};
+        export const signOut = async () => {};
     """,
     "firebase-firestore.js": """
         const lists = {
@@ -31,7 +35,7 @@ FIREBASE_MODULES = {
             b: { name: "Ball", priority: "Really want" },
             z: { name: "Zebra", priority: "Top wish" }
         };
-        export const collection = (_, ...parts) => parts;
+        export const collection = (parent, ...parts) => Array.isArray(parent) ? [...parent, ...parts] : parts;
         export const doc = collection;
         export const query = ref => ref;
         export const getDoc = async ([_, code]) => ({
@@ -46,9 +50,57 @@ FIREBASE_MODULES = {
         }
         export const getFirestore = () => ({});
         export const where = () => null;
+        const snapshot = data => ({ exists: () => Boolean(data), data: () => data });
+        let plan = window.giftTestPlan === undefined
+            ? { organizerEmail: "organizer@example.test", organizerUid: "organizer" } : window.giftTestPlan;
+        const invitedEmails = new Set(["guest@example.test"]);
+        let claims = { b: { reservedBy: "other-guest" } };
+        let showClaims;
+        export async function getDocFromServer(path) {
+            if (path[2] !== "giftPlans") return getDoc(path);
+            if (path[4] === "guests") {
+                return snapshot(invitedEmails.has(path[5]) ? { invitedAt: 1 } : null);
+            }
+            if ((window.giftTestUser?.uid ?? "owner") === "owner"
+                || plan?.organizerEmail === window.giftTestUser?.email) return snapshot(plan);
+            throw Object.assign(new Error("Permission denied"), { code: "permission-denied" });
+        }
+        export async function getDocsFromServer(path) {
+            if (path[4] !== "guests") return getDocs(path);
+            return { docs: [...invitedEmails].map(id => ({ id })) };
+        }
+        export async function setDoc(path, data) {
+            if (path[2] !== "giftPlans") return unused();
+            if (path[4] === "guests") invitedEmails.add(path[5]);
+            else plan = data;
+        }
+        export async function updateDoc(path, data) {
+            if (path[2] !== "giftPlans" || path.length !== 4) return unused();
+            plan = { ...plan, ...data };
+        }
+        export function onSnapshot(path, options, callback) {
+            if (path[4] !== "claims") throw new Error("Unexpected snapshot");
+            window.claimReads = (window.claimReads || 0) + 1;
+            showClaims = () => callback({
+                metadata: { fromCache: false },
+                docs: Object.entries(claims).map(([id, data]) => ({ id, data: () => data }))
+            });
+            queueMicrotask(showClaims);
+            return () => { showClaims = undefined; };
+        }
+        export async function runTransaction(_, action) {
+            const id = path => path.at(-1);
+            const result = await action({
+                get: async path => snapshot(claims[id(path)]),
+                set: (path, data) => { claims[id(path)] = data; },
+                delete: path => { delete claims[id(path)]; }
+            });
+            showClaims?.();
+            return result;
+        }
+        export const serverTimestamp = () => 1;
         function unused() { throw Error("Unexpected database operation"); }
-        export { unused as addDoc, unused as setDoc, unused as updateDoc, unused as deleteDoc,
-                 unused as writeBatch, unused as serverTimestamp, unused as orderBy };
+        export { unused as addDoc, unused as deleteDoc, unused as writeBatch, unused as orderBy };
     """,
 }
 
@@ -110,7 +162,6 @@ class WishlistBrowserTests(unittest.TestCase):
         from unittest.mock import patch
         modules = dict(FIREBASE_MODULES)
         modules["firebase-app.js"] += "export const getApps=()=>[], getApp=()=>({});"
-        modules["firebase-auth.js"] += "export const signOut=async()=>{};"
         modules["firebase-firestore.js"] = """
             export const getFirestore = () => ({}), collection = (_, ...p) => p, doc = collection;
             export const query = ref => ref, where = () => null;
@@ -185,6 +236,72 @@ class WishlistBrowserTests(unittest.TestCase):
                 self.page.goto(ORIGIN + "/" + path)
                 self.page.locator(control).select_option("priority")
                 expect(self.page.locator(".wish-item h3")).to_have_text(["Zebra", "Ball", "Apple"])
+
+    def test_reservation_tutorial_and_privacy_for_list_maker(self):
+        page = self.page
+        page.goto(ORIGIN + "/dashboard.html?view=lists")
+        page.locator(".open-owned-list").first.click()
+        page.locator("#workspace").get_by_text("Sharing options", exact=True).click()
+        page.get_by_role("button", name="Invite gift-givers").click()
+        expect(page.locator("#gift-reservation-controls")).to_contain_text("is organizing gifts")
+        expect(page.get_by_role("button", name="Reserve gift")).to_have_count(0)
+        self.assertIsNone(page.evaluate("window.claimReads"))
+        page.get_by_role("link", name="How reservations work").click()
+        expect(page.get_by_role("heading", name="How gift reservations work")).to_be_visible()
+        expect(page.get_by_role("heading", name="2. Invite gift-givers")).to_be_visible()
+        self.assertTrue(page.evaluate("document.documentElement.scrollWidth <= innerWidth"))
+
+    def test_list_maker_can_nominate_an_organizer(self):
+        page = self.page
+        page.add_init_script("window.giftTestPlan = null;")
+        page.goto(ORIGIN + "/gift.html?code=ABCD234567#gift-reservation-controls")
+        page.get_by_label("Organizer’s email").fill("organizer@example.test")
+        page.get_by_role("button", name="Choose organizer").click()
+        expect(page.get_by_text("Waiting for organizer@example.test", exact=False)).to_be_visible()
+        expect(page.get_by_role("link", name="Open email draft for organizer@example.test")).to_have_attribute(
+            "href", re.compile(r"^mailto:organizer@example\.test\?")
+        )
+        self.assertIsNone(page.evaluate("window.claimReads"))
+
+    def test_organizer_can_accept_and_invite_without_a_family(self):
+        page = self.page
+        page.add_init_script("""
+            window.giftTestUser = {uid: 'organizer', email: 'organizer@example.test', emailVerified: true};
+            window.giftTestPlan = { organizerEmail: 'organizer@example.test', organizerUid: '' };
+        """)
+        page.goto(ORIGIN + "/gift.html?code=ABCD234567")
+        page.get_by_role("button", name="Accept organizer invitation").click()
+        page.get_by_label("Gift-giver’s email").fill("friend@example.test")
+        page.get_by_role("button", name="Add invitation").click()
+        expect(page.get_by_role("link", name="Open email draft for friend@example.test")).to_have_attribute(
+            "href", re.compile(r"^mailto:friend@example\.test\?")
+        )
+
+    def test_invited_guest_can_reserve_and_undo_their_own_claim(self):
+        page = self.page
+        page.add_init_script(
+            "window.giftTestUser = {uid: 'guest', email: 'guest@example.test', emailVerified: true};"
+        )
+        page.goto(ORIGIN + "/gift.html?code=ABCD234567")
+        item = page.locator(".wish-item").filter(has=page.get_by_role("heading", name="Apple"))
+        other = page.locator(".wish-item").filter(has=page.get_by_role("heading", name="Ball"))
+        expect(other.get_by_text("Reserved", exact=True)).to_be_visible()
+        expect(other.get_by_role("button", name="Reserve gift")).to_have_count(0)
+        item.get_by_role("button", name="Reserve gift").click()
+        expect(item.get_by_text("Reserved by you", exact=True)).to_be_visible()
+        item.get_by_role("button", name="Undo reservation").click()
+        expect(item.get_by_text("Available", exact=True)).to_be_visible()
+
+    def test_signed_out_visitor_can_browse_without_loading_claims(self):
+        page = self.page
+        page.add_init_script("window.giftTestUser = null;")
+        page.goto(ORIGIN + "/gift.html?code=ABCD234567")
+        expect(page.get_by_role("heading", name="Apple")).to_be_visible()
+        expect(page.get_by_role("link", name="Sign in or create an account")).to_have_attribute(
+            "href", "signup.html?gift=ABCD234567"
+        )
+        expect(page.get_by_role("button", name="Reserve gift")).to_have_count(0)
+        self.assertIsNone(page.evaluate("window.claimReads"))
 
     def test_stale_response_cannot_replace_latest_selection(self):
         page = self.page

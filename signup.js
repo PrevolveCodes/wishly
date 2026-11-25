@@ -22,7 +22,10 @@ const toggle = $("#account-toggle");
 const googleButton = $("#google-sign-in");
 const status = $("#account-status");
 const notice = $("#notice");
-let mode = "signup";
+const giftCode = new URLSearchParams(location.search).get("gift");
+const returnToGift = /^[A-HJ-NP-Z2-9]{10}$/.test(giftCode ?? "");
+const accountDestination = returnToGift ? "gift.html?code=" + encodeURIComponent(giftCode) + "#gift-reservation-controls" : "dashboard.html";
+let mode = returnToGift ? "signin" : "signup";
 function toast(message) {
   notice.textContent = message;
   notice.classList.remove("hidden");
@@ -53,10 +56,13 @@ function updateMode() {
   submit.innerHTML = signup ? "Create account <span>→</span>" : "Sign in <span>→</span>";
   toggle.textContent = signup ? "Already have an account? Sign in" : "Need an account? Create one";
   $("#account-password").autocomplete = signup ? "new-password" : "current-password";
+  if (returnToGift) $("#signup-description").textContent = "Use the email address from your gift invitation.";
+
 }
+if (returnToGift) updateMode();
 onAuthStateChanged(auth, user => {
   if (user && !user.isAnonymous) {
-    window.location.replace("dashboard.html");
+    window.location.replace(accountDestination);
   }
 });
 toggle.addEventListener("click", () => { mode = mode === "signup" ? "signin" : "signup"; updateMode(); });
@@ -68,9 +74,9 @@ form.addEventListener("submit", async event => {
     const password = $("#account-password").value;
     if (mode === "signup") await createUserWithEmailAndPassword(auth, email, password);
     else await signInWithEmailAndPassword(auth, email, password);
-    status.textContent = "Account ready. You can now manage your wishlists.";
+    status.textContent = returnToGift ? "Account ready. Returning to the wishlist." : "Account ready. You can now manage your wishlists.";
     toast("Account ready. Returning to Wishly…");
-    window.location.href = "dashboard.html";
+    window.location.href = accountDestination;
   } catch (error) {
     toast(friendlyError(error));
     submit.disabled = false;
@@ -83,7 +89,7 @@ googleButton.addEventListener("click", async () => {
     provider.setCustomParameters({ prompt: "select_account" });
     await signInWithPopup(auth, provider);
     toast("Signed in with Google. Returning to Wishly…");
-    window.location.href = "dashboard.html";
+    window.location.href = accountDestination;
   } catch (error) {
     toast(friendlyError(error));
     googleButton.disabled = false;
