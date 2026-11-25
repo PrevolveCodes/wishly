@@ -5,12 +5,9 @@ export function mountNotifications(db,user,controls,settingsButton) {
   if(!email||!settingsButton)return ()=>{};
   const style=document.createElement("style");
   style.textContent=`
-    .wishly-account-controls{grid-template-columns:minmax(0,1fr) 38px 44px!important;gap:6px!important;position:relative}
+    .wishly-account-controls{grid-template-columns:minmax(0,1fr) 44px 44px!important;gap:6px!important;position:relative}
     .wishly-account-controls .wishly-profile-button{gap:7px;padding:5px}
     .wishly-account-controls .wishly-profile-avatar{width:32px;height:32px;flex-basis:32px}
-    .wishly-notification-button{position:relative;display:grid;place-items:center;width:38px;height:44px;padding:0;border:1px solid var(--line);border-radius:12px;background:var(--card,var(--white));color:var(--muted);cursor:pointer}
-    .wishly-notification-button:hover,.wishly-notification-button[aria-expanded=true]{color:var(--purple);border-color:var(--purple)}
-    .wishly-notification-button svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
     .wishly-notification-badge{position:absolute;right:-5px;top:-5px;min-width:18px;height:18px;padding:0 4px;display:grid;place-items:center;background:#c43b4d;color:#fff;border:2px solid var(--white);border-radius:20px;font:700 10px/1 sans-serif}
     .wishly-notification-panel{position:fixed;inset:auto;margin:0;z-index:10000;width:330px;max-width:calc(100vw - 24px);max-height:min(440px,70vh);overflow:auto;padding:14px;background:var(--white);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 36px #0003}
     .wishly-notification-panel header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 0 10px;border-bottom:1px solid var(--line)}
@@ -24,14 +21,17 @@ export function mountNotifications(db,user,controls,settingsButton) {
     .wishly-notification-item a{font-size:12px;color:var(--purple);font-weight:700;text-decoration:none;justify-self:start}
     .wishly-notification-item a:hover{text-decoration:underline}
     .wishly-notification-item[data-unread=true] strong::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--purple);margin-right:7px}
-    body.dark-mode .wishly-notification-button{background:#1c2332;border-color:#39465c;color:#c5cee1}
     body.dark-mode .wishly-notification-panel{background:#22222e;border-color:#39465c}
     .wishly-notification-badge[hidden],.wishly-notification-panel[hidden]{display:none!important}
   `;
   document.head.append(style);
   const button=document.createElement("button");
-  button.type="button";button.className="wishly-notification-button";button.title="Notifications";button.setAttribute("aria-label","Notifications");button.setAttribute("aria-expanded","false");button.setAttribute("aria-controls","wishly-notification-panel");
-  button.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span class="wishly-notification-badge" hidden></span>';
+  button.type="button";button.className="wishly-notification-button wishly-account-icon-button";button.title="Notifications";button.setAttribute("aria-label","Notifications");button.setAttribute("aria-expanded","false");button.setAttribute("aria-controls","wishly-notification-panel");
+  button.innerHTML = `
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 2.5a6 6 0 0 0-6 6v2.7c0 1.6-.52 3.15-1.48 4.42l-.86 1.15A.75.75 0 0 0 4.26 18h15.48a.75.75 0 0 0 .6-1.23l-.86-1.15A7.35 7.35 0 0 1 18 11.2V8.5a6 6 0 0 0-6-6Z M9.4 19.4a2.6 2.6 0 0 0 5.2 0Z"/>
+    </svg>
+    <span class="wishly-notification-badge" hidden></span>`;
   settingsButton.before(button);
   const badge=button.querySelector("span");
   const panel=document.createElement("section");panel.id="wishly-notification-panel";panel.className="wishly-notification-panel";panel.popover="auto";panel.setAttribute("aria-label","Notifications");

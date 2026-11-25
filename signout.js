@@ -1,4 +1,4 @@
-import { mountNotifications } from "./notifications.js?v=2";
+import { mountNotifications } from "./notifications.js?v=account-buttons-1";
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
@@ -29,7 +29,7 @@ onAuthStateChanged(auth, async user => {
       <img class="wishly-profile-avatar" alt="">
       <span class="wishly-profile-copy"><strong class="wishly-profile-name">Your profile</strong></span>
     </div>
-    <a class="wishly-settings-button" href="settings.html" aria-label="Settings" title="Settings">
+    <a class="wishly-settings-button wishly-account-icon-button" href="settings.html" aria-label="Settings" title="Settings">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path fill-rule="evenodd" d="M9.2 5.1 Q9.75 4.45 10.05 2.95 Q10.05 2.95 10.5 2.5 L13.5 2.5 Q13.95 2.95 14.25 4.45 Q14.25 4.45 14.8 5.1 
           A7.45 7.45 0 0 1 16.58 6.13 Q17.41 6.28 18.86 5.79 Q18.86 5.79 19.48 5.95 L20.98 8.55 Q20.81 9.16 19.66 10.17 Q19.66 10.17 19.38 10.97 

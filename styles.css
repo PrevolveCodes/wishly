@@ -1534,36 +1534,42 @@ body.dashboard-page .dashboard-main #message-list > * {
 .wishly-profile-copy{display:flex;flex-direction:column;min-width:0;gap:3px}
 .wishly-profile-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:800}
 .wishly-profile-handle{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted,#747587);font-size:11px}
-.wishly-settings-button {
-  --settings-button-bg: var(--lavender, #eaf4ff);
+.wishly-account-icon-button {
+  --account-icon-bg: var(--lavender, #eaf4ff);
   display: grid;
   place-items: center;
   width: 44px;
   height: 44px;
+  padding: 0;
   border: 1px solid transparent;
   border-radius: 14px;
   color: var(--purple-dark, #1858a8);
-  background: var(--settings-button-bg);
+  background: var(--account-icon-bg);
   text-decoration: none;
   transition: background-color .15s, border-color .15s;
 }
-.wishly-settings-button svg {
+.wishly-account-icon-button svg {
   width: 22px;
   height: 22px;
   fill: currentColor;
 }
-.wishly-settings-button:hover {
-  background-color: color-mix(in srgb, currentColor 12%, var(--settings-button-bg));
+.wishly-notification-button {
+  position: relative;
+  cursor: pointer;
+}
+.wishly-account-icon-button:hover,
+.wishly-account-icon-button[aria-expanded="true"] {
+  background-color: color-mix(in srgb, currentColor 12%, var(--account-icon-bg));
   border-color: color-mix(in srgb, currentColor 24%, transparent);
 }
-.wishly-settings-button:focus-visible {
+.wishly-account-icon-button:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 2px;
 }
 html body.dark-mode .wishly-profile-button{color:#f0f2fa}
 html body.dark-mode .wishly-profile-button:hover{background:#202b43;border-color:#3c5a7b}
-body.dark-mode .wishly-settings-button {
-  --settings-button-bg: #22324d;
+body.dark-mode .wishly-account-icon-button {
+  --account-icon-bg: #22324d;
   color: #c4dcff;
 }
 
