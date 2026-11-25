@@ -24,7 +24,23 @@ onAuthStateChanged(auth, async user => {
   const controls = document.createElement("div");
   controls.id = "wishly-account-controls";
   controls.className = "wishly-account-controls";
-  controls.innerHTML = '<div class="wishly-profile-button"><img class="wishly-profile-avatar" alt=""><span class="wishly-profile-copy"><strong class="wishly-profile-name">Your profile</strong></span></div><a class="wishly-settings-button" href="settings.html" aria-label="Settings" title="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="m19.4 15 .1.1a1.7 1.7 0 0 1-2.4 2.4l-.1-.1a1.7 1.7 0 0 0-2.9 1.2v.2a1.7 1.7 0 0 1-3.4 0v-.2a1.7 1.7 0 0 0-2.9-1.2l-.1.1a1.7 1.7 0 0 1-2.4-2.4l.1-.1a1.7 1.7 0 0 0-1.2-2.9H4a1.7 1.7 0 0 1 0-3.4h.2a1.7 1.7 0 0 0 1.2-2.9l-.1-.1a1.7 1.7 0 0 1 2.4-2.4l.1.1a1.7 1.7 0 0 0 2.9-1.2V2a1.7 1.7 0 0 1 3.4 0v.2a1.7 1.7 0 0 0 2.9 1.2l.1-.1a1.7 1.7 0 0 1 2.4 2.4l-.1.1a1.7 1.7 0 0 0 1.2 2.9h.2a1.7 1.7 0 0 1 0 3.4h-.2a1.7 1.7 0 0 0-1.2 2.9Z"/></svg></a>';
+  controls.innerHTML = `
+    <div class="wishly-profile-button">
+      <img class="wishly-profile-avatar" alt="">
+      <span class="wishly-profile-copy"><strong class="wishly-profile-name">Your profile</strong></span>
+    </div>
+    <a class="wishly-settings-button" href="settings.html" aria-label="Settings" title="Settings">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path fill-rule="evenodd" d="M9.2 5.1 Q9.75 4.45 10.05 2.95 Q10.05 2.95 10.5 2.5 L13.5 2.5 Q13.95 2.95 14.25 4.45 Q14.25 4.45 14.8 5.1 
+          A7.45 7.45 0 0 1 16.58 6.13 Q17.41 6.28 18.86 5.79 Q18.86 5.79 19.48 5.95 L20.98 8.55 Q20.81 9.16 19.66 10.17 Q19.66 10.17 19.38 10.97 
+          A7.45 7.45 0 0 1 19.38 13.03 Q19.66 13.83 20.81 14.84 Q20.81 14.84 20.98 15.45 L19.48 18.05 Q18.86 18.21 17.41 17.72 Q17.41 17.72 16.58 17.87 
+          A7.45 7.45 0 0 1 14.8 18.9 Q14.25 19.55 13.95 21.05 Q13.95 21.05 13.5 21.5 L10.5 21.5 Q10.05 21.05 9.75 19.55 Q9.75 19.55 9.2 18.9 
+          A7.45 7.45 0 0 1 7.42 17.87 Q6.59 17.72 5.14 18.21 Q5.14 18.21 4.52 18.05 L3.02 15.45 Q3.19 14.84 4.34 13.83 Q4.34 13.83 4.62 13.03 
+          A7.45 7.45 0 0 1 4.62 10.97 Q4.34 10.17 3.19 9.16 Q3.19 9.16 3.02 8.55 L4.52 5.95 Q5.14 5.79 6.59 6.28 Q6.59 6.28 7.42 6.13 
+          A7.45 7.45 0 0 1 9.2 5.1 Z
+          M15.3 12 a3.3 3.3 0 1 1 -6.6 0 a3.3 3.3 0 0 1 6.6 0 Z"/>
+      </svg>
+    </a>`;
   const settingsButton = controls.querySelector(".wishly-settings-button");
   if (settingsButton) {
     settingsButton.href = "dashboard.html?view=settings";
